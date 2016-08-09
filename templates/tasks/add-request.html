@@ -1,0 +1,181 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<script src="/static/js/jquery.validate.js"></script>
+
+
+<script>
+  $(function() {
+    $( ".datepicker" ).datepicker();
+  });
+  </script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+$("#request_form").validate({
+rules :
+{
+title: {required: true},
+},
+});
+});
+</script>
+
+<script>
+$( document ).ready(function() {
+$('#id_client').change(function(){
+    $('#id_project option').remove();
+    var cid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/gettasks/',
+        data:{'cid':cid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                $('<option>',{value:''}).html('All Projects').appendTo('#id_project');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_project');
+                }
+            }
+        }
+    })
+    });
+});
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+//$('#id_client').attr('data-rel','chosen');
+//$('#id_project').attr('data-rel','chosen');
+//$('#id_frm').attr('data-rel','chosen');
+//$('#id_priority').attr('data-rel','chosen');
+//$('#id_doc').attr('class','form-control')
+$('#id_title').attr('class','form-control')
+$('#id_description').attr('class','form-control')
+$('#id_requested_due_date').attr('class','form-control')
+
+});
+</script>
+
+
+<script>
+$(function() {
+$( "#datepicker" ).datepicker();
+$("#id_requested_due_date").datepicker("setDate","{{todays|date:'m/d/o'}}");
+
+});
+//$("#id_requested_due_date").datepicker("setDate","{{todays|date:'m/d/o'}}");
+
+</script>
+
+<body>
+
+
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Task Request Form</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+<form id="request_form" class="form-inline" role="form" action="/task/request/add/" method="POST" enctype = "multipart/form-data" >{% csrf_token %}
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_title">Title:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{form.title}}
+                    </div>
+                    <p>
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_client">Client:</label> <p>
+                        {{form.client}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                      <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_project">Project:</label> <p>
+                        {{form.project}}
+                    </div>
+                </div>
+                    <p>
+                    
+                       <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_from">From:</label> <p>
+                        {{form.frm}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                     <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_priority">Priority:</label> <p>
+                        {{form.priority}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                     <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_requested_due_date" >Requested Due Date:</label> <p>
+                        <!--<input id="id_due_date" class="form-control" name="id_due_date">-->
+                        {{form.requested_due_date}}
+                    </div>
+                    <p>
+                    
+                    
+                     <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_description">Description:</label> <p>
+                        <!--<input id="id_description" type="text" class="form-control" name="description">-->
+                        {{form.description}}
+                    </div>
+                    <p>
+                    
+                  <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_doc">Upload a Document</label><p>
+                        <!--input type="file" id="exampleInputFile"-->
+                            {{form.doc}}
+                    </div>
+                    <p>
+                
+                <p>
+                <br>
+                            <input type="submit" class="btn btn-default" value="Save" />
+                            <a href="/task/requests/" style="text-decoration:none;"> <button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+    <!--/span-->
+            
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+</div><!--/row-->
+</div>
+</div>
+{% endblock midpart %}

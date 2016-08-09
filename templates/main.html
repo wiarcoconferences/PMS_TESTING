@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>PMS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
+    <meta name="author" content="Muhammad Usman">
+
+    <!-- The styles -->
+    <link href="/static/css/bootstrap-cerulean.min.css" rel="stylesheet">
+
+    <link href="/static/css/charisma-app.css" rel="stylesheet">
+    <link href='/static/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+    <link href='/static/bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+    <link href='/static/bower_components/chosen/chosen.min.css' rel='stylesheet'>
+    <link href='/static/bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
+    <link href='/static/bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+    <link href='/static/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
+    <link href='/static/css/jquery.noty.css' rel='stylesheet'>
+    <link href='/static/css/noty_theme_default.css' rel='stylesheet'>
+    <link href='/static/css/elfinder.min.css' rel='stylesheet'>
+    <link href='/static/css/elfinder.theme.css' rel='stylesheet'>
+    <link href='/static/css/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='/static/css/uploadify.css' rel='stylesheet'>
+    <link href='/static/css/animate.min.css' rel='stylesheet'>
+
+    <!-- jQuery -->
+    <script src="/static/bower_components/jquery/jquery.min.js"></script>
+
+    <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- The fav icon -->
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+    
+    <style>
+    .filter-select {
+    background: -moz-linear-gradient(center top , #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%) repeat scroll 0 0 padding-box rgba(0, 0, 0, 0);
+    border: 1px solid #aaaaaa;
+    border-radius: 5px; 
+    box-shadow: 0 0 3px #ffffff inset, 0 1px 1px rgba(0, 0, 0, 0.1);
+    color: #444444;
+    display: block;
+    height: 23px;
+    line-height: 24px;
+    overflow: hidden;
+    padding: 0 3px 0 8px;
+    position: relative;
+    text-decoration: none;
+    float:left;
+    margin-right:10px;
+    }
+    </style>
+    
+</head>
+{% block topmenu %}
+<body>
+
+    <!-- topbar starts -->
+    <div class="navbar navbar-default" role="navigation">
+
+        <div class="navbar-inner">
+            <button type="button" class="navbar-toggle pull-left animated flip">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"> <img alt="Charisma Logo" src="/static/img/logo20.png" class="hidden-xs"/>
+                <span>PMS</span></a>
+
+            <!-- user dropdown starts -->
+            <div class="btn-group pull-right">{% autoescape on %}
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs"> 
+                    
+                      
+                    {{ request.user.username|safe }} 
+                    
+                    </span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <!--li><a class="glyphicon glyphicon-user" href="#">Profile</a></li>
+                    <li class="divider"></li-->
+                   {% if perms.people.add_userprofile %} <li><a class="glyphicon glyphicon-wrench" href="/Settings & Defaults/"> Settings & Defaults</a></li>
+                    <li class="divider"></li>{% endif %}
+                    
+                    <li> <a class="glyphicon glyphicon-calendar" href="/leavecalender/"> Leave Calender</a></li>
+                    <li class="divider"></li>
+                    <li> <a class="glyphicon glyphicon-calendar" href="/resource/leavecalender/"> Resource Leave Calender</a></li>
+                    <li class="divider"></li>
+                        <li> <a class="glyphicon glyphicon-envelope" href="/password/reset/"> Change Password </a></li>
+                    <li class="divider"></li>
+                    <li><a class=" glyphicon glyphicon-off" href="/accounts/logout/"> Logout</a></li>
+                </ul>{% endautoescape %}
+            </div>
+            <!-- user dropdown ends -->
+
+            <!-- theme selector starts -->
+          <!--  <div class="btn-group pull-right theme-container animated tada">
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <i class="glyphicon glyphicon-tint"></i><span
+                        class="hidden-sm hidden-xs"> Change Theme / Skin</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" id="themes">
+                    <li><a data-value="classic" href="#"><i class="whitespace"></i> Classic</a></li>
+                    <li><a data-value="cerulean" href="#"><i class="whitespace"></i> Cerulean</a></li>
+                    <li><a data-value="cyborg" href="#"><i class="whitespace"></i> Cyborg</a></li>
+                    <li><a data-value="simplex" href="#"><i class="whitespace"></i> Simplex</a></li>
+                    <li><a data-value="darkly" href="#"><i class="whitespace"></i> Darkly</a></li>
+                    <li><a data-value="lumen" href="#"><i class="whitespace"></i> Lumen</a></li>
+                    <li><a data-value="slate" href="#"><i class="whitespace"></i> Slate</a></li>
+                    <li><a data-value="spacelab" href="#"><i class="whitespace"></i> Spacelab</a></li>
+                    <li><a data-value="united" href="#"><i class="whitespace"></i> United</a></li>
+                </ul>
+            </div> -->
+            <!-- theme selector ends -->
+
+           <!-- <ul class="collapse navbar-collapse nav navbar-nav top-menu">
+                <li><a href="#"><i class="glyphicon glyphicon-globe"></i> Visit Site</a></li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown"><i class="glyphicon glyphicon-star"></i> Dropdown <span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <form class="navbar-search pull-left">
+                        <input placeholder="Search" class="search-query form-control col-md-10" name="query"
+                               type="text">
+                    </form>
+                </li>
+            </ul>-->
+
+        </div>
+    </div>
+    {% endblock %}
+    <!-- topbar ends -->
+    
+    
+    {% block sidemenu %}
+<div class="ch-container">
+    <div class="row">
+        
+        <!-- left menu starts -->
+        <div class="col-sm-2 col-lg-2">
+            <div class="sidebar-nav">
+                <div class="nav-canvas">
+                    <div class="nav-sm nav nav-stacked">
+
+                    </div>
+                    <ul class="nav nav-pills nav-stacked main-menu">
+                        <li class="nav-header">Main</li>
+                        <li><!--<a class="ajax-link" href="index.html">--><a href="/home/"><i class="glyphicon glyphicon-home"></i><span> Home</span></a>
+                         <li class="ajax-link">{% if perms.client.can_view_client %}
+                            <a href="/clients/"><i class="glyphicon glyphicon-star"></i> Clients</a>
+                            {% endif %}
+                            <!-- <ul class="nav nav-pills nav-stacked"> -->
+                            <!--     <li><a href="/clients/">Client Home </a></li> -->
+                            <!--    <\!-- {% if perms.client.can_view %} -\-> -->
+                            <!--     <li><a href="/client/add/0/">Create a new client</a></li> -->
+                            <!--    <\!--{% endif %}-\-> -->
+                            <!--     <\!--<li><a href="#">Import clients</a></li>-\-> -->
+                            <!--    <\!-- <li><a href="/recently_viewed/?key=client">Recently Viewd Clients</a></li>-\-> -->
+                               
+                            <!-- </ul> -->
+                        </li>
+                        {#% endif %#}
+                        
+                        
+                         <li class="ajax_link">
+                            <a href="/projects/"><i class="glyphicon glyphicon-star"></i><span> Projects</span></a>
+                            <!-- <ul class="nav nav-pills nav-stacked"> -->
+                            <!--     {% if perms.projects.can_view_project %}<li><a href="/projects/">Project Home </a></li>{% endif %} -->
+                            <!--     {% if perms.projects.add_project %}<li><a href="/project/add/0/">Create a new project</a></li>{% endif %} -->
+                            <!--     <\!--li><a href="/project/permissions/">Project Permission</a></li-\-> -->
+                            <!--     <\!--li><a href="/import/data/">Import Projects</a></li-\-> -->
+                            <!--     <\!--<li><a href="/recently_viewed/?key=project">Recently Viewd Tasks</a></li>-\-> -->
+                                
+                            <!-- </ul> -->
+                        </li>
+                        
+                          <li class="ajax-link">
+                          {% if perms.people.can_view_userprofile %}
+                            <a href="/persons/"><i class="glyphicon glyphicon-star"></i><span> People</span></a>
+                            {% endif %}
+                           <!--  <ul class="nav nav-pills nav-stacked"> -->
+                           <!--  {% if perms.people.can_view_userprofile %}  -->
+                           <!--      <li><a href="/persons">People Home</a></li> -->
+                           <!--  {% endif %}  -->
+                           <!-- {% if perms.people.add_userprofile and perms.people.change_userprofile%} -->
+                           <!-- <li><a href="/person/add/?key=default">Create a new people</a></li> -->
+                           
+                                
+                           <!--      {% endif %} -->
+                                
+                           <!--      <\!--<li><a href="#">Recently Viewd People</a></li>-\-> -->
+                           <!--  </ul> -->
+                        </li>
+                        
+                            <li class="accordion">
+                            <a href="/milestones/"><i class="glyphicon glyphicon-star"></i><span> Milestones</span></a>
+                            <ul class="nav nav-pills nav-stacked">
+                            {% if perms.milestones.add_milestone %}
+                                <li><a href="/milestones/">Milestones Home</a></li>{% endif %}
+                                <!-- {# if perms.milestones.add_milestone #} <li><a href="/milestones/add/0/">Create a new milestone</a></li>{# endif #}  -->
+                                <li><a href="/milestones/overdue/">Overdue</a></li>
+                                <li><a href="/milestones/owned by me/">Owned by me</a></li>
+                                
+                                <!--li><a href="/milestones/import/">Import Milestones</a></li-->
+                                <!--<li><a href="#">Recently Viewd Milestones</a></li>-->
+                            
+                            </ul>
+                        </li>
+                        
+                        
+                           <li class="accordion">
+                            <a href="/tasks/"><i class="glyphicon glyphicon-star"></i><span> Task</span></a>
+                            <ul class="nav nav-pills nav-stacked">
+                                {% if perms.tasks.add_tasks %}<li><a href="/tasks/">Task Home</a></li>{% endif %}
+                                <!-- {# if perms.tasks.add_tasks #}<li><a href="/task/add/">Create a new task</a></li>{# endif #} -->
+                                {% if perms.tasks.add_tasks %}<li><a href="/task/addmultiple/">Create multiple tasks</a></li>{% endif %}
+                                {% if perms.tasks.change_tasks %}<li><a href="/task/overdue/">My Overdue</a></li>{% endif %}
+                                {% if perms.tasks.add_tasks %}<li><a href="/task/assigned/">Assigned to me</a></li>{% endif %}
+                                {% if perms.tasks.add_tasks %}<li><a href="/task/ownedby/">Owned by me</a></li>{% endif %}
+                                {% if perms.tasks.add_tasks %}<li><a href="/task/following/">Task I'm following ?</a></li>{% endif %}
+                                {% if perms.tasks.add_tasks %}<li><a href="/task/requests/">Request Queue</a></li>{% endif %}
+                                <!--li><a href="#">Import Tasks</a></li-->
+                                {% if perms.tasks.add_tasks %}<li><a href="/recently/viewed/?key=task">Recently Viewd Tasks</a></li>{% endif %}
+                            </ul>
+                        </li>
+                        </li>
+                        
+                          <li class="accordion">
+                            <a href="/times/"><i class="glyphicon glyphicon-star"></i><span> Time</span></a>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="/times/">Times Home</a></li>
+                                 {% if perms.times.add_addtime %}<li><a href="/addtimes/">Add Time</a></li>{% endif %}
+                                {% if perms.times.add_addtime %}
+                                <li><a href="/addmtimes/">Add Multiple Time Entries</a></li>
+                                {% endif%}
+                                {% if perms.times.change_addtime %}
+                                <li><a href="/times/manage/timesheets/">Manage Timesheets</a></li>
+                                {% endif%}
+                                {#% if perms.times.change_addtime %#}
+                                <!--li><a href="#">Edit Time</a></li-->
+                                {#% endif%#}
+                                {% if perms.times.change_addtime %}
+                                <li><a href="#">Weekly Hour Graph</a></li>
+                                {% endif%}
+                                {% if perms.times.change_addtime %}
+                                <li><a href="#">Where is my time going ?</a></li>
+                                {% endif%}
+                                {% if perms.times.change_addtime %}
+                                <li><a href="/Active timers/">Active Timers</a></li>
+                                {% endif%}
+                                {% if perms.times.change_addtime %}
+                                <li><a href="#">Missing Timesheets</a></li>
+                                {% endif%}
+                                <!--li><a href="#">Import Time</a></li-->
+                            </ul>
+                        </li>
+                        <!--li class="accordion">
+                            <a href="/invoices/"><i class="glyphicon glyphicon-star"></i><span> Invoices</span></a>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="/invoices-home/">Invoices Home </a></li>
+                                <li><a href="/invoice/">Create a new invoice</a></li>
+                                <li><a href="#">Outstanding Invoices</a></li>
+                                <li><a href="#">Overdue invoices</a></li>
+                                <li><a href="#">Paid invoices</a></li>
+                                <li><a href="/import/invoice/">Import invoices</a></li>
+                            </ul>
+                        </li-->
+                        {% if perms.reports.can_view  %}
+                        <li class="accordion">
+                            <a href="#"><i class="glyphicon glyphicon-star"></i><span> Reports</span></a>
+                            <ul class="nav nav-pills nav-stacked">
+                            {% if perms.reports.can_view %}
+                                <li><a href="#">Mr.Pie Chart</a></li>
+                                <li><a href="#">Project Activity</a></li>
+                                {% else %}
+                                <li><a href="#">Trends</a></li>
+                                <li><a href="#">Periscope</a></li>
+                                {% endif%}
+                                
+                                <li><a href="#">Summary</a></li>
+                                <li><a href="#">Break It Down</a></li>
+                                <li><a href="#">Crosschart</a></li>
+                                <li><a href="#">Outstanding Balances</a></li>
+                                <li><a href="#">Project Landscape</a></li>
+                                <li><a href="#">Expenses</a></li>
+                                
+                            </ul>
+                        </li>
+                        {% endif %}
+                         <li class="accordion">
+                            <a href="#"><i class="glyphicon glyphicon-star"></i><span> Documents</span></a>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="/documents/documents-home/">Documents Home</a></li>
+                                <li><a href="/documents/documents/add/">Upload a new document</a></li>
+                                <li><a href="/documents/my-documents/">My Documents</a></li>
+                                <li><a href="#">Recent Documents</a></li>
+                                <li><a href="#">Tags</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/logout/"><i class=" glyphicon glyphicon-off"></i><span> Logout</span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+        <!--/span-->
+        <!-- left menu ends -->
+
+        <noscript>
+            <div class="alert alert-block col-md-12">
+                <h4 class="alert-heading">Warning!</h4>
+
+                <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a>
+                    enabled to use this site.</p>
+            </div>
+        </noscript>
+
+        <div id="content" class="col-lg-10 col-sm-10">
+            <!-- content starts -->
+            <div>
+   <!-- <ul class="breadcrumb">
+        <li>
+            <a href="/main/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="#" style="text-decoration:none;">Dashboard</a>
+        </li>
+    </ul>-->
+    {% block midpart %}
+</div>
+{% endblock midpart %}
+            <ins class="adsbygoogle "
+                 style="display:inline-block;width:728px;height:90px"
+                 data-ad-client="ca-pub-5108790028230107"
+                 data-ad-slot="3193373905"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        <div class="col-md-2 col-lg-3 col-sm-12 col-xs-12 donate">
+        </div>
+
+    </div>
+    <!-- Ad ends -->
+
+    <hr>
+
+            </div>
+        </div>
+    </div>
+    {% block footer %}
+    <footer class="row">
+        <p class="col-md-5 col-sm-5 col-xs-12 powered-by">Powered by: <a href="http://www.facebook.com/jyothi.nadu//">Jyothi Naidu</a>
+        <p class="col-md-5 col-sm-5 col-xs-12 copyright">&copy; <a href="http://www.facebook.com/jyothi.nadu" target="_blank">PMS</a> 2014</p></p>
+       
+    </footer>
+{% endblock %}
+</div><!--/.fluid-container-->
+
+<!-- external javascript -->
+
+<script src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!--script src='/static/js/jquery.validate.min.js'></script-->
+<!-- library for cookie management -->
+<script src="/static/js/jquery.cookie.js"></script>
+<!-- calender plugin -->
+<script src='/static/bower_components/moment/min/moment.min.js'></script>
+<script src='/static/bower_components/fullcalendar/dist/fullcalendar.min.js'></script>
+<!-- data table plugin -->
+<script src='/static/js/jquery.dataTables.min.js'></script>
+
+<!-- select or dropdown enhancer -->
+<script src="/static/bower_components/chosen/chosen.jquery.min.js"></script>
+<!-- plugin for gallery image view -->
+<script src="/static/bower_components/colorbox/jquery.colorbox-min.js"></script>
+<!-- notification plugin -->
+<script src="/static/js/jquery.noty.js"></script>
+<!-- library for making tables responsive -->
+<script src="/static/bower_components/responsive-tables/responsive-tables.js"></script>
+<!-- tour plugin -->
+<script src="/static/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js"></script>
+<!-- star rating plugin -->
+<script src="/static/js/jquery.raty.min.js"></script>
+<!-- for iOS style toggle switch -->
+<script src="/static/js/jquery.iphone.toggle.js"></script>
+<!-- autogrowing textarea plugin -->
+<script src="/static/js/jquery.autogrow-textarea.js"></script>
+<!-- multiple file upload plugin -->
+<script src="/static/js/jquery.uploadify-3.1.min.js"></script>
+<!-- history.js for cross-browser state change on ajax -->
+<script src="/static/js/jquery.history.js"></script>
+<!-- application script for Charisma demo -->
+<script src="/static/js/charisma.js"></script>
+
+</body>
+</html>

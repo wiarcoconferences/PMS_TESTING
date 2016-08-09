@@ -1,0 +1,64 @@
+{% extends "main.html" %}
+{% block content %}
+<body>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $('input:checkbox').bind('click', function(){
+            var check = $("input[type=checkbox]:checked").map(function () {return $(this).attr('name');}).get().join(",")
+            console.log(check);
+            var toch1 = check.toString().split(',')[0];
+            var toch2 = check.toString().split(',')[1];
+            var toch3 = check.toString().split(',')[2];
+            if (toch1 || toch2 || toch3){
+                $.ajax({
+                    type : 'GET',
+                    url : '/client/',
+                    data:{'toch1':toch1,'toch2':toch2,'toch3':toch3},
+                    success:function(data){
+                        
+                    }
+                });
+            }
+        });
+    });
+
+</script>
+                         
+            <div align="right">
+            <a title = "Print this Page" href="javascript:window.print()"><img src="/static/images/print.jpeg" height="25".width="25"></a>
+            </div>
+                                    <table class="items">
+                                    <tr>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Address</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                                <th>Website</th>
+                                                <th>Fax </th>
+                                    <tr>
+                              <div>
+                                            <tr>{% for a in clients %}
+                                                    <td>{{ a.name }}</td>
+                                                    <td>{{ a.description }}</td> {% for i in toch1 %}{{ i.description }}{% endfor %}
+                                                    <td>{{ a.address }}</td>
+                                                    <td>{{ a.email }}</td>
+                                                    <td>{{ a.phone }}</td>
+                                                    <td>{{ a.website }}</td>
+                                                    <td>{{ a.fax }} </td>
+                                                </tr>
+                                    </table>
+                                     
+                                  <div align = "right">
+                                    <a href="/client/"> <input type="Submit" class="btnsubmit" value="Cancel" /> 
+                                  </div>
+                              </div>
+                       </div>
+                  </div>
+             </div>
+</body>
+</html>
+</div>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+<script>
+function myFunction() {
+    window.print();
+}
+</script>
+            <!--sitemap-->
+            <div class="breadcrumbs">
+                   <!-- <a class="home" href="#">Home</a>-->
+            </div>
+                <!-- main content -->
+                <!-- Work_Type -->
+                    <div class="maincontent">
+                        <div class="portlet box blue">
+                         <div class="breadcrumb">
+                         <li>
+            <a href="/main/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="/tasks/" style="text-decoration:none;">Task</a>
+        </li>
+                        </div>
+                        {% if perms.tasks.add_request %}
+                        <a class="breadcrumb" href="/task/request/add/" style="text-decoration:none;" >Add New Request</a>{% endif %}
+                        <div id="employee-designation-grid" class="breadcrumb">
+                        <h3>Request Queue  {{requests|length}} </h3>
+                        <p>
+                        <input id="" class="check" type="checkbox" onclick="" value="1">
+                        <label for="f_summary">Show request description</label>
+        <a title = "Print this Page" href="javascript:window.print()"><img src="/static/img/print-icon.png" height="25" width="25" align="right"></a>
+                        </p>
+                        <form>
+                                <span class="sprites iconsPrintpage"></span>
+                                </a>
+                                </form>
+                        <p>
+                        <li>
+                        <strong>Filter options:</strong>
+                        <select>
+                        <option value = "">All Clients</option>
+                        {% for p in requests %}
+                        <option value = "{{p.id}}">{{ p.client }}</option>
+                        {% endfor %}
+                        </select>
+                        <select>
+                        <option value = "">All Projects</option>
+                        {% for p in requests %}
+                        <option value = "{{p.id}}">{{ p.project }}</option>
+                        {% endfor %}
+                        </select>
+                        <select>
+                        <option value = "">All Requesters</option>
+                        {% for p in requests %}
+                        <option value = "{{p.id}}">{{ p.frm }}</option>
+                        {% endfor %}
+                        </select>
+                        </li>
+                        </p>
+                        <br>
+                                    <table class="table table-striped table-bordered bootstrap-datatable datatable responsive" >
+                                      {% if requests %}
+                                          <thead>
+                                                <tr>
+                                                <th>#</th>
+                                                <th>Title</th>
+                                                <th>From</th>
+                                                <th>Project</th>
+                                                <th>Submitted</th>
+                                                <th>Due_Date</th>
+                                                <th>Assign as task</th>
+                                                <th>Add to an existing task</th>
+                                                {% if perms.tasks.change_request %}<th>Edit</th>{% endif %}
+                                                <th>Select</th>
+                                                </tr>
+                                                       </thead>
+                                            {% for p in requests %}
+                                                <tr class="{% cycle 'odd' 'even'%}" align = "center">
+                                                    <td>{{ p.id }}</td>
+                                                    <td><a href="/task/request/view/{{p.id}}/" style="text-decoration:none;">{{ p.title }}</td></a>
+                                                    <td>{{ p.frm}}</td>
+                                                    <td>{{ p.project }}</td>
+                                                    <td></td>
+                                                    <td>{{ p.requested_due_date }}</td>
+                                                    <td><a href="/task/assign/{{p.id}}" style="text-decoration:none;">new task</td>
+                                                    {% if perms.tasks.change_request %}
+                                                    <td><a href="#" style="text-decoration:none;">existing task</td>
+                                                    {% endif %}
+                                                    <td><a href="/task/request/edit/{{p.id}}/" class="glyphicon glyphicon-edit" ></a> </td>
+                                                    <td><input type = checkbox ></td>
+                                                </tr>
+                                          {% endfor %}
+                                      {% else %}
+                                          <td style="text-align:center;color:blue;text-size:14px;">No Request added Yet...</td>
+                                        {% endif %}
+                                    </table>
+                                    <div class="keys" style="display:none" title="">
+                                    <span>3</span><span>2</span><span>1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+{% endblock midpart %}
+

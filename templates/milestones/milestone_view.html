@@ -1,0 +1,426 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+<script>
+function myFunction() {
+    window.print();
+}
+</script>
+
+
+<script src="/static/js/jcook.js" type="text/javascript"></script>
+
+<body onload="myFunction()">
+<!--<body >-->
+  <div class="maincontent">
+                        <div class="portlet box blue">
+                        <div class="breadcrumb">
+                        
+                         <li>
+            <a href="/home/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="/milestones/" style="text-decoration:none;">Milestone</a>
+        </li>
+                        </div>
+    <div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <a href="#" style="text-decoration:none;"># {{ mil_obj.id }}: {{ mil_obj.title }}</a>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                <!--a href="" style="text-decoration:none;" title="Copy">Copy</a>&nbsp;&nbsp;
+                                    <a href="#" class="confirmationcomplete" style="text-decoration:none;" title="Compelete" >Complete</a>&nbsp;&nbsp;
+                                    <a href="#" class="confirmationdelete" style="text-decoration:none;"title="Delete" >Delete</a>&nbsp;&nbsp;-->
+                                    <a href="/task/add/?milestone_id={{mil_obj.id}}" style="text-decoration:none;" title="Create a new task for this milestone"> Create a new task for this milestone</a>&nbsp;&nbsp;
+                                   <a href="/task/addmultiple/?milestone_id={{mil_obj.id}}" style="text-decoration:none;" title="Create a multiple task for this milestone">Create a multiple task for this milestone</a>
+                                    <a title = "Print this Page" href="javascript:window.print()"><img src="/static/img/print-icon.png" height="25" width="25" align="right"></a><p><br>
+                                    <!--Premalink <input type="text"> Email-->
+                                    <a href="/milestones/edit/{{mil_obj.id}}/" style="text-decoration:none; float:right;" title="cilck here to update milestone">Update milestone</a></br>
+                                    <a href="/milestones/" style="text-decoration:none; float:right;" title="Return to the milestone list"><< Return to the milestone list</a>
+                                    <!-- <button onClick="/editmilestone/{{p.id}}/"/>Update milestone</button> --><br>
+                                    
+                                    
+                                    
+                                    <!-- script for confirm alert -->
+<script type="text/javascript">
+    var elems = document.getElementsByClassName('confirmationcomplete');
+    var confirmIt = function (e) {
+        if (!confirm('Are you sure you want to set this milestone to "Complete" ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+    
+    
+    
+     var elems = document.getElementsByClassName('confirmationdelete');
+    var confirmIt = function (e) {
+        if (!confirm('Are you sure you want to "Delete" this milestone ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+    
+</script>
+<!-- script for confirm alert -->
+
+                        <table class="table" >
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Project</th>
+                                    <th>Owned by</th>
+                                    <th>Description</th>
+                                    <th>Due date</th>
+                                    <th>Status</th>
+                                    <th>Estimated Time</th>
+                                    <th>Actual Time</th>
+                                    <th>Time Remaning</th>
+                                    <th>Estimated vs Actual</th>
+                                    <th>Task Summary</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ mil_obj.client }}</td>
+                                    <td>{{ mil_obj.project }}</td>
+                                    <td>{{ mil_obj.owned_by }}</td>
+                                    <td>{{ mil_obj.description }}</td>
+                                    <td>{{mil_obj.due_date}}</td>
+                                    {%if mil_obj.due_date <= todays and mil_obj.status == False %}
+                                    <td><span class="label-default label label-danger">Overdue</span></td>
+                                    {%else%}
+                                    <td>{{ mil_obj.status |yesno:"Compelete,In Progress"}}</td>
+                                    {%endif%}
+                                    <td>{{tasks.estimated}}</td>
+                                    <td>{{tasks.actual}}</td>
+                                    <td><p id="demo"></p></td>
+                                    <td></td>
+                                    <td>{{task.summary}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div><!--/row-->
+
+<script>
+function myFunction() {
+    y = '{{ tk.estimated }}';
+    z = '{{ tk.actual }}';
+    x = y - z;
+    document.getElementById("demo").innerHTML = x;
+}
+</script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<meta charset=utf-8 />
+
+<!-- script starts for hide tables-->
+<script>
+$(document).ready(function () {
+            $('#check1,#check2,#check3').on('click', function () {
+                //Check atlest one checkbox is checked
+                if ($("input[type=checkbox]:checked").length > 0) {
+                    //Show the table
+                    $('.module').css('display','block');
+                    $('.moduled').css('display','block');
+                    $('.sd').css('display','block');
+                    $('.sdd').css('display','block');
+                    $('.tot').css('display','block');
+                    $('.totd').css('display','block');
+              
+                }
+                else {
+                //hide the table
+                    $('.module').hide();
+                    $('.moduled').hide();
+                    $('.sd').hide();
+                    $('.sdd').hide();
+                    $('.tot').hide();
+                    $('.totd').hide();
+                   
+                }
+            });
+        });
+</script>
+
+<script type="text/javascript">
+
+function post_mile_comment(mid){
+    var cmdval = $('#id_comment').val();
+   var csrf = getCookie('csrftoken');
+   if (cmdval){
+       $.ajax({
+           type : 'POST',
+           url : '/mile-comment/',
+           data : {'mid':mid, 'val':cmdval, 'csrfmiddlewaretoken':csrf},
+           async : false,
+           dataType : 'json',
+           success : function(d){
+               if (d.success){
+                   location.reload(true);
+               }
+           }
+       });
+   } else {
+       alert('Please, enter your comments.');
+   }
+}
+
+
+</script>
+
+
+
+
+<!-- script ends for hide tables-->
+
+<!-- script for total starts -->
+<script>
+var totals=[0,0,0];
+$(document).ready(function(){
+
+    var $dataRows=$("#sum_table tr:not('.totalColumn, .titlerow')");
+   
+    $dataRows.each(function() {
+        $(this).find('.rowDataSd').each(function(i){
+            totals[i]+=parseInt( $(this).html());
+        });
+    });
+    $("#sum_table td.totalCol").each(function(i){
+        $(this).html(""+totals[i]);
+    });
+
+});
+</script>
+<!-- script for total ends -->
+    <div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <h2>Task View</h2>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                 <!--<input type="checkbox">&nbsp;&nbsp;Include closed tasks&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+                 <input type="checkbox" id="check1">
+                 <label>&nbsp;&nbsp;Show widescreen view</label></p>
+                    <table class="table" id="sum_table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                                <th class ="module" style="display: none">Module</th>
+                                <th>Assigned to</th>
+                                <th class ="sd" style="display: none">Start</th>
+                                <th>Due</th>
+                                <th>Status</th>
+                                <th>Estimated</th>
+                                <th>Actual</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {% for tk in task_list %}
+                          <tr>
+                            <td>{{ tk.id }}</td>
+                                    <td><a title="click here to view task" href="/tasks/view/{{tk.id}}" style="text-decoration:none;">{{ tk.title }}</a></td>
+                                    <td class ="moduled" style="display: none">{{ tk.module }}</td>
+                                    <td >{% for i in  tk.assigned_to.all %}{{ i }} {% if not forloop.last %} ,{% endif %} {% endfor %}</td>
+                                    <td class ="sdd" style="display: none">{{ tk.start_date }}</td>
+                                    <td>{{ tk.due_date }}</td>
+                                    <td>{{ tk.status }}</td>
+                                    <td class="rowDataSd">{{ tk.estimated }}</td>
+                                    <td class="rowDataSd">{{ tk.actual }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                        <th colspan="4">Total</th>
+                        <td class ="tot" style="display: none"></td>
+                        <td></td>
+                        <td class ="totd" style="display: none"></td>
+                        <td class="totalCol"></td>
+                        <td class="totalCol"></td>
+                        
+                       
+                        
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div><!--/row-->
+    
+    
+    
+    
+    <div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <h2>Comments & Updates</h2>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                     {% if comment %}
+                       <table class="table" id="sum_table">
+                           <thead>
+                               <tr>
+                                   <th>User</th>
+                                   <th>Comment</th>
+                                   <th>Submitted Date</th>
+                               </tr>
+                           </thead>
+                           <tbody>
+                               {% for c in comment %}
+                                   <tr>
+                                       <td>{{c.user}}</td>
+                                       <td>{{c.comment}}</td>
+                                       <td>{{c.submit_date}}</td>
+                                   </tr>
+                               {% endfor %}
+                           </tbody>
+                       </table>
+                   {% endif %}
+                    
+                    
+                    <textarea name="comments" id="id_comment"></textarea>
+                    <input type="button" value="Post Comment" onclick="return post_mile_comment('{{mil_obj.pk}}')">
+                
+                <!--div align="right"><a title="click here to add comments "href="#" style="text-decoration:none;">Add Comment</a></div-->
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div><!--/row-->
+    
+    
+    
+    
+    
+    
+    <div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <h2>Documents ({{doc|length}})</h2>
+
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                {% if perms.milestones.change_milestone_document %}
+                <a title="click here to upload document" href="/documents/documents/add/" style="text-decoration:none; float:right;">Upload a new document</a>
+                
+                    <table class="table">
+                        <thead>
+                        
+                        <tr>
+                            <th>File:</th>
+                                    <th>Title</th>
+                                    <th>Tags</th>
+                                    <th>Notes</th>
+                                    <th>Edit</th>
+                                    </tr>
+                                    {% for i in doc %}
+                                    <tr class="{% cycle 'odd' 'even'%}" align = "center">
+                                    <td>{{i.files}}</td>
+                                    <td>{{i.title}}</td>
+                                     <td>{{i.tags}}</td>
+                                    <td>{{i.notes}}</td> 
+                                    <td><a href="/documents/documents/edit/?id={{i.id}}" class="glyphicon glyphicon-edit" style="text-decoration:none;"></a></td>
+                                    </tr> {% endfor %}
+                                    </thead>
+                        </tbody>
+                    </table>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div><!--/row-->
+    
+    
+    
+    
+    <div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <h2>History</h2>
+
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Created On</th>
+                                <th>Modified On</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr align = "center">
+                                 <td>{{ mil_obj.created_on }}</td>
+                                <td>{{ mil_obj.modified_on }}</td> 
+                            </tr> 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div><!--/row-->
+
+
+    <div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <h2>Graphs</h2>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div><!--/row-->
+</div>
+{% endblock midpart %}

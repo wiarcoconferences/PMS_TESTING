@@ -1,0 +1,183 @@
+{% extends "main.html" %}
+{% block midpart %}
+{% if not key %}
+<script type="text/javascript">
+$(document).ready(function()
+{
+    $('#calendar').fullCalendar({
+        header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+        },
+        {% if calender_lists %}
+            defaultDate: '{{today_date|date:"Y-m-d"}}',
+        {% endif %}
+        events: [
+            {% for m in calender_lists %}
+            {
+                //title:'{{p.client.name}}',
+                title: '{{m.person}} {{m.description}}',
+                start: '{{m.start_date|date:"Y-m-d"}}',
+                end:   '{{m.end_date|date:"Y-m-d"}}',
+                //url:'/home/',
+                //defaultDate: '{{m.due_date|date:"Y-m-d"}}',
+            },
+            {% endfor %}
+        ]
+    })
+}
+);
+</script>
+
+                        <!---claender-->
+    <div class="row">
+        <div class="box col-md-7" align="center">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <h2><i class="glyphicon glyphicon-calendar"></i> Calendar</h2>
+                    <div class="box-icon">
+                        <a href="/resource/leavecalender/add/" class="btn btn-round btn-default">
+                            <i class="glyphicon glyphicon-plus " title="Add a Leave">  </i>
+                        </a>
+                {% if perms.mastermodule.add_generalinfo  %}
+                        <a href="/resource/leavecalender/?key=view" class="btn btn-round btn-default">
+                            <i class="glyphicon glyphicon-calendar " title="View Resource Leave">  </i>
+                        </a>
+                {% endif %}
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div id="calendar"></div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+
+
+<div class="row">
+        <div class="box col-md-5">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <h2><i class="glyphicon glyphicon"></i> My Holidays List</h2>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                    <div class="box-content">
+                        <table class="table" >
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Holiday</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for c in calender_lists %}
+                                    <tr>
+                                        <td>{{ c.start_date }} {{c.end_date }}</td>
+                                        <td>{{ c.description}}</td>
+                                    {% if c.active == 2 %}
+                                        <td> <i class ="confirmationdeactive label-success label label-default">Leave Approved</i></td>
+                                    {% else %}
+                                        <td> <i class ="confirmationdeactive label-danger label label-default">Status Pending</i></td>
+                                    {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+        </div>
+</div>
+
+
+{% endif %}
+{% if key == 'view' %}
+
+<div class="breadcrumbs">
+                    <div class="maincontent">
+                        <div class="portlet box blue">
+                         <div class="breadcrumb">
+        <li>
+            <a href="/home/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="/resource/leavecalender/" style="text-decoration:none;">LeaveCalender</a>
+        </li>
+    </div>
+                       <a title = "Apply for leave" class="breadcrumb" href="/resource/leavecalender/add/" style="text-decoration:none;">Apply for Leave</a>
+                        <div id="employee-designation-grid" class="breadcrumb">
+                                 <div class="box-content">
+                                      <table class="table table-striped table-bordered bootstrap-datatable datatable responsive" id="sum_table">
+                                      {% if calender_list %}
+                                         <thead>
+                                             <tr>
+                                                 <th align="center">#</th>
+                                                 <th>Person</th>
+                                                 <th>Description</th>
+                                                 <th>From </th>
+                                                 <th>To</th>
+                                                 <th>Status</th>
+                                             </tr>
+                                         </thead>
+                                         <tbody>
+                                            {% for c in calender_list %}
+                                             <tr>
+                                                 <td>{{c.id}}</td>
+                                                 <td>{{c.person}}</td>
+                                                 <td>{{c.description}}</td>
+                                                 <td> {{c.start_date}} </td>
+                                                 <td> {{c.end_date}}</td>
+                                                      {% if c.active == 0 %}
+                                                 <td class="active"><a title = "Approve this leave" href="/resource/leavecalender/active/?id={{c.id}}" style="text-decoration:none;" class="confirmationdeactive label-danger label label-default "> Status Pending </td>
+                                                        {% else %}
+                                                 <td class="inactive"><a title = "Reject this leave" href="/resource/leavecalender/delete/?id={{c.id}}" style="text-decoration:none;" class="confirmationactive label-success label label-default "> Approved  </td>
+                                                        {% endif %}
+                                             </tr>
+                                            {% endfor %}
+                                      {% else %}
+                                          <td style="text-align:center;color:blue;text-size:14px;">No Data added Yet...</td>
+                                      {% endif %}
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    var elems = document.getElementsByClassName('confirmationdeactive');
+    var confirmIt = function (e) {
+        if (!confirm('Do you want to approve ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+    
+    
+    
+     var elems = document.getElementsByClassName('confirmationactive');
+    var confirmIt = function (e) {
+        if (!confirm('Do you want to reject ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+</script>
+
+{% endif %}
+
+
+
+
+
+
+
+{% endblock midpart %}

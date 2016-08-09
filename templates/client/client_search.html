@@ -1,0 +1,88 @@
+{% extends "main.html" %}
+{% block content %}
+  <div id="dashcontent"style="">
+
+        <div class="portlet box blue content-part" style="width:99%;height:602px; overflow:auto;overflow-x: hidden;">
+
+<body>
+</body>
+            <!--sitemap-->
+            <div class="breadcrumbs" align="center">
+                    <a class="home" href="/home/">Home</a>
+            </div>
+                <!-- main content -->
+                <!-- Work_Type -->
+                    <div class="maincontent">
+                        <div class="operation"> 
+                            <!-- <a class="btnyellow" href="#">PDF</a> -->
+                            <!-- <a class="btnblue" href="#">CSV</a> -->
+                        </div>
+                        <div class="portlet box blue">
+                        <div class="portlet-title"> Client </div>
+                        </form>
+            <a title = "Print this Page" href="javascript:window.print()"><img src="/static/images/print.jpeg" height="25".width="25"></a>
+                        </div>
+                        
+
+        <li>
+        <a class="btngreen" href="/client/add/" >Add New Client</a>
+                         <ol>
+                        <div id="client_gridview" class="grid-view">
+                                   
+                                  
+                                    <table class="items">
+                                    
+                                      {% if client_list %}
+                                          <thead>
+                                          
+                                           <tr>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Address</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                                <th>Website</th>
+                                                <th>Fax</th>
+                                                <th>Total Projects</th>
+                                                <th>Active Projects </th>
+                                                <th>Date Created </th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                                <th>Active</th>
+                                            </tr>
+                                                   </thead>
+                                            {% for list in client_list %}
+                                                <tr class="{% cycle 'odd' 'even'%}">
+                                                    
+                                                    <td><a href = "/client-view/?id={{c.id}}">{{ list.name }}</a></td>
+                                                    <td> {{ list.description }} </td>
+                                                    <td> {{ list.address }} </td>
+                                                    <td> {{ list.email }} </td>
+                                                    <td> {{ list.phone }} </td>
+                                                    <td> {{ list.website }} </td>
+                                                    <td> {{ list.fax }} </td>
+                                                    <td> {{ list.get_projects.all.count }} </td>  
+                                                    <td>  {{ list.get_active_projects }}  </td> 
+                                                    <td> {{ list.created_on|date }} </td>
+                                                  <td><a href="/client/edit/?id={{c.id}}" onclick="return editfunc({{i.id}})"><img src = "/static/images/edit.jpg"></a> </td> 
+                                                    <td><a href="/client/delete/?id={{c.id}}"><img src = "/static/images/delete.jpeg"></a> </td> 
+                                                    <td><a href="/client/active/?id={{c.id}}">Active</a> </td>
+                                                </tr>
+                                          {% endfor %}
+                                      {% else %}
+                                          <td style="text-align:center;color:blue;text-size:14px;">No Client added Yet...</td>
+                                        {% endif %}
+                                     </table> 
+                                    <div class="keys" style="display:none" title="">
+			</div></ol>
+			</form>
+			
+                                    <span>3</span><span>2</span><span>1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+{% endblock content %}
+

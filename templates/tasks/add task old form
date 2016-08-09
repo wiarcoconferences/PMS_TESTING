@@ -1,0 +1,157 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+
+dddddddddddddddd
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+<script>
+  $(function() {
+    $(".datepicker").datepicker();
+  });
+  //$("#yourinput").datepicker( "setDate" , "7/11/2011" );
+  </script><!--{{todays}}-->
+  <script src="/static/js/jquery.validate.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+$("#task_form").validate({
+rules :
+{
+title: {required: true},
+client: {required: true},
+module: {required: true},
+project: {required: true},
+},
+});
+});
+</script>
+<script type="text/javascript">
+$( document ).ready(function() {
+$( "#id_start_date").datepicker("setDate","{{todays|date:'m/d/o'}}");
+$( "#id_end_date").datepicker("setDate","{{todays|date:'m/d/o'}}");
+$('#id_client').change(function(){
+    $('#id_project option').remove();
+    var cid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/gettasks/',
+        data:{'cid':cid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                $('<option>',{value:''}).html('Choose a project').appendTo('#id_project');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_project');
+                }
+            }
+        }
+    })
+    });
+});
+</script>
+<script>
+$(document).ready(function() {
+alert('pid');
+$('id_project').change(function(){
+    $('#id_module option').remove();
+    var pid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/getmodules/',
+        data:{'pid':pid},
+        success:function(data){
+            
+            if (data){
+            var res = data.res;
+            $('<option>',{value:''}).html('Choose Module').appendTo('#id_module');
+            for(i=0;i<res.length;i++)
+            {
+                $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_module');
+                
+            }
+        }
+    }
+    })
+});
+});
+</script>
+<script type="text/javascript">
+    
+    $(document).ready(function(){
+        {% if clientobj %}
+            alert(clientobj);
+            $('#id_client option').remove();
+            var cid = {% if clientobj.id%}{{clientobj.id}}{%else%}0{%endif%}
+            $('<option>', {value:cid}).html('{{clientobj.name}}').appendTo('#id_client');
+            console.log("Client id======="+{{clientobj.id}});
+        {% endif %}
+    });
+    
+</script>
+<script>
+$(document).ready(function(){
+$('#id_owned_by').val({{user_id2.id}});
+
+})
+</script>
+{% if key == 'request' %}
+<script>
+$(document).ready(function(){
+//alert("hi");
+$('#id_title').val('{{requestobj.title}}');
+$('#id_client').val('{{requestobj.client.id}}');
+$('#id_project').val('{{requestobj.project.id}}');
+$('#id_start_date').val('{{requestobj.requested_due_date}}');
+$('#id_owned_by').val('{{user_id2.id}}');
+})
+</script>
+
+{% endif %}
+
+<body>
+	<!--sitemap
+	<div class="breadcrumbs">
+		<a class="home" href="main.html">Home</a>
+		<a href="designation.html">PMS</a><a href="tasks.html">Task</a><span>Add New</span>
+            </div>-->
+            <!-- main content -->
+            <div class="maincontent">
+                <h3>Add a Task</h3> 
+                <div class="portlet box blue">
+                         <div id="employee-designation-grid" class="breadcrumb">
+                              <div>
+                              {% if msg %}
+                              {{ msg }} 
+                              {% endif %}
+                                 <form id="task_form" action="." method="POST" enctype = "multipart/form-data" >{% csrf_token %}
+                                  {{ form.as_p }}
+                                  
+                                    
+                                    <input type="submit" class="btn btn-default" value="Save task" />
+                                     
+                                     <input type="submit" class="btn btn-default" value="Save task & create another" onclick="redirect();"/>
+                                    <a href="/tasks/" style="text-decoration:none;"> <button type ="button" class ="btn btn-default">Cancel</button> </a><br></br>
+                                  </form>
+                              </div>
+                       </div>
+                  </div>
+             </div>
+</body>
+</html>
+
+
+
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock midpart %}
+

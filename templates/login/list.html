@@ -1,0 +1,16 @@
+{% extends "sign/base.html" %}
+
+{% block content %}
+    <div class="main">
+
+
+        <ul>
+            {% for register in reg.object_list %}
+                <div class = "Admin">{{register.main}}</div>
+            {% endfor %}
+        </ul>
+
+       
+    </div>
+
+{% endblock %}

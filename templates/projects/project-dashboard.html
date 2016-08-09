@@ -1,0 +1,317 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+<script>
+function myFunction() {
+    window.print();
+}
+</script>
+
+
+            <!--sitemap-->
+                <!-- main content -->
+                <!-- Work_Type -->
+                    <div class="maincontent">
+                        <div class="portlet box blue">
+                        <div class="breadcrumb">
+                         <li>
+            <a href="/home/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="/projects/" style="text-decoration:none;">Projects</a>
+        </li>
+                        
+                        </div>
+                      
+                       <h4> Project Dashboard - {{a.name}}</h4>
+<!--   chart-->
+
+<div class="row">
+    <div class="box col-md-6">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2> Overview of project tasks</h2>
+                <div class="box-icon">
+                    <!--<a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>-->
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+
+                </div>
+            </div>
+            <div class="box-content">
+                <div id="piechart" style="height:300px"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="row">
+    <div class="box col-md-6">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2>Time by module ( billable and unbillable)</h2>
+                <div class="box-icon">
+                   <!-- <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>-->
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div id="piechart" style="height:300px"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <table class="table">
+    <tr>
+    <th><a href = "/tasks/view/?key=unclosed" > >>View all unclosed tasks for this project ({{a.get_unclosed_task_list.count}}) </a></th></tr>
+    <tr>
+    <th><a href = "/tasks/view/?key=no_assignee" > >>View all tasks with no assignee for this project ({{a.get_no_assignee_task_list.count}}) </a></th>
+    </tr>
+    </table>
+
+
+
+
+    <div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <a href="#" style="text-decoration:none;">Time</a>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+    <table class="table">
+    <tr>
+    <td><input type="checkbox"></td>
+    <td>Billable hours of this week:</td>
+    <td>0</td>
+    <tr>
+    <td><input type="checkbox"></td>
+    <td>Unbillable hours of this week:</td>
+    <td>0</td>
+    </tr>
+    <tr>
+    <td></td>
+    <td>Total hours of this week:</td>
+    <td>0</td>
+    </tr>
+    <tr>
+    <th><a href="#"> >>  View hours for entire project </a></th>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+        </div>
+    </div>
+        <!--/span-->
+    </div><!--/row-->
+
+
+
+
+
+
+
+
+        <div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <a href="#" style="text-decoration:none;">Budget Overview | This is a billable project. Recalculate using: </a>   <select>
+    <option value = "">Billable time </option>
+    <option value="">Unbillable time </option>
+    <option value="">Both</option>
+    </select>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+    <table class="table">
+    <tr>
+    <th>Both Billable & Unbillable Summary</th>
+    </tr>
+    
+    <tr>
+    <td>Total work</td>
+    <td>Project fees</td>
+    <td>Project total</td>
+    <td>Total Payments</td>
+    <td>Project credit</td>
+    <td>Unpaid invoices</td>
+    <td>Uninvoiced</td>
+    </tr>
+    
+    <tr>
+    <td>$0.00</td>
+    <td>$0.00</td>
+    <td>$0.00</td>
+    <td>$0.00</td>
+    <td>$0.00</td>
+    <td>$0.00</td>
+    <td>$0.00</td>
+    </tr>
+    </table>
+    
+    
+     
+    
+    </p></br>
+    <table class="table">
+    <tr>
+    <td>Estimated hourly rate</td>
+    <td>Actual hourly rate</td>
+    <td>Paid rate per hour</td>
+    </tr>
+    
+    <tr>
+    <td>$0.00</td>
+    <td>$0.00</td>
+    <td>$0.00</td>
+    </tr>
+    </table>
+    
+    
+    </p></br>
+    <table class="table">
+    <tr>
+    <td>Total estimated hours</td>
+    <td>Total hours used</td>
+    <td>Overage</td>
+    <td>Usage</td>
+    </tr>
+    
+    <tr>
+    <td>$0.00</td>
+    <td>$0.00</td>
+    <td>$0.00</td>
+    <td>$0.00</td>
+    </tr>
+    </table>
+    
+     </p></br>
+    <table class="table">
+    <tr>
+    <td><a href="#"> >>  View detailed Estimated vs Actual report </a></td>
+    </tr>
+    </table>
+    
+    
+    
+    </div>
+        </div>
+    </div>
+        <!--/span-->
+    </div><!--/row-->
+    
+
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well">
+                <h2> Hours </h2>
+
+                <div class="box-icon">
+<!--                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>-->
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <div id="stackchart" class="center" style="height:300px;"></div>
+                <p class="stackControls center">
+                    <input class="btn btn-default" type="button" value="Estimated: ">
+                    <input class="btn btn-default" type="button" value="Actual: ">
+                </p>
+
+                <p class="graphControls center">
+                    <input class="btn btn-primary" type="button" value="Bars">
+                    <input class="btn btn-primary" type="button" value="Lines">
+                    <input class="btn btn-primary" type="button" value="Lines with steps">
+                </p>
+            </div>
+        </div>
+
+
+
+
+
+    <div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <a href="#" style="text-decoration:none;">Project reports</a>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+    <table class="table">
+    <tr>
+    <td><a href="#">Mr Pie Chart</td>
+    <td><a href="#">Summary</td>
+    <td><a href="#">Periscope</td>
+    </tr>
+    
+    <tr>
+    <td><a href="#">Trends Report</td>
+    <td><a href="#">Break It Down</td>
+    <td><a href="#">Project Landscape</td>
+    </tr>
+    
+    <tr>
+    <td><a href="#">Project Activity</td>
+    <td><a href="#">Crosschart</td>
+    <td><a href="#">Expenses</td>
+    </tr>
+    
+    </tbody>
+    </table>
+    </div>
+        </div>
+    </div>
+        <!--/span-->
+    </div><!--/row-->
+
+
+
+
+<!-- chart libraries start -->
+<script src="/static/bower_components/flot/excanvas.min.js"></script>
+<script src="/static/bower_components/flot/jquery.flot.js"></script>
+<script src="/static/bower_components/flot/jquery.flot.pie.js"></script>
+<script src="/static/bower_components/flot/jquery.flot.stack.js"></script>
+<script src="/static/bower_components/flot/jquery.flot.resize.js"></script>
+<!-- chart libraries end -->
+<script src="/static/js/init-chart.js"></script>
+
+        </div>
+    </div>
+
+
+{% endblock midpart %}
+

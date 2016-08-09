@@ -1,0 +1,101 @@
+{% extends "main.html" %}
+{% block midpart %}
+  <script type="text/javascript">
+$('table').filterTable({
+    callback: function(term, table) {
+        table.find('th').removeClass('striped').filter(':visible:even').addClass('striped');
+    }
+});
+</script>
+        <div class="portlet box blue content-part" style="width:99%;height:602px; overflow:auto;overflow-x: hidden;">
+    <script>
+            function preferedlist() {
+                prefer = document.forms[0].list.value;
+                alert("You prefer listing " + prefer);
+            }
+    </script>
+            <!--sitemap-->
+                <!-- main content -->
+                <!-- Work_Type -->
+                    <div class="maincontent">
+                        <div class="portlet box blue">
+                        <div class="breadcrumb">
+                          <li>
+            <a href="/main/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="/persons-home/" style="text-decoration:none;">People</a>
+        </li>
+                        
+                        </div>
+                        <a class="breadcrumb" href="/person/add/" style="text-decoration:none;" >Add New UserProfile</a>
+                        <div id="employee-designation-grid" class="breadcrumb">
+                         <h3>{{person|length}} Person</h3>
+    <div>
+     <form method = "POST" action="/persons-home/"> {% csrf_token %}
+    <label>    Filter Options                        </label>
+                        <select name="list_length" size="1" aria-controls="list">
+                            <option value="All Access_Levels">All Access Levels</option>
+                            <option value="Administrator">Administrator</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Resource">Resource</option>
+                            <option value="Executive">Executive</option>
+                        </select><b></b>
+                        
+                        <select name = "list" >
+                        <option value="All Clients"> All Clients </option>
+                        {% for a in client %}
+                        <option value="{{ a.name }}"> {{ a.name }} </option>
+                        {% endfor %}
+                        </select>
+    </div>
+    
+    
+                            <a title = "Print this Page" href="javascript:window.print()"><img src="/static/img/print-icon.png" height="25".width="25" align="right"></a>
+                            
+    
+    
+                                    <table class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+                                      {% if peoples %}
+                                          <thead>
+                                           <tr>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Title</th>
+                                                <th>Profile Image</th>
+                                                <th>Access_Level </th>
+                                                <th> Client </th>
+                                                <th>Edit </th>
+                                                <th>Delete</th>
+                                                <th>Active</th>
+                                            </tr>
+                                                   </thead>
+                                            {% for p in peoples %}
+                                                <tr class="{% cycle 'odd' 'even'%}">
+                                                    
+                                                    <td><a href = "/view-person/?id={{p.id}}" style="text-decoration:none;">{{ p.first_name }}</td>
+                                                    <td>{{ p.last_name }}</td>
+                                                    <td>{{ p.title }}</td>
+						    <td>{{ p.profile_image }}</td>
+                                                    <td>{{ p.access_level }}</td>
+                                                    <td>{{ p.client }}</td>
+                                                    <td><a href="/person_/edit/?id={{p.id}}" style="text-decoration:none;"><img src="/static/images/edit.jpg"></a> </td>
+                                                    <td><a href="/person_/delete/?id={{p.id}}" style="text-decoration:none;"><img src="/static/images/delete.jpeg"></a> </td>
+                                                    <td><a href="/person_/active/?id={{p.id}}" style="text-decoration:none;">Active</a> </td>
+                                                </tr>
+                                          {% endfor %}
+                                      {% else %}
+                                          <td style="text-align:center;color:blue;text-size:14px;">No People  added Yet...</td>
+                                        {% endif %}
+                                    </table>
+                                </ol>
+                                    <div class="keys" style="display:none" title="">
+                                    <span>3</span><span>2</span><span>1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+{% endblock midpart %}
+

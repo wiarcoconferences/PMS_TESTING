@@ -1,0 +1,101 @@
+    {% extends "main.html" %}
+{% block midpart %}
+
+
+
+
+<body>
+  <div class="maincontent">
+                        <div class="portlet box blue">
+                        <div class="breadcrumb">
+                        
+                         <li>
+            <a href="/home/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="/persons/" style="text-decoration:none;">Person</a>
+        </li>
+                        </div>
+    <div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <a href="#" style="text-decoration:none;">Managers</a>
+                    <div class="box-icon">
+                        <a href="/manager/add/" class="btn btn-setting btn-round btn-default"><i
+                                class="glyphicon glyphicon-plus-sign" title="click her to add new manager"></i></a>
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up" title="click her to hide the form"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove" title="click her to close the form"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                <!--a href="" style="text-decoration:none;" title="Copy">Copy</a>&nbsp;&nbsp;
+                                    <a href="#" class="confirmationcomplete" style="text-decoration:none;" title="Compelete" >Complete</a>&nbsp;&nbsp;
+                                    <a href="#" class="confirmationdelete" style="text-decoration:none;"title="Delete" >Delete</a>&nbsp;&nbsp;-->
+                                    <a href="/manager/add/" style="text-decoration:none; float:right;" title="cilck here to add new manager"> Add new manager</a>
+                        <table class="table" >
+                                      {% if project_managers %}
+                                          <thead>
+                                           <tr>
+                                                <th>Name</th>
+                                                <th>Profile</th>
+                                                <th>Edit </th>
+                                                <th>Delete</th>
+                                                <th>Active</th>
+                                            </tr>
+    
+                              {% for p in project_managers %}
+                                                 <tr class="{% cycle 'odd' 'even'%}">
+                                                    
+                                                    <td>{{ p.name }}</td>
+                                                    <td>{{ p.userprofile }}</td>
+                                                    <td><a href="/manager/edit/?id={{p.id}}" class="glyphicon glyphicon-edit" style="text-decoration:none;"></a> </td>
+                                                  <td><a href="/manager/delete/?id={{p.id}}"><img src="/static/images/delete.jpeg"></a> </td>
+                                                    <td><a href="/manager/active/?id={{p.id}}">Active</a> </td>
+                                                </tr>
+                                                
+                                          {% endfor %}
+                                      {% else %}
+                                          <td style="text-align:center;color:blue;text-size:14px;">No managers added Yet...</td>
+                                        {% endif %}
+                                    </table>
+                                    
+                                    
+                                    
+                                    
+                                                                            <!-- script for confirm alert -->
+<script type="text/javascript">
+    var elems = document.getElementsByClassName('confirmationdeactive');
+    var confirmIt = function (e) {
+        if (!confirm('Do you want to deactivate ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+    
+    
+    
+     var elems = document.getElementsByClassName('confirmationactive');
+    var confirmIt = function (e) {
+        if (!confirm('Do you want to activate ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+    
+</script>
+<!-- script for confirm alert -->
+                                    
+                                    
+                                    
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div><!--/row-->
+    </div>
+    </div><!--/row-->
+</div>
+{% endblock midpart %}

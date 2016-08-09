@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Dashboard</title>
+<link rel="stylesheet" type="text/css" href="/static/css/style.css">
+<link rel="stylesheet" type="text/css" href="/static/css/component.css">
+<link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<script type="text/javascript"src="http://code.jquery.com/jquery-latest.js"></script>
+<!-- <script type="text/javascript" src="js/jquery.peity.min.js"></script> -->
+</head>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.gn-menu-wrapper').mouseover( function(){
+	     $(".gn-icon").addClass('gn-selected');
+	     $(".gn-menu-wrapper").addClass('gn-open-all');
+	});
+
+	$('.gn-menu-wrapper').mouseout( function(){
+	     $(".gn-icon").removeClass('gn-selected');
+	     $(".gn-menu-wrapper").removeClass('gn-open-all');     
+	});
+
+	//new JS
+	$(".gn-menu-wrapper li").has("ul").hover(function(){
+			//Add a class of current and fade in the sub-menu
+		$(this).addClass(".gn-selected").children("ul").fadeIn();
+		}, function() {
+			// On mouse off remove the class of current
+			// Stop any sub-menu animation and set its display to none
+		$(this).removeClass("gn-selected").children("ul").stop(true, true).css("display", "none");
+		});
+
+	// $('.submenu').mouseout( function(){
+	//      $(".gn-icon").removeClass('gn-selected');         
+	// });
+	// $('.submenu').mouseout( function(){
+	//      $(".submenu").css('display' , 'none');     
+	// });
+	// $('.gn-menu').find("li").click(function(e){
+	//     $(this).addClass('active').siblings('.active').removeClass('active');
+	//     $('.gn-menu').find("li .submenu").css('display' , 'none');
+	//     $(this).children(".submenu").show();
+	// });
+	// $('.changeForm').click(function(){
+	// 	$(".gn-icon").removeClass('gn-selected');
+	// 	$(".gn-menu-wrapper").removeClass('gn-open-all');
+	// 	newSrc = $(this).attr('href');
+	// 	$('#content-frame').attr('src', newSrc);
+	// 	return false;
+	// });
+
+	$('iframe').load(function(){
+	  window.parent.$(".gn-menu li .submenu").css('display','none');
+	  window.parent.$(".gn-menu li").removeClass('active');
+	  
+		$(this).contents().find("body").on('click', function(event) { 
+			window.parent.$(".gn-menu li").removeClass('active');
+			window.parent.$(".gn-menu li .submenu").css('display','none');
+			$(".gn-icon").removeClass('gn-selected');
+			$(".gn-menu-wrapper").removeClass('gn-open-all');
+		});
+	});      
+});
+	var timer = 0;
+	function set_interval() {
+	  timer = setInterval("auto_logout()", 300000);
+	  // the figure '10000' above indicates how many milliseconds the timer be set to.
+	  // Eg: to set it to 5 mins, calculate 5min = 5x60 = 300 sec = 300,000 millisec.
+	  // So set it to 300000
+	}
+
+	function reset_interval() {
+	  if (timer != 0) {
+	    clearInterval(timer);
+	    timer = 0;
+	    timer = setInterval("auto_logout()", 300000);
+	  }
+	}
+
+	function auto_logout() {
+	  window.location = "/site/logout";
+	}
+</script>
+
+<body>
+	{% block topmenu %}
+	<div class="header">
+		<!--left section-->
+		<div id="leftsection">
+				<div id="logo">
+					<a href="#">
+						<img src="/static/img/1.png" width="80" height="70">
+					</a>
+				</div>
+				<div id="logotitle">
+					<h1>PMS</h1>
+				</div>
+		</div>
+
+		<!--right section-->
+		<div id="rightsection">
+			<div id="support">
+				<a href="#">
+					<h2>Support</h2>
+				</a>
+			</div>
+			<div id="adminimg">
+				<a href="#" class="l1">
+					<img src="/static/img/2.jpg" height="30" width="30">
+					<span>admin</span>
+				</a>
+
+					<!--dropdown menu-->
+				<ul class="dropdown-menu" style="display:none;">
+					<li class="sub-menu">
+						<a href="/dashboard/dashboard" class="changeForm">My Profile</a>
+					</li>
+					<li class="sub-menu">
+						<a href="/mailbox" class="changeForm">My Inbox</a>
+					</li>
+					<li>
+						<a href="/logout/">Log Out</a>
+					</li>
+				</ul>
+			</div>
+		</div>		
+	</div>	
+	{% endblock %}
+	<div align="right"> 
+	<h6> Client </h6> 
+	</div>
+	{% block sidemenu %}
+	
+	<div align = center>
+	<br>
+	</br>
+	                     <a href="/clients-home/"><h1>Client</h1> </a> 
+	                     <a href="/projects-home/"><h1>Project</h1></a>
+	                     <a href="/persons-home/"><h1>People</h1></a>
+	                     <a href="/tasks/"><h1>Tasks</h1></a>
+	                     <a href="/milestones/"><h1>Milestones</h1></a>
+	                     
+	</div>
+
+	<!--left side navigation panel section-->
+	<div class="page-container">
+		<div id="gn-menu" class="gn-menu-main ">
+			<nav class="gn-menu-wrapper">
+				<div class="gn-scroller webwidget_vertical_menu" id="webwidget_vertical_menu"> <!-- left sidebar start -->
+					<ul class="gn-menu">
+						<i class="newline icon-user" title="Configuration"></i>
+							<li>Home  
+								<ul class="submenu" style="display: none;">
+								     <li>
+								        <a class="changeForm" href="/home/">Home</a>
+								     </li>
+								</ul>
+							</li>
+						<i class="newline icon-male" title="Client"></i>
+							<li>Client  
+								<ul class="submenu" style="display: none;">
+									<li>
+										<a class="changeForm" href="/clients-home/">Client</a>
+									</li>
+									<li>
+										<a class="changeForm" href="/client/add/">Add Client</a></li>
+								</ul>
+							</li>
+						<i class="newline icon-male" title="Project"></i>
+							<li>Project  
+									<ul class="submenu" style="display: none;">
+										<li>
+											<a class="changeForm" href="/projects-home/">Project</a>
+											<li>
+											<a class="changeForm" href="/project/add/">Add Project</a></li>
+										</li>
+										<li>
+											<a class="changeForm" href="/employers-home/">Employer</a></li>
+										</li>
+									</ul>
+							</li>
+						<i class="newline icon-user" title="People"></i>
+							<li>People  
+									<ul class="submenu" style="display: none;">
+										<li>
+											<a class="changeForm" href="/persons-home/">People</a></li>
+										<li>
+											<a class="changeForm" href="/person/add/">Add People</a></li>
+									</ul>
+							</li>
+						<i class="newline icon-user" title="Invoices"></i>
+							<li>Invoices  
+									<ul class="submenu" style="display: none;">
+										<li>
+											<a class="changeForm" href="/invoices/">Invoices</a>
+										</li>
+									</ul>
+							</li>
+						<i class="icon-th" title="Control Panel"></i>
+						<li>Times
+						        <ul class="submenu" style="display: none;">
+						        <li>
+						            <a class="changeForm" href="/times/">Times</a>
+					            </li>
+					            </ul>
+			            </li>
+						<i class="icon-th" title="Control Panel"></i>
+							<li>Tasks  
+									<ul class="submenu" style="display: none;">
+										<li>
+											<a class="changeForm" href="/add/">Create a new task</a></li>
+											<li><a class="submenu" href="/addm/">Create multiple tasks</a></li>
+											<li><a class="submenu" href="#">My overdue</a></li>
+											<li><a class="submenu" href="/assign/">Assigned to me </a></li>
+											<li><a class="submenu" href="/owned_by/">Owned by me</a></li>
+											<li><a class="submenu" href="/task_follow/">Tasks I'm' following</a></li>
+											<li><a class="submenu" href="/requests/">Request queue</a></li>
+										</li>
+									</ul>
+							</li>
+						<i class="newline icon-file-alt" title="Milestones"></i>
+							<li>Milestones
+									<ul class="submenu" style="display: none;">
+										<li>
+											<a class="changeForm" href="/milestones/">Milestones</a>
+											<li><a class="submenu" href="/addmilestone/">Create a new milestone</a></li>
+											<li><a class="submenu" href="#">Overdue</a></li>
+											<li><a class="submenu" href="/owned_by_me/">Owned by me</a></li>
+											<li><a class="submenu" href="#">Import Milestones</a></li>
+										</li>
+									</ul>
+							</li>
+						<i class="newline icon-repeat" title="Reset Login"></i>
+							<li>Reports
+									<ul class="submenu" style="display: none;">
+										<li>
+											<a class="changeForm" href="/reports/">Reports</a></li>
+										</li>
+									</ul>
+							</li>
+						<i class="newline icon-user-md" title="Documents"></i>
+							<li>Documents
+									<ul class="submenu" style="display: none;">
+										<li>
+											<a class="changeForm" href="/documents/documents-home/">Documents</a></li>
+										</li>
+										<li>
+											<a class="changeForm" href="#">Employee</a>
+										</li>
+									</ul>
+							</li>
+						<i class="newline icon-h-sign" title="Login History"></i>
+							<li>
+								<a class="changeForm" style="padding:0; color: #FFF;" href="#">Login History</a>
+							</li>
+					</ul>
+				</div>
+			</nav>
+		</div>			
+	</div> 
+	{% endblock %}
+		{% block content %}
+	<!--iframe section-->
+	<div id="dashcontent">
+		<iframe src="/home/" name="ifr"></iframe>
+	</div>
+	{% endblock %}
+	
+	{% block footer %}
+	<!--footer section-->
+	<div class="footer">
+		© 2013 design by PMS, All right Reserved.
+	</div>
+	
+	{% endblock %}
+</body>
+</html>

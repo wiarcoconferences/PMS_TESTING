@@ -1,0 +1,38 @@
+{% extends "main.html" %}
+{% block midpart %}
+<body>
+	<!--sitemap-->
+	<div class="breadcrumbs" align = "center">
+            </div>
+            <!-- main content -->
+            <div class="maincontent">
+                <h3>Add New</h3>
+                <div class="portlet box blue">
+                         <div id="employee-designation-grid" class="breadcrumb">
+                         
+                                    {% if msg %}
+                                     <font color="red"><h3>{{msg}}</h3></font>
+                                    {% endif %}
+                                    
+                              <div>
+                              {% if task == "add" %}
+                                 <form action ="/permission/add/" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                              {% endif %}
+                              {% if task == "edit" %}
+                                 <form action ="/permission/edit/?id={{id_edit}}" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                              {% endif %}
+                                
+                                            {{ form.as_p }}
+                                
+                                    <input type="Submit" class="btnsubmit" value="submit" />
+                                     
+                                  </form>
+                                    <a href="/peoples/" style="text-decoration:none;"> <input type="Submit" class="btnsubmit" value="Cancel" /></a>
+                              </div>
+                       </div>
+                  </div>
+             </div>
+</body>
+</html>
+</div>
+{% endblock midpart%}

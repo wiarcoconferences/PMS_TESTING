@@ -1,0 +1,37 @@
+{% extends "main.html" %}
+{% block midpart %}
+<body>
+	<!--sitemap-->
+	<div class="breadcrumbs" align="center">
+            </div>
+            <!-- main content -->
+            <div class="maincontent">
+                <h3>Employer</h3>
+                <div class="portlet box blue">
+                         <div id="employee-designation-grid" class="breadcrumb">
+                         
+                                    {% if msg %}
+                                     <font color="red"><h3>{{msg}}</h3></font>
+                                    {% endif %}
+                                    
+                              <div>
+                            {% if task == "add" %}
+                                 <form action ="/employer/add/" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                             {% endif %}
+                              {% if task == "edit" %}
+                                 <form action ="/employer/edit/?id={{id_edit}}" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                              {% endif %}
+                                
+                                            {{ form.as_p }}
+                                    <input type="Submit" class="btnsubmit" value="submit" />
+                                    <a href="/employers-home/" style="text-decoration:none;"> <button type="button">Cancel</button></a></p>
+                                     
+                                  </form>
+                                    
+                              </div>
+                       </div>
+                  </div>
+             </div>
+</body>
+</div>
+{% endblock midpart%}

@@ -1,0 +1,15 @@
+from django.conf.urls import patterns, include, url
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+    # Examples:
+    # url(r'^$', 'myintervals.views.home', name='home'),
+    
+    url(r'^documents/(?P<task>(:?add|:?edit))/$', 'documents.views.documents_details', name='documnets_details'),
+    url(r'^documents-home/$','documents.views.documents_home',name='documents_home'),
+    
+    
+)

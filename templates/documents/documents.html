@@ -1,0 +1,197 @@
+{% extends "main.html" %}
+{% block midpart %}
+<script src="/static/js/jquery.validate.js"></script>
+<script type="text/javascript">
+{%if task == 'add' %}
+    $(document).ready(function(){
+        $("#document_form").validate({
+            rules :
+            {
+            title : {required : true,maxlength:100, minlength:3},
+            project : {required : true},
+            files : {required : true},
+            //tags : {required : true},
+            notes : {required : true},
+            },
+
+        });
+    });
+{% endif %}
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    if ('{{edit}}'== 'True'){
+//            $("#id_project").remove();
+ //           $("#id_tasks").remove();
+ //           $("#id_milestone").remove();
+ //           $('label[for=id_project]').remove();
+ //           $('label[for=id_tasks]').remove();
+ //           $('label[for=id_milestone]').remove();
+        }
+    $("#id_project").change(function(){
+             var id=$(this).val();
+             $.ajax({
+                    url : "/documents/ajaxmilestonetasks/",
+                    type : "GET",
+                    dataType: "json",
+                    data :{'id':id},
+                    success: function(data)
+                    {
+                        $('#id_milestone option').remove()
+                        $('<option>', {value : ''}).html('-------').appendTo('#id_milestone');
+                        if (data)
+                            {
+                                var res = data.res
+                                for (i=0;i<res.length;i++)
+                                {
+                                    $('<option>', {value : res[i].id }).html(res[i].title).appendTo('#id_milestone');
+                                }
+                            }
+                    }
+            })
+        return false;
+    });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#id_project").change(function(){
+             var id=$(this).val();
+             $.ajax({
+                    url : "/documents/getajaxtasks/",
+                    type : "GET",
+                    dataType: "json",
+                    data :{'id':id},
+                    success: function(data)
+                    {
+                        $('#id_tasks option').remove()
+                        $('<option>', {value : ''}).html('-------').appendTo('#id_tasks');
+                        if (data)
+                            {
+                                var res = data.res
+                                for (i=0;i<res.length;i++)
+                                {
+                                    $('<option>', {value : res[i].id }).html(res[i].title).appendTo('#id_tasks');
+                                }
+                            }
+                    }
+            })
+        return false;
+    });
+});
+{% if task == "edit" %}
+$(document).ready(function(){
+{% if document_obj.tasks or document_obj.milestone %}
+alert('{{document_obj.tasks.id}}');
+var task_id = '{{document_obj.tasks}}';
+//$('<option>', {value: task_id.id}).html(task_id.title).appendTo('#id_tasks');
+$('#id_tasks').val(task_id);
+var milestone_id ='{{document_obj.milestone.id}}';
+$('#id_milestone').val(milestone_id);
+{% endif %}
+});
+{% endif %}
+$(document).ready(function(){
+$('#id_person').hide();
+});
+</script>
+
+
+ <div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Task </h2>
+
+            </div>
+            <div class="box-content">
+                    {% if msg %}<font color="red"><h3>{{msg}}</h3></font>{% endif %}
+                    <div>
+                        {% if task == "add" %}
+                            <form id="document_form" action ="/documents/documents/add/" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                        {% endif %}
+                        {% if task == "edit" %}
+                            <form id='document_form' action ="/documents/documents/edit/?id={{id_edit}}" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                        {% endif %}
+                        <ul class="mmm">
+                        
+                        <li>
+            <div class="form-group has-success has-feedback">
+                <div >
+                     <label for="id_title">Title:</label> 
+                         {{form.title}}
+                </div>
+            </div>
+        </li>
+        <li id="id_person" disabled="disabled">
+            <div class="form-group has-success has-feedback">
+                <div >
+                     <label  for="id_person">Person:</label> 
+                     <select name="person" value="">
+                         <option value="{{form.person.id}}">{{form.person}}</option>
+                     </select>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group has-success has-feedback">
+                <div >
+                     <label class="control-label" for="id_files">Files:</label> 
+                         {{form.files}}
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group has-success has-feedback">
+                <div class="controls">
+                     <label class="control-label" for="id_project">Project:</label> 
+                         {{form.project}}
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group has-success has-feedback">
+                <div class="controls">
+                     <label class="control-label" for="id_tasks">Tasks:</label> 
+                         {{form.tasks}}
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group has-success has-feedback">
+                <div class="controls">
+                     <label class="control-label" for="id_milestone">Milestone:</label> 
+                         {{form.milestone}}
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group has-success has-feedback">
+                <div >
+                     <label class="control-label" for="id_tags">Tags:</label> 
+                         {{form.tags}}
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group has-success has-feedback">
+                <div >
+                     <label class="control-label" for="id_notes">Notes:</label> 
+                         {{form.notes}}
+                </div>
+            </div>
+        </li>
+
+
+
+                        </ul>
+                        <input type="Submit" class="btnsubmit" value="submit" />
+                        <a href="/documents/documents-home/" style="text-decoration:none;"><button type="button">Cancel</button> </a>
+                    </form><br>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

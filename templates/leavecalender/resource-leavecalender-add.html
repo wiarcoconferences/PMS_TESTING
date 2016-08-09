@@ -1,0 +1,161 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/static/resources/demos/style.css">
+
+<script type="text/javascript">
+$( document ).ready(function() {
+$("#id_start_date").datepicker({dateFormat: 'yy-mm-dd',changeMonth: true,changeYear: true,}).attr( 'readOnly' , 'true' );
+$("#id_end_date").datepicker({dateFormat: 'yy-mm-dd',changeMonth: true,changeYear: true,}).attr( 'readOnly' , 'true' );
+});
+</script>
+
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<script src="/static/js/jquery.validate.js"></script>
+
+
+<script src="/static/js/jquery.validate.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+$("#leavecalender_form").validate({
+rules :
+{
+name: {minlength:3,maxlength:40,required: true},
+description: {required: true},
+person : {required : true},
+start_date: {required : true},
+end_date : {required : true},
+},
+messages : {
+                person : {required : "Please select the person"},
+                description : {required : "Please enter the description"},
+                start_date : {required : "Please select the From date"},
+                end_date : {required : "Please select the to date"},
+           },
+});
+});
+</script>
+
+<style>
+.error{color:red; min-width: 200px;}
+</style>
+
+<script>
+$(document).ready(function(){
+{% if form.error %}
+alert('{{error}}');
+{% endif %}
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+{%if userprofile %}
+$('#id_person option').remove();
+      var pid = {% if userprofile%}{{userprofile.id}}{%else%}0{%endif%}
+    $('<option>', {value:pid}).html('{{userprofile.first_name}} {{useprofile.last_name}}').appendTo('#id_person');
+{% endif %}
+$("#leavecalender_form").validate({
+rules :
+{
+name: {minlength:3,maxlength:40,required: true},
+description: {required: true,
+        }
+},
+});
+});
+</script>
+
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> LeaveCalender Form</h2>
+
+            </div>
+            <div class="box-content">
+            
+            
+            {% if task == 'add' %}
+            <form id = leavecalender_form class="form-inline" role="form" action="/resource/leavecalender/add/" method="POST" enctype = "multipart/form-data" >{% csrf_token %}
+            
+            
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_name">Person:</label><p>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.person}}
+                </p>
+            </div>
+            <p>
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_name">Description:</label><p>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.description}}
+                </p>
+            </div>
+            <p>
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_start_date">From:</label><p>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.start_date}}
+                </p>
+            </div>
+            <p>
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_end_date">To:</label><p>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.end_date}}
+                </p>
+            </div>
+            <p>
+            <p>
+        <input type="submit" class="btn btn-default" value="Save" />
+                             <a href="/resource/leavecalender/" style="text-decoration:none;"><button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+            {% endif %}
+            
+            {% if task == "edit" %}
+            
+            
+            <form id = leavecalender_form class="form-inline" role="form" action="/leavecalender/edit/?id={{id_edit}}" method="POST"enctype = "multipart/form-data" >{% csrf_token %}
+            
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_name">Person:</label>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.name}}
+            </div>
+            
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_name">Description:</label>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.description}}
+            </div>
+            
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_start_date">From:</label><p>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.date}}
+                </p>
+            </div>
+            
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_end_date">To:</label>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.image}}
+            </div>
+        <input type="submit" class="btn btn-default" value="Save" />
+                             <a href="/resource/leavecalender/" style="text-decoration:none;"><button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+
+            {% endif %}
+
+
+
+
+{% endblock midpart %}

@@ -1,0 +1,44 @@
+{% extends "main.html" %}
+{% block midpart %}
+  <div id="dashcontent"style="">
+        <div class="portlet box blue content-part" style="width:99%;height:602px; overflow:auto;overflow-x: hidden;">
+            <!--sitemap-->
+            <div class="breadcrumbs"><br></br>
+                    <a class="home" href="/home/">Home</a>
+            </div>
+                <!-- main content -->
+                <!-- Work_Type -->
+                    <div class="maincontent">
+                        <div class="operation"> 
+                            <a class="btnyellow" href="#">PDF</a> 
+                            <a class="btnblue" href="#">CSV</a>
+                        </div>
+                        <div class="portlet box blue">
+                        <div class="portlet-title"> Project </div>
+                        <a class="btngreen" href="/employer/add/" >Add New Employer</a>
+                        <div id="employee-designation-grid" class="grid-view">
+                                    <table class="items">
+                                          <thead>
+                                           <tr>
+                                                <th> Name</th>
+                                                <th>Descriptions</th>
+                                            </tr>
+    
+                                                   </thead>
+                                                <tr class="{% cycle 'odd' 'even'%}">
+                                                    
+                                                    {% for p in peoples %}<td>{{ p.name }},({{ p.client }})</td>{% endfor %}
+                                                    {% for p in projects %}<td>{{ p.name }}</td>{% endfor %}
+                                                </tr>
+                                          <td style="text-align:center;color:blue;text-size:14px;">No People  added Yet...</td>
+                                    </table>
+                                    <div class="keys" style="display:none" title="">
+                                    <span>3</span><span>2</span><span>1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+{% endblock midpart %}
+

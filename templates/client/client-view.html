@@ -1,0 +1,177 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+<script>
+function checkClient() {
+    var cid = $('#clientID').val();
+    if(document.getElementById('clientID').selectedIndex == 0) {
+        alert('Please select a client');
+        return false;
+} else {
+        //return true;
+        document.getElementById('clientview').action = "/client/view/"+cid+"/"
+}
+} 
+</script>
+<script>
+function myFunction() {
+    var x;
+    if (confirm("You are trying to activate !") == true) {
+        x = "Client Actived Successfully";
+    } else {
+        x = "Inactive";
+    }
+    document.getElementById("active");
+    {
+    
+        document.getElementById("active");
+    }
+}
+</script>
+
+<body>
+
+	<!--sitemap
+	<div class="breadcrumbs">
+		<a class="home" href="/home/">Home</a>
+		<a href="designation.html">Designations</a><a href="newdesg.html">Manage</a><span>Add New</span>
+            </div>-->
+            <!-- main content -->
+            <div class="maincontent">
+            <a class="breadcrumb" href = "/clients/" style="text-decoration:none;"><strong>Client </strong></a>
+            
+            <div id="employee-designation-grid" class="breadcrumb">
+                <h3>Client Profile - {{client_obj.name}}</h3>
+                <a class="breadcrumb" href="#" style="text-decoration:none;"> <storng>Projects({{client_obj.get_projects.all.count}}) </strong> </a>
+                <div class="portlet box blue">
+                         <div id="employee-designation-grid" class="breadcrumb">
+            <a title = "Print this Page" href="javascript:window.print()"><img src="/static/img/print-icon.png" height="25".width="25" align="right"></a>
+             <form id="clientview" name="clientview" onsubmit="return checkClient();" method="POST">{% csrf_token %}
+        <select id="clientID" name="id">
+            <option value="0">Change client</option>
+                    {% for c in client %}
+            <option value="{{c.id }}"> {{c.name}}</option>
+                    {% endfor %}
+        </select>
+        <input class="submit" type="submit" value="Go">
+        </form>
+                                    <table class="table table-striped table-bordered bootstrap-datatable datatable responsive" >
+                                    <div> <th colspan="8"> Details </th> 
+                                    <th><a href="/client/edit/{{client_obj.id}}/"><img src="/static/img/edit.gif"></a></th >  </div>
+                                    <tr>
+                                                <th >Client #</th>
+                                                <th>Name</th>
+                                                <th>Date Created</th>
+                                                <th>Description</th>
+                                                <th>Address</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                                <th>Website</th>
+                                                <th>Fax </th>
+                                                
+                                    <tr>
+                              <div>
+                                            <tr>
+                                                    <td>{{ client_obj.id }}</td>
+                                                    <td>{{ client_obj.name }}</td>
+                                                    <td>{{ client_obj.created_on|date }}</td>
+                                                    <td>{{ client_obj.description }}</td> 
+                                                    <td>{{ client_obj.address }}</td>
+                                                    <td>{{ client_obj.email }}</td>
+                                                    <td>{{ client_obj.phone }}</td>
+                                                    <td>{{ client_obj.website }}</td>
+                                                    <td>{{ client_obj.fax }} </td>
+                                                </tr>
+                                    </table>
+                                    {% if client_obj.get_user_profile %}
+                                    <table class="table table-striped table-bordered bootstrap-datatable datatable responsive" >
+                                    <tr>
+                                        <th>  <div style="float: right; white-space: nowrap"><ul id="options" class="noprint" style="margin: 0; padding: 0;">
+
+                                                    <input class="check" type="checkbox" value="" name="">
+                                                    <label for="r_people_active_only">Show active people only</label>
+
+                                </ul></div>People </th>
+                                        <th> Edit </th>
+                                    </tr>
+                                    <tr> 
+                                        <td>{% for i in  client_obj.get_user_profile %} <a href="/person/view/{{i.id}}/" style="text-decoration:none;"> <strong>   {{ i.first_name}} {{i.last_name }} </strong></a>({{i.get_access_level_display}})<p class="separator" ></p><p> {{i.email }}  </p>{% endfor %}</td>
+                                        <td> <a href="/person/edit/{{client_obj.id}}" style="text-decoration:none;"><img src="/static/img/edit.gif"></a> </td>
+                                    </tr>
+                                    
+                                    </table> {% else %}
+                                    <table class="table table-striped table-bordered bootstrap-datatable datatable responsive" >
+                                        <tr>
+                                                <th> People  </th> </a>
+                                        </tr>
+                                        <tr>
+                                                <td>This client does not have any people.<a href="/person/add/?client_id={{client_obj.id}}" style="text-decoration:none;"> Click here to add a new person to this client. </a></td>
+                                        </tr>
+                                    </table>
+                                        {% endif %}
+                                    <div>
+                                    {% if client_obj.status == 1 %}
+                                    <a href="/client/delete/{{client_obj.id}}/" style="text-decoration:none;"> <input type=submit  title ="Deactivate this client" class="portlet box blue  confirmationdeactive"  value="Active" /> </a>
+                                    {% else %}
+                                    <a href="/client/active/{{client_obj.id}}/" style="text-decoration:none;"> <input type=submit title="Activate this client" class="portlet box blue   confirmationactive" value="Deactive " /> </a>
+                                    {% endif %}
+                                   <a href="/person/add/?client_id={{client_obj.id}}" style="text-decoration:none;"><input type=button  value="Create a new person to this client" /> </a>
+                                 <a href="/project/add/?client_id={{client_obj.id}}" style="text-decoration:none;"> <input type=button  value="Create a new project to this client" /></a>
+                                  <a href="/clients/" style="text-decoration:none;"> <input type="Submit" class="portlet box blue" value="Back" /> </a>
+                                  </div>
+                                  
+                                  
+
+<script type="text/javascript">
+    var elems = document.getElementsByClassName('confirmationdeactive');
+    var confirmIt = function (e) {
+        if (!confirm('Do you want to deactivate ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+    
+    
+    
+     var elems = document.getElementsByClassName('confirmationactive');
+    var confirmIt = function (e) {
+        if (!confirm('Do you want to activate ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+    
+</script>
+
+                                    
+                                  
+                                  
+                                     <div class="keys" style="display:none" title="">
+                                </div>
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                            </div>
+                            
+                            
+                            
+                            <!--<a class="breadcrumb" href = "" style="text-decoration:none;" align="right">Add Comment</a>-->
+                        
+                             <div>
+                                    
+                                   
+                                    
+                                    </div>
+                                    </div>
+                                  
+                       </div>
+                  </div>
+             </div>
+</body>
+</html>
+</div>
+{% endblock midpart%}

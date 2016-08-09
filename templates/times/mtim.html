@@ -1,0 +1,165 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/static/resources/demos/style.css">
+
+<script>
+  $(function() {
+    $(".datepicker" ).datepicker();
+  });
+  </script>
+
+<script src="/static/js/jquery.validate.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+
+//$('#id_person').attr('data-rel','chosen');
+$('#id_times').attr('class','form-control')
+//$('#id_client').attr('data-rel','chosen');
+//$('#id_project').attr('data-rel','chosen');
+//$('#id_module').attr('data-rel','chosen');
+//$('#id_tasks').attr('data-rel','chosen');
+//$('#id_worktype').attr('data-rel','chosen');
+//$('#id_description').attr('class','form-control')
+//$('#id_pub_date').attr('class','form-control')
+
+
+
+
+
+
+
+
+
+
+
+$("#times_form").validate({
+rules :
+{
+title: {required: true},
+client: {required: true},
+project:{required: true},
+worktype: {required: true},
+
+},
+});
+});
+</script>
+<!--script to defualt due date -->
+<script type="text/javascript">
+    $( document ).ready(function() {
+    for(i=0;i<=3;i++){
+    $("#id_date").datepicker();
+}
+});
+</script>
+
+<!--script to set defualt owned by -->
+<script>
+$(document).ready(function(){
+$('#id_owned_by').val({{user_id2.id}});
+});
+</script>
+<script>
+$(document).ready(function(){
+$('#id_person').val({{user_id2.id}});
+{% for i in tasks %}
+$('#id_tasks').val({{i.id}})
+{% endfor %}
+//alert($('#id_owned_by').val({{user_id2.id}}))
+
+})
+</script>
+<body>
+
+
+
+<div class="row">
+    <div class="box col-md-17">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Add Time</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+            <legend><h3>Add multiple time entries:</h3></legend>
+            {% if error %} {{form.errors}} {% endif %}
+       <form id = times_form class="form-inline" role="form" action="." method="POST" enctype = "multipart/form-data" >{% csrf_token %}
+                   <table class="table table-bordered table-striped table-condensed ">
+                   <thead>
+                   <tr>
+                   <th>People</th>
+                   <th>Date</th>
+                   <th>Client</th>
+                   <th>Project</th>
+                   <th>Module</th>
+                   <th>Task</th>
+                   <th>Work type</th>
+                   <th>Time</th>
+                   </tr>
+                   </thead>
+
+                   <tr >
+                   <td>{{form.person}}</td>
+                   <td>{{form.date}}</td>
+                   <td>{{form.client}}</td>
+                   <td>{{form.project}}</td>
+                   <td>{{form.module}}</td>
+                   <td>{{form.tasks}}</td>
+                   <td>{{form.worktype}}</td>
+                   <td>{{form.time}}</td>
+                   <td>{{form.description}}</td>
+                   </tr>
+                   <tr>
+                   <td>{{subform.person}}</td>
+                   <td>{{subform.date}}</td>
+                   <td>{{subform.client}}</td>
+                   <td>{{subform.project}}</td>
+                   <td>{{subform.module}}</td>
+                   <td>{{subform.tasks}}</td>
+                   <td>{{subform.worktype}}</td>
+                   <td>{{subform.time}}</td>
+                   <td>{{subform.description}}</td>
+                   </tr>
+                   <tr>
+                   
+                   <td>{{subbform.person}}</td>
+                   <td>{{subbform.date}}</td>
+                   <td>{{subbform.client}}</td>
+                   <td>{{subbform.project}}</td>
+                   <td>{{subbform.module}}</td>
+                   <td>{{subbform.tasks}}</td>
+                   <td>{{subbform.worktype}}</td>
+                   <td>{{subbform.time}}</td>
+                   <td>{{subbform.description}}</td>
+                   </tr>
+                            
+                            </table>
+                <input type="submit" class="btn btn-default" value="Save" />
+                            <a href="/times/" style="text-decoration:none;"> <button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+                </>
+    <!--/span-->
+            
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+</div><!--/row-->
+</div>
+</div>
+{% endblock midpart %}

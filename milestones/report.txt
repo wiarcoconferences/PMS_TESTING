@@ -1,0 +1,14 @@
+Parsing  views.py ... done
+Parsing  models.py ... done
+39 sequences
+average sequence length: 5.487179
+maximum sequence length: 23
+Number of statements:  214
+Calculating size for each statement... done
+Building statement hash... done
+Number of different hash values:  64
+Building patterns... 77 patterns were discovered
+Choosing pattern for each statement... done
+Finding similar sequences of statements... 12  sequences were found
+Refining candidates... 3 clones were found
+Removing dominated clones... -1 clones were removed

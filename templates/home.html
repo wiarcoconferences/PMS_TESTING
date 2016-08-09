@@ -1,0 +1,298 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+
+<script type="text/javascript">
+$(document).ready(function()
+{
+    $('#calendar').fullCalendar({
+        header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+        },
+        {% if not milestones_obj %}
+            defaultDate: '{{today_date|date:"Y-m-d"}}',
+        {% else %}
+            defaultDate: '{{milestones_obj.due_date|date:"Y-m-d"}}',
+        {% endif %}
+        events: [
+            {% for m in milestone_list %}
+            {
+                //title:'{{p.client.name}}',
+                title: 'Milestone: {{m.title}} Project: {{m.project.name}}',
+                start: '{{m.due_date|date:"Y-m-d"}}',
+                //end:   '{{p.end_date|date:"Y-m-d"}}',
+                url:'/milestone/view/{{m.id}}/',
+                //defaultDate: '{{m.due_date|date:"Y-m-d"}}',
+            },
+            {% endfor %}
+        ]
+    });
+    
+    if ($("#stackchart").length) {
+    var d1 = [];
+    for (var i = 1; i <= 7; i += 1){
+        {% for k,j in data %}
+            val1 = {{k}};
+            val2 = {{j}};
+            if (i == val1 ) {
+                d1.push([i, parseFloat(1 * val2)]);
+            }
+            else{
+                d1.push([i, 0]);
+            }
+        {%endfor%}
+    
+        
+    }
+    
+    var stack = 0, bars = true, lines = false, steps = false;
+
+    function plotWithOptions() {
+        $.plot($("#stackchart"), [ d1 ], {
+            series: {
+                stack: stack,
+                lines: { show: lines, fill: true, steps: steps },
+                bars: { show: bars, barWidth: 0.6 }
+            }
+        });
+    }
+
+    plotWithOptions();
+
+    $(".stackControls input").click(function (e) {
+        e.preventDefault();
+        stack = $(this).val() == "With stacking" ? true : null;
+        plotWithOptions();
+    });
+    $(".graphControls input").click(function (e) {
+        e.preventDefault();
+        bars = $(this).val().indexOf("Bars") != -1;
+        lines = $(this).val().indexOf("Lines") != -1;
+        steps = $(this).val().indexOf("steps") != -1;
+        plotWithOptions();
+    });
+}
+    
+});
+    
+</script>
+            <!--sitemap-->
+                <!-- main content -->
+                <!-- Work_Type -->
+                
+                
+                <a title = "Print this Page" href="javascript:window.print()"><img src="/static/img/print-icon.png" height="25".width="25" align="right"></a></p></br>
+                
+                
+                
+                
+                
+                <script>
+                console.log(2*5)
+console.log("hello")
+</script>
+                
+                
+                
+                
+                <div id="project_gridview" class="breadcrumb">
+                <form method="POST" action ="/home/"  >{% csrf_token %}
+                <p>
+                <strong>Filter options:</strong></p>
+                <p>
+                        <select class="filter-select" name="client">
+                        <option value = "" name="client">All Clients</option>
+			{% for i in clients %}
+                        <option value = "{{i.id}}">{{ i.name }}</option>
+			{% endfor %}
+                        </select>
+                        
+                        <select class="filter-select" name="project">
+                        <option value = "" name="project">All Projects</option>
+                        {% for p in projects %}
+                        <option value = "{{p.id}}">{{ p.name }}</option>
+                        {% endfor %}
+                        </select>
+                        
+                        <select class="filter-select"  name="milestone">
+                        <option value = "" name="milestone">All Milestones</option>
+                        {% for m in milestones %}
+                        <option value = "{{m.id}}">{{m.title}}</option>
+                        {% endfor %}
+                        </select>
+                        
+                         <select class="filter-select" name="modules">
+                        <option value = "" name="modules">All Task Modules</option>
+                        {% for m in modules %}
+                        <option value = "{{m.id}}">{{m.name}}</option>
+                        {% endfor %}
+                        </select>
+                        
+                        <select class="filter-select"  name="tasks_status">
+                        <option value = "" name="tasks_status">All Task Statuses </option>
+                        {% for m in tasks_status %}
+                        <option value = "{{m.id}}">{{ m.name }}</option>
+                        {% endfor %}
+                        </select>
+                        
+                        <select class="filter-select" name="task_priorities">
+                        <option value = "">All Task Priorities</option>
+                        {% for m in task_priorities %}
+                        <option value = "{{m.id}}">{{ m.name }}</option>
+                        {% endfor %}
+                        </select>
+                        
+                        <select class="filter-select" name="assigned">
+                        <option value = "">All Task Assignees</option>
+                        {% for m in userprofile_list %}
+                        <option value = "{{m.id}}">{{ m.first_name }}</option>
+                        {% endfor %}
+                        </select>
+                        
+                       <select class="filter-select" name="owner">
+                        <option value = "">All Task Owners</option>
+                        {% for m in userprofile_list %}
+                        <option value = "{{m.id}}">{{m.first_name }}</option>
+                        {% endfor %}
+                        </select>
+                        
+                        <select class="filter-select" name="follower">
+                        <option value = "">All Task Followers</option>
+                        {% for m in userprofile_list %}
+                        <option value = "{{m.id}}">{{ m.first_name }}</option>
+                        {% endfor %}
+                        </select> 
+                        
+                        <button class="btn btn-success" type="submit"><i class="glyphicon glyphicon-filter"></i>
+                    Filter</button>
+                    </form>
+                        </p>
+                </div>
+                
+                    <div class="maincontent">
+                        </div>
+                        
+                        
+                        
+                        <!---claender-->
+    <div class="row">
+        <div class="box col-md-6">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <h2><i class="glyphicon glyphicon-calendar"></i> Calendar</h2>
+                    <div class="box-icon">
+<!--                        <a href="#" class="btn btn-setting btn-round btn-default"><i
+                                class="glyphicon glyphicon-cog"></i></a>-->
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div id="calendar"></div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+<!--   chart-->
+    <div class="box col-md-6">
+        <div class="box-inner">
+            <div class="box-header well">
+                <h2><i class="glyphicon glyphicon-list-alt"></i> Weekly Time</h2>
+        <div class="box-icon">
+<!--                        <a href="#" class="btn btn-setting btn-round btn-default"><i
+                                class="glyphicon glyphicon-cog"></i></a>-->
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+            </div>
+            <div class="box-content">
+                <div id="stackchart" class="center" style="height:300px;"></div>
+                <p class="stackControls center">
+                    <input class="btn btn-default" type="button" value="Billable">
+                    <input class="btn btn-default" type="button" value="Unbillable">
+                </p>
+
+                <p class="graphControls center">
+                    <input class="btn btn-primary" type="button" value="Bars">
+                    <input class="btn btn-primary" type="button" value="Lines">
+                    <input class="btn btn-primary" type="button" value="Lines with steps">
+                </p>
+            </div>
+        </div>
+            </div><!--calender and weekly time ends-->
+        
+        </div>
+        <div class="maincontent">
+                        <div class="portlet box blue"><br>
+                            <a class="breadcrumb" href="#" style="text-decoration:none;">My overdue milestones ({{overdue_milestones.count}})</a>
+                           <div id="project_gridview" class="breadcrumb">
+                                {% for i in overdue_milestones %}
+                                    <a href="/milestone/view/{{i.id}}/">{{i.title}}</a><br/>
+                                {% endfor %}
+
+
+
+
+                            </div>
+                            </div>
+                        </div>
+
+
+        <div class="maincontent">
+                        <div class="portlet box blue"><br>
+                            <a class="breadcrumb" href="#" style="text-decoration:none;">My overdue tasks ({{overdue_tasks|length}})</a>
+                           <div id="project_gridview" class="breadcrumb">
+                                {% for i in overdue_tasks %}
+                                <a href="/tasks/view/{{i.id}}/">{{i.title}}</a><br/>
+                            {% endfor %}
+
+                            </div>
+                            </div>
+                        </div>
+
+
+
+        <div class="maincontent">
+                        <div class="portlet box blue"><br>
+                            <a class="breadcrumb" href="#" style="text-decoration:none;">My tasks with no due date ({{no_due_date_tasks|length}})</a>
+                           <div id="project_gridview" class="breadcrumb">
+                                {% for i in no_due_date_tasks %}
+                                <a href="/tasks/view/{{i.id}}/">{{i.title}}</a><br/>
+                            {% endfor %}
+
+
+
+
+                            </div>
+                            </div>
+                        </div>
+
+
+
+
+<!-- chart libraries start -->
+<script src="/static/bower_components/flot/excanvas.min.js"></script>
+<script src="/static/bower_components/flot/jquery.flot.js"></script>
+<script src="/static/bower_components/flot/jquery.flot.pie.js"></script>
+<script src="/static/bower_components/flot/jquery.flot.stack.js"></script>
+<script src="/static/bower_components/flot/jquery.flot.resize.js"></script>
+<!-- chart libraries end -->
+<script src="/static/js/init-chart.js"></script>
+
+        </div>
+    </div>
+
+
+
+{% endblock midpart %}
+

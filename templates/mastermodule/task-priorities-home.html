@@ -1,0 +1,107 @@
+    {% extends "mastermodule/settings-main.html" %}
+{% block specialpart %}
+
+
+
+
+<script src="/static/js/jcook.js" type="text/javascript"></script>
+
+
+
+
+<body onload="myFunction()">
+  <div class="maincontent">
+                        <div class="portlet box blue">
+                        <div class="breadcrumb">
+                        
+                         <li>
+            <a href="/home/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="/Settings & Defaults/" style="text-decoration:none;">Settings & Defaults</a>
+        </li>
+                        </div>
+    <div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <a href="#" style="text-decoration:none;">Task Priorities</a>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                <!--a href="" style="text-decoration:none;" title="Copy">Copy</a>&nbsp;&nbsp;
+                                    <a href="#" class="confirmationcomplete" style="text-decoration:none;" title="Compelete" >Complete</a>&nbsp;&nbsp;
+                                    <a href="#" class="confirmationdelete" style="text-decoration:none;"title="Delete" >Delete</a>&nbsp;&nbsp;-->
+                                    {% if perms.mastermodule.add_task_priorities %}
+                                    <a href="/settings/task/priorities/add/0/" style="text-decoration:none; float:right;" title="cilck here to add new task priorities"> Add new task priorities</a>
+                                    {% endif %}
+                        <table class="table" >
+                            <thead>
+                            {% if task_priorities_list %}
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Edit</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                             {% for t in task_priorities_list %}
+                                <tr>
+                                    <td>{{ t.name }}</td>
+                                    {%if perms.mastermodule.change_task_priorities %}
+                        <td><a href="/settings/task/priorities/edit/{{t.id}}/" class="glyphicon glyphicon-edit" style="text-decoration:none;"></a> </td>
+                         
+                        
+                             {%if t.active == 2 %}
+                                 <td ><a title = "Deactivate this task priorities" href="/settings/task/priorities/delete/{{t.id}}/" style="text-decoration:none;" class="confirmationdeactive label-success label label-default ">Active</a> </td>
+                                 {% else %}
+                                 <td><a title = "Activate this task priorities" href="/settings/task/priorities/active/{{t.id}}/" style="text-decoration:none;" class="confirmationactive label-default label">Inactive</a> </td>
+                                {% endif %}
+                                
+                                {% endif %}
+                                  </tr>
+                              {% endfor %}
+                                      {% else %}
+                                          <td style="text-align:center;color:blue;text-size:14px;">No task priorities added Yet...</td>
+                                        {% endif %}
+                                    </table>
+                                    
+                                    
+                                    
+                                    
+                                                                            <!-- script for confirm alert -->
+<script type="text/javascript">
+    var elems = document.getElementsByClassName('confirmationdeactive');
+    var confirmIt = function (e) {
+        if (!confirm('Do you want to deactivate ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+    
+    
+    
+     var elems = document.getElementsByClassName('confirmationactive');
+    var confirmIt = function (e) {
+        if (!confirm('Do you want to activate ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+    
+</script>
+<!-- script for confirm alert -->
+                                    
+                                    
+                                    
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div><!--/row-->
+    </div><!--/row-->
+{% endblock specialpart %}

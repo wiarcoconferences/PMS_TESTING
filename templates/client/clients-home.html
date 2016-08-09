@@ -1,0 +1,240 @@
+{% extends "main.html" %}
+{% block midpart %}
+<body>
+<script src='/static/js/jquery.dataTables.min.js'></script>
+<link href='/static/bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#id_"+"{{key}}").click(function(){
+            var check_perm = central_redirect_func('{{key}}', 'add');
+            if (check_perm){
+            $.ajax({
+                type:'GET',
+                url:"/projects/{{key}}/add/",
+                success:function(data){
+                    $("#replace-part").html(data);
+                }
+            });
+            }
+             return false;
+        });
+    });
+</script>
+<script>
+var totals=[0,0,0];
+$(document).ready(function(){
+
+    var $dataRows=$("#sum_table tr:not('.totalColumn, .titlerow')");
+   
+    $dataRows.each(function() {
+        $(this).find('.rowDataSd').each(function(i){
+            totals[i]+=parseInt( $(this).html());
+        });
+    });
+    $("#sum_table td.totalCol").each(function(i){
+        $(this).html(""+totals[i]);
+    });
+
+});
+</script>
+
+<script>
+function myFunction() {
+    var x;
+    if (confirm("You are trying to activate !") == true) {
+        x = "Client Actived Successfully";
+    } else {
+        x = "Inactive";
+    }
+    document.getElementById("active");
+    {
+        document.getElementById("active");
+    }
+}
+</script>
+<!-- script for show description -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<meta charset=utf-8 />
+
+
+
+<!--script>
+$(document).ready(function () {
+            $('#check1,#check2,#check3').on('click', function () {
+                //Check atlest one checkbox is checked
+                if ($("input[type=checkbox]:checked").length > 0) {
+                    //Show the table
+                    $('#desc').show();
+                    $('.descd').css('display','block');
+                    $('#tot').show();
+                }
+                else {
+                //hide the table
+                    $('#desc').hide();
+                    $('.descd').hide();
+                    $('#tot').hide();
+                }
+            });
+        });
+</script-->
+<!-- script ends for hide tables-->
+
+<!-- script for select checkbox-->
+
+<script language="javascript">
+$(function(){
+ 
+    // add multiple select / deselect functionality
+    $("#all").click(function () {
+          $('.case').attr('checked', this.checked);
+    });
+ 
+    // if all checkbox are selected, check the selectall checkbox
+    // and viceversa
+    $(".case").click(function(){
+ 
+        if($(".case").length == $(".case:checked").length) {
+            $("#all").attr("checked", "checked");
+        } else {
+            $("#all").removeAttr("checked");
+        }
+ 
+    });
+    
+    
+    $('#active_clients').click(function(){
+        var is_checked = $(this).is(':checked');
+        if (is_checked){
+            $('tr.cactive').show();
+            $('tr.cinactive').hide();
+        } else {
+            $('tr.cactive').show();
+            $('tr.cinactive').show();
+        }
+    
+    });
+    
+});
+</SCRIPT>
+
+<!-- script for select checkbox ends-->
+
+<div class="breadcrumbs">
+            <!--sitemap
+            <div class="breadcrumbs" align="center">
+                    <a class="home" href="/home/">Home</a>
+            </div>-->
+                <!-- main content -->
+                <!-- Work_Type -->
+                    <div class="maincontent">
+                        <div class="portlet box blue">
+                         <div class="breadcrumb">
+        <li>
+            <a href="/home/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="/clients/" style="text-decoration:none;">Client</a>
+        </li>
+    </div>
+    {% if perms.client %}
+                       <a title = "Add new client" class="breadcrumb" href="/client/add/0/" style="text-decoration:none;">Add New Client</a>
+                       <a title = "Recently viewed clients" class="breadcrumb" href="/recently/viewed/?key=client" style="text-decoration:none">Recently Viewd Clients</a>
+                       <a title = "Import clients" class="breadcrumb" href="/import/data/" style="text-decoration:none">Import Client</a>
+                       {% endif %}
+                        <div id="employee-designation-grid" class="breadcrumb">
+                                   <h3> {{client|length}} Clients </h3>
+                                    <div id="options" class="noprint">
+                           <!-- <input id="list1" class="check" type="checkbox" name = "check_1" >
+                            <label for="f_description">Show client descriptions</label> -->
+                             <input type="checkbox" id="check1">
+                        <label for="f_summary">Show client descriptions</label>
+                        
+                            <input id="active_clients" class="check" type="checkbox" name = "check_2" >
+                            <label for="f_inactive">Show active clients only</label>
+                            <a class="glyphicon glyphicon-print" title = "Print this Page" href="javascript:window.print()" align="right"> </a>
+<p></p>
+                                    <form method="POST" action = /clients/>{%csrf_token %} 
+                                    <input type = text  placeholder = "Search Client"  value = "{{c.name}}"  name = "client-name"/>
+                                    <input type = "submit" value=Filter />
+                                    </form>
+                                    <p></p>
+                                    <div id="employee-designation-grid" class="breadcrumb">
+                                    <table class="table table-striped table-bordered bootstrap-datatable datatable responsive" id="sum_table">
+                                      {% if client %}
+                                         <thead>
+                                         <tr>
+                                                <th align="center">#</th>
+                                                <th>Name</th>
+                                                <th id="desc" runat="server" style="display: none">Description</th>
+                                                <th>Dashboards</th>
+                                                <th>Total Projects</th>
+                                                <th>Active Projects </th>
+                                                <th>Date Created </th>
+                                                <th>Edit</th>
+                                                <!--th>Deactivate</th-->
+                                                <th>Status</th>
+                                             <!--   <th><input type="checkbox" id="all"></th>-->
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for c in client %}
+                                                <tr class="{% cycle 'odd' 'even'%} {{ c.status|yesno:'cactive,cinactive'}}">
+                                                    <td>{{c.id}}</td>
+                                     <td><a title = "Click here for detail view" href = "/client/view/{{c.id}}/" style="text-decoration:none;">{{ c.name }}</a></td>
+                                                   <td id="descd" class="descd" runat="server" style="display: none">{{c.description}}</td>
+                                                   <td> <a href = "/client/dashboard/{{c.id}}/" style="text-decoration:none;"> Dashboard </a></td>
+                                                    <td class="rowDataSd"> {{ c.get_projects.all.count }} </td>  
+                                                    <td class="rowDataSd">  {{ c.get_active_projects }}  </td> 
+                                                    <td> {{c.created_on|date }} </td>
+                                                  <td><a title = "Edit this client" href="/client/edit/{{c.id}}" class="glyphicon glyphicon-edit" style="text-decoration:none;"></a> </td> 
+                                                     {%if c.status == 2 %}
+                                                    <td class="active"><a title = "Deactivate this client" href="/client/delete/{{c.id}}" style="text-decoration:none;" class="confirmationdeactive label-success label label-default " >Active</a> </td>
+                                                    {% else %}
+                                                    <td class="inactive"><a title = "Activate this client" href="client/active/c.id" style="text-decoration:none;" class="confirmationactive label-default label">Inactive</a> </td>
+                                                    {% endif %}
+                                                  <!--  <td><input type="checkbox" class="case" name="case" value=""/></td>-->
+                                                </tr>
+                                          {% endfor %}
+                                      {% else %}
+                                          <td style="text-align:center;color:blue;text-size:14px;">No Client added Yet...</td>
+                                        {% endif %}
+                                        <tr>
+                                                <th colspan="3">Total</th>
+                                                <th colspan="1" id="tot" runat="server" style="display: none"></th>
+                                                <td class="totalCol"></td>
+                                                <td class="totalCol"></td>
+                                                <th></th>
+                                                <th colspan="4"></th>
+                                                </tr>
+                        <!-- script for confirm alert -->
+<script type="text/javascript">
+    var elems = document.getElementsByClassName('confirmationdeactive');
+    var confirmIt = function (e) {
+        if (!confirm('Do you want to deactivate ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+    
+    
+    
+     var elems = document.getElementsByClassName('confirmationactive');
+    var confirmIt = function (e) {
+        if (!confirm('Do you want to activate ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+</script>
+<!-- script for confirm alert -->
+                                                </tbody>
+                                                </table>
+                                    <div class="keys" style="display:none" title="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+
+{% endblock midpart %}

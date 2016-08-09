@@ -1,0 +1,687 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/static/resources/demos/style.css">
+
+{% if client_obj and proj_obj %}
+<script type="text/javascript">
+$(document).ready(function(){
+    $('select[name^=task-milestone] option[value={{mobj.id}}]').attr({'selected':'selected'},{'readyonly':'true'});
+    alert('{{mobj.id}}');
+    $('select[name^=tas-milestone] option[value={{mobj.id}}]').attr({'selected':'selected'},{'readyonly':'true'});
+    alert('{{mobj.id}}');
+    $('select[name^=tasks-milestone] option[value={{mobj.id}}]').attr({'selected':'selected'},{'readyonly':'true'});
+    alert('{{mobj.id}}');
+});
+</script>
+{% endif %}
+
+<script type="text/javascript">
+$(document).ready(function(){
+{% if client_obj and proj_obj %}
+    $('#id_task-client option').remove();
+    $('#id_tas-client option').remove();
+    $('#id_tasks-client option').remove();
+        var cid = {% if client_obj%}{{client_obj.id}}{%else%}0{%endif%}
+    $('<option>', {value:cid}).html('{{client_obj.name}}').appendTo('#id_task-client');
+    $('<option>', {value:cid}).html('{{client_obj.name}}').appendTo('#id_tas-client');
+    $('<option>', {value:cid}).html('{{client_obj.name}}').appendTo('#id_tasks-client');
+    $('#id_task-project option').remove();
+    $('#id_tas-project option').remove();
+    $('#id_tasks-project option').remove();
+        var pid = {% if proj_obj %} {{proj_obj.id}} {% else %}0{% endif %}
+    $('<option>', {value:pid}).html('{{proj_obj.name}}').appendTo('#id_task-project');
+    $('<option>', {value:pid}).html('{{proj_obj.name}}').appendTo('#id_tas-project');
+    $('<option>', {value:pid}).html('{{proj_obj.name}}').appendTo('#id_tasks-project');
+    {% endif %}
+
+        $('#id_task-start_date').val('{{form.start_date.value|date:"o-m-d"}}');
+
+        $('select[name="task-milestone"] option[value={{form.milestone.value}}]').attr('selected','selected');
+
+
+    });
+    
+</script>
+<script>
+$(document).ready(function(){
+$('#id_task-owned_by option').remove();
+$('#id_tas-owned_by option').remove();
+$('#id_tasks-owned_by option').remove();
+var cid = {{user_id2.id}}
+$('<option>', {value:cid}).html('{{user_id2.first_name}}').appendTo('#id_task-owned_by');
+$('<option>', {value:cid}).html('{{user_id2.first_name}}').appendTo('#id_tas-owned_by');
+$('<option>', {value:cid}).html('{{user_id2.first_name}}').appendTo('#id_tasks-owned_by');
+$('#id_task-owned_by').val({{user_id2.id}});
+$('#id_tas-owned_by').val({{user_id2.id}});
+$('#id_tasks-owned_by').val({{user_id2.id}});
+})
+</script>
+
+
+<!--link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css"-->
+<script type="text/javascript" task form = 1>
+$( document ).ready(function() {
+$('#id_task-client').change(function(){
+    $('#id_task-project option').remove();
+    var cid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/gettasks/',
+        data:{'cid':cid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                $('<option>',{value:''}).html('Choose a project').appendTo('#id_task-project');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_task-project');
+                }
+            }
+        }
+    })
+    });
+});
+</script>
+<script type="text/javascript" Task form = 2>
+$( document ).ready(function() {
+$('#id_tas-client').change(function(){
+    $('#id_tas-project option').remove();
+    var cid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/gettasks/',
+        data:{'cid':cid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                $('<option>', {value:''}).html('Choose a project').appendTo('#id_tas-project');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>', {value:res[i].id}).html(res[i].name).appendTo('#id_tas-project');
+                }
+            }
+        }
+    })
+    });
+});
+</script>
+<script type="text/javascript" task form = 3>
+$( document ).ready(function() {
+$('#id_tasks-client').change(function(){
+    $('#id_tasks-project option').remove();
+    var cid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/gettasks/',
+        data:{'cid':cid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                $('<option>', {value:''}).html('Choose a project').appendTo('#id_tasks-project');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>', {value:res[i].id}).html(res[i].name).appendTo('#id_tasks-project');
+                }
+            }
+        }
+    })
+    });
+});
+</script>
+
+
+
+
+<script>
+  $(function() {
+    $(".datepicker").datepicker();
+  });
+  </script><!--{{todays}}-->
+<!--script type="text/javascript">
+$(document).ready(function(){
+$("#task_form").validate({
+rules :
+{
+    title: {required: true},
+    client: {required: true},
+    module: {required: true},
+    project: {required: true},
+    start_date : {required : true},
+},
+});
+});
+</script-->
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+$('#id_title').attr('class','form-control')
+$('#id_client').attr('data-rel','chosen');
+//$('#id_project').attr('data-rel','chosen');
+//$('#id_module').attr('data-rel','chosen');
+$('#id_milestone').attr('data-rel','chosen');
+//$('#id_status').attr('data-rel','chosen');
+//$('#id_priority').attr('data-rel','chosen');
+//$('#id_owned_by').attr('data-rel','chosen');
+//$('#id_assigned_to').attr('data-rel','chosen');
+//$('#id_followed_by').attr('data-rel','chosen');
+$('#id_estimated').attr('class','form-control')
+$('#id_actual').attr('class','form-control')
+$('#id_summary').attr('class','form-control')
+$('#id_start_date').attr('class','form-control')
+$('#id_due_date').attr('class','form-control')
+
+
+
+});
+</script>
+<script>
+$(document).ready(function(){
+    $('#id_task1-bug_reports').hide();
+    $('#id_task-module').change(function(){
+    var acc_level = $('#id_task-module').val()
+    if (acc_level == {{mod.id}}){
+        $('#id_task1-bug_reports').show();
+    }
+    else{
+    $('#id_task1-bug_reports').hide();
+    }
+    });
+});
+</script>
+<script>
+$(document).ready(function(){
+    $('#id_task2-bug_reports').hide();
+    $('#id_tas-module').change(function(){
+    var acc_level = $('#id_tas-module').val()
+    if (acc_level == {{mod.id}}){
+        $('#id_task2-bug_reports').show();
+    }
+    else{
+    $('#id_task2-bug_reports').hide();
+    }
+    });
+});
+</script>
+<script>
+$(document).ready(function(){
+    $('#id_task3-bug_reports').hide();
+    $('#id_tasks-module').change(function(){
+    var acc_level = $('#id_tasks-module').val()
+    if (acc_level == {{mod.id}}){
+        $('#id_task3-bug_reports').show();
+    }
+    else{
+    $('#id_task3-bug_reports').hide();
+    }
+    });
+});
+</script>
+<!---script>
+$(document).ready(function() {
+alert('a');
+    var max_fields      = 10; //maximum input boxes allowed
+    var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+    var add_button      = $(".add_form_button"); //Add button ID
+   
+    var x = 1; //initlal text box count
+    $(add_button).click(function(e){ //on add input button click
+        e.preventDefault();
+        if(x < max_fields){ //max input box allowed
+            x++; //text box increment
+            $(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="remove_field">Remove</a></div>'); 
+        }
+    });
+    $(wrapper).on("click",".remove_field", function(e){ 
+        e.preventDefault(); $(this).parent('div').remove(); x--;
+    })
+});
+</script-->
+
+
+
+<body>
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Multiple Task Form</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+             <legend><h3>Task 1:</h3></legend>
+       <form id="task_form" class="form-inline" role="form" action="." method="POST" enctype = "multipart/form-data" >{% csrf_token %}
+                            
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_title">Title:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{form.title}}
+                    </div>
+                    <p>
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_client">Client:</label> <p>
+                        {{form.client}}
+                        <!--select name="client" id="id_client">
+                            <option value="">Choose a client </option>
+                        {% for i in form.client %}
+                            <option value="{{i.id}}">{{i.name}}</option>
+                        {% endfor %}
+                       </select-->
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                      <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_project">Project:</label> <p>
+                        {{form.project}}
+                    </div>
+                </div>
+                    <p>
+                    
+                      <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_module">Module:</label> <p>
+                       {{form.module}}
+                    </div>
+                </div>
+                    <p>
+                    
+                     <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_start_date" >Start Date:</label> <p>
+                        <!--<input id="id_due_date" class="form-control" name="id_due_date">-->
+                        {{form.start_date}}
+                    </div>
+                    <p>
+                    
+                     <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_due_date" >Due Date:</label> <p>
+                        <!--<input id="id_due_date" class="form-control" name="id_due_date">-->
+                        {{form.due_date}}
+                    </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_milestone">Milestone:</label> <p>
+                       {{form.milestone}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_status">Status:</label> <p>
+                       {{form.status}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_priority">Priority:</label> <p>
+                       {{form.priority}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_owned_by">Owned By:</label> <p>
+                       {{form.owned_by}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_assigned_to">Assigned To:</label> <p>
+                       {{form.assigned_to}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_followed_by">Followed By:</label> <p>
+                       {{form.followed_by}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_estimated">Estimated:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{form.estimated}}
+                    </div>
+                    <p>
+                    
+    
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_actual">Actual:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{form.actual}}
+                    </div>
+                    <p>
+                    
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_summary">Summary:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{form.summary}}
+                    </div>
+                    <p>
+                <div id="id_task1-bug_reports" class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_bug_reports">Upload File:</label> <p>
+                        {{form.bug_reports}}
+                    </div>
+                </p>
+                <hr>
+                     <legend><h3>Task 2:</h3></legend>
+       <form id="task_form" class="form-inline" role="form" action="." method="POST" enctype = "multipart/form-data" >{% csrf_token %}
+                            
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_title">Title:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{subform.title}}
+                    </div>
+                    <p>
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_client">Client:</label> <p>
+                        {{subform.client}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                      <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_project">Project:</label> <p>
+                        {{subform.project}}
+                    </div>
+                </div>
+                    <p>
+                    
+                      <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_module">Module:</label> <p>
+                       {{subform.module}}
+                    </div>
+                </div>
+                    <p>
+                    
+                     <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_start_date" >Start Date:</label> <p>
+                        <!--<input id="id_due_date" class="form-control" name="id_due_date">-->
+                        {{subform.start_date}}
+                    </div>
+                    <p>
+                    
+                     <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_due_date" >Due Date:</label> <p>
+                        <!--<input id="id_due_date" class="form-control" name="id_due_date">-->
+                        {{subform.due_date}}
+                    </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_milestone">Milestone:</label> <p>
+                       {{subform.milestone}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_status">Status:</label> <p>
+                       {{subform.status}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_priority">Priority:</label> <p>
+                       {{subform.priority}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_owned_by">Owned By:</label> <p>
+                       {{subform.owned_by}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_assigned_to">Assigned To:</label> <p>
+                       {{subform.assigned_to}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_followed_by">Followed By:</label> <p>
+                       {{subform.followed_by}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_estimated">Estimated:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{subform.estimated}}
+                    </div>
+                    <p>
+                    
+    
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_actual">Actual:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{subform.actual}}
+                    </div>
+                    <p>
+                    
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_summary">Summary:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{subform.summary}}
+                    </div>
+                    <p>
+                    <div id="id_task2-bug_reports" class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_bug_reports">Upload File:</label> <p>
+                        {{form.bug_reports}}
+                    </div>
+                   <p>
+                <hr>
+                     <legend><h3>Task 3:</h3></legend>
+       <form id="task_form" class="form-inline" role="form" action="." method="POST" enctype = "multipart/form-data" >{% csrf_token %}
+                            
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_title">Title:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{subbform.title}}
+                    </div>
+                    <p>
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_client">Client:</label> <p>
+                        {{subbform.client}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                      <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_project">Project:</label> <p>
+                        {{subbform.project}}
+                    </div>
+                </div>
+                    <p>
+                    
+                      <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_module">Module:</label> <p>
+                       {{subbform.module}}
+                    </div>
+                </div>
+                    <p>
+                    
+                     <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_start_date" >Start Date:</label> <p>
+                        <!--<input id="id_due_date" class="form-control" name="id_due_date">-->
+                        {{subbform.start_date}}
+                    </div>
+                    <p>
+                    
+                     <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_due_date" >Due Date:</label> <p>
+                        <!--<input id="id_due_date" class="form-control" name="id_due_date">-->
+                        {{subbform.due_date}}
+                    </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_milestone">Milestone:</label> <p>
+                       {{subbform.milestone}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_status">Status:</label> <p>
+                       {{subbform.status}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_priority">Priority:</label> <p>
+                       {{subbform.priority}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_owned_by">Owned By:</label> <p>
+                       {{subbform.owned_by}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_assigned_to">Assigned To:</label> <p>
+                       {{subbform.assigned_to}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_followed_by">Followed By:</label> <p>
+                       {{subbform.followed_by}}
+                    </div>
+                </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_estimated">Estimated:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{subbform.estimated}}
+                    </div>
+                    <p>
+                    
+    
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_actual">Actual:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{subbform.actual}}
+                    </div>
+                    <p>
+                    
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_summary">Summary:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{subbform.summary}}
+                    </div>
+                    <p>
+                <div id= "id_task3-bug_reports" class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_bug_reports">Upload File:</label> <p>
+                        {{form.bug_reports}}
+                    </div>
+                <p>
+                <br>
+                              <input type="submit" class="btn btn-default" value="Save task" />
+                            <a href="/tasks/" style="text-decoration:none;"> <button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                           
+                </form>
+                                    
+                                  
+                                     
+                                    
+                              </div>
+        </div>
+    </div>
+    <!--/span-->
+</div><!--/row-->
+</div>
+</div>
+
+
+{% endblock midpart %}

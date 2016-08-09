@@ -1,0 +1,75 @@
+{% extends "main.html" %}
+{% block title %}Manage FAQ{% endblock %}
+
+
+{% block midpart %}
+<script type="text/javascript" src="/static/js/jquery.validate.js"></script>
+<script>
+    $(document).ready(function(){
+        $('input').addClass('form-control');
+    });
+
+</script>
+<style>
+.error{color:red; min-width: 200px;}
+</style>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $("#doc_form").validate({
+            rules :
+            {
+            title : {required : true,maxlength:100},
+            tags : {required : true},
+            notes : {maxlength:500},
+             },
+
+        });
+    });
+</script>
+
+    <div id="content" class="col-lg-10 col-sm-10" style="width:100%">
+        <!-- content starts -->
+        <div>
+            <ul class="breadcrumb">
+                <li>
+                    <a href="/home/">Home</a>
+                </li>
+                <li>
+                    Add Document
+                </li>
+            </ul>
+        </div>
+
+        <div class="row">
+            <div class="box col-md-12">
+                <div class="box-inner">
+                    <div class="box-header well" data-original-title="">
+                        <h2><i class="glyphicon glyphicon-edit"></i>Add Document</h2>
+                    </div>
+
+                    <div class="box-content">
+                        {% if edit %}
+                            <form id="doc_form" enctype="multipart/form-data" action = "/task/edit-document/{{tid}}/" method = "post">{% csrf_token %}
+                        {% else %}
+                            <form id="doc_form" enctype="multipart/form-data" action = "/task/add-document/{{tid}}/" method = "post">{% csrf_token %}
+                        {% endif %}
+                            {% if error %}<p style="color:red"><b>{{error}}</b></p>{% endif %}
+                            {% for field in form %}
+                            <div class="input-group col-md-4">
+                                {{ field.label_tag }}
+                                <br/>
+                                {{ field }}
+                                <p style="color:red">{% if field.errors %}{{ field.errors|striptags }}{% endif %}</p>
+                            </div>
+                            {% endfor %}
+                            <br>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--/span-->
+        </div><!--/row-->
+    </div>
+{% endblock %}

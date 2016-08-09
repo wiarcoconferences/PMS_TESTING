@@ -1,0 +1,49 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+
+
+
+
+<body>
+            <div class="maincontent">
+                <h3>Settings & Defaults</h3>
+                <div class="portlet box blue">
+                         <div id="employee-designation-grid" class="breadcrumb">
+                              <div>
+                              {% if msg %}
+                              {{ msg }}
+                              {% endif %}
+                                 <form action="/add settings/" method="POST" enctype = "multipart/form-data" >{% csrf_token %}
+                                  {{ form.as_p }}
+                                  
+                                    
+                                    <input type="submit" class="btnsubmit" value="Save" />
+                                     
+                                    <a href="/Settings & Defaults/" style="text-decoration:none;"> <button type ="button">Cancel</button></a>
+                                  </form>
+                              </div>
+                       </div>
+                  </div>
+             </div>
+</body>
+</html>
+
+
+
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock midpart %}
+

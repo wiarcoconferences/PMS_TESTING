@@ -1,0 +1,228 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+<!--script language="javascript">
+    function validate()
+        if (document.addclient.value = "")
+        {
+            alert("please enter name");
+            document.addclient.t1.focus();
+            return(false);
+        };
+</script-->
+
+<!link href="/static/css/charisma-app.css" rel="stylesheet">
+
+<script type="text/javascript" language="javascript">
+    function redirect()
+    {
+        window.location.href = "/client/add/"
+    }
+</script>
+<script src="/static/js/jquery.validate.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+$("#client_form").validate({
+rules :
+{
+name: {minlength:3,maxlength:40,required: true},
+email: {required: true,
+        email: true},
+website: {
+            url: true},
+phone: {
+        number: true},
+fax: {
+        number: true},
+},
+});
+});
+
+
+$(document).ready(function(){
+
+$('#id_name').attr('class','form-control')
+$('#id_description').attr('class','form-control')
+$('#id_address').attr('class','form-control')
+$('#id_email').attr('class','form-control')
+$('#id_phone').attr('class','form-control')
+$('#id_website').attr('class','form-control')
+$('#id_fax').attr('class','form-control')
+
+})
+
+
+</script>
+
+
+
+<body>
+
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Client Form</h2>
+
+                <!--div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div-->
+            </div>
+            <div class="box-content">
+{% if msg %}
+<script>
+$(document).ready(function(){
+    alert('{{msg}}');
+})
+</script>
+{% endif %}
+            {% if task == "add" %}
+       <form id = client_form class="form-inline" role="form" action="/client/add/0/" method="POST"enctype = "multipart/form-data" >{% csrf_token %}
+
+
+        <ul class="mmm">
+            <li >
+                <div class="form-group has-success has-feedback ">
+                    <label class="control-label" for="id_name">Name:</label>
+                    <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                    {{form.name}}
+                </div>
+            </li>
+
+
+           <li>
+                <div class="form-group has-success has-feedback ">
+                    <label class="control-label" for="id_address">Address:</label>
+                    <!--<input id="id_address" type="text" class="form-control" name="address">-->
+                    {{form.address}}
+                </div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback ">
+                    <label class="control-label" for="id_email">Email Address:</label>
+                    <input id="id_email" type="text" class="form-control" name="email" placeholder="example@abc.com"> 
+                      <!-- {{form.email}} -->
+                </div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback ">
+                    <label class="control-label" for="id_phone">Phone:</label>
+                    <!--<input id="id_phone" type="text" class="form-control" name="phone">-->
+                    {{form.phone}}
+                <div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback ">
+                    <label class="control-label" for="id_website">Website:</label>
+                    <input id="id_website" type="text" class="form-control" name="website" placeholder="http://google.com">
+                    <!--{{form.website}} -->
+                </div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback ">
+                    <label class="control-label" for="id_fax">Fax:</label>
+                    <!--<input id="id_fax" type="text" class="form-control" name="fax">-->
+                    {{form.fax}}
+                </div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback " >
+                    <label class="control-label" for="id_description">Description:</label>
+                    <!-- <input id="id_description" type="text" class="form-control " name="description"-->
+                    {{form.description}}
+                </div>
+            </li>
+
+        </ul>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="submit" class="btn btn-default" value="Save" />
+                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                             <a href="/clients/" style="text-decoration:none;"><button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+                {% endif %}
+    <!--/span-->
+            
+            <div class="box-content">
+            {% if task == "edit" %}
+
+                    <form id="client_form" class="form-inline" role="form" action ="/client/edit/{{ id_edit }}/" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                       <ul class="mmm">
+            <li >
+                <div class="form-group has-success has-feedback ">
+                    <label class="control-label" for="id_name">Name:</label>
+                    <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                    {{form.name}}
+                </div>
+            </li>
+
+
+           <li>
+                <div class="form-group has-success has-feedback ">
+                    <label class="control-label" for="id_address">Address:</label>
+                    <!--<input id="id_address" type="text" class="form-control" name="address">-->
+                    {{form.address}}
+                </div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback ">
+                    <label class="control-label" for="id_email">Email Address:</label>
+                    <!--<input id="id_email" type="text" class="form-control" name="email" placeholder="example@abc.com"> -->
+                         <!--{{form.email}} -->
+                </div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback ">
+                    <label class="control-label" for="id_phone">Phone:</label>
+                    <!--<input id="id_phone" type="text" class="form-control" name="phone">-->
+                    {{form.phone}}
+                <div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback ">
+                    <label class="control-label" for="id_website">Website:</label>
+                    <!--<input id="id_website" type="text" class="form-control" name="website" placeholder="http://google.com"> -->
+                    {{form.website}}
+                </div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback ">
+                    <label class="control-label" for="id_fax">Fax:</label>
+                    <!--<input id="id_fax" type="text" class="form-control" name="fax">-->
+                    {{form.fax}}
+                </div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback " >
+                    <label class="control-label" for="id_description">Description:</label>
+                    <!-- <input id="id_description" type="text" class="form-control " name="description"-->
+                    {{form.description}}
+                </div>
+            </li>
+
+        </ul>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 <input type="submit" class="btn btn-default" value="Save" />
+                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                             <a href="/clients/" style="text-decoration:none;"><button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+</div><!--/row-->
+</div>
+</div>
+
+</body>
+</html>
+</div>
+{% endblock midpart %}
+

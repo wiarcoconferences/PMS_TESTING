@@ -1,0 +1,45 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+<body>
+
+
+
+	<!--sitemap
+	<div class="breadcrumbs" align="center">
+		<a class="home" href="/home/">Home</a>
+            </div>-->
+            <!-- main content -->
+            <div class="maincontent">
+            <h3>Client</h3>           
+                <div class="portlet box blue">
+                         <div id="employee-designation-grid" class="breadcrumb">
+                         <div>
+                                    
+                                    
+                                 <form  action ="/invoice/" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                              {{ form.as_p }}</p>
+                              <input type="Submit" class="btnsubmit" value="Save" style="text-decoration:none;" />
+                                        {% if msg %}
+                                     <font color="red"><h3>{{msg}}</h3></font>
+                                    {% endif %}
+                              
+                              
+                              
+                                  </form>
+                                  <a href="/invoices-home/" style="text-decoration:none;"><button type="button">Cancel</button> </a>
+                                  <br>
+                                  
+                                    
+                                    </form>
+                              </div>
+                       </div>
+                  </div>
+             </div>
+
+
+</body>
+</html>
+</div>
+{% endblock midpart %}
+

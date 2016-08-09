@@ -1,0 +1,79 @@
+{% extends "main.html" %}
+{% block midpart %}
+<div id="dashcontent">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="/static/css/style.css">
+<link rel="stylesheet" type="text/css" href="/static/css/component.css">
+<link rel="stylesheet" type="text/css" href="/static/css/font-awesome.min.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<script type="text/javascript"src="http://code.jquery.com/jquery-latest.js"></script>
+<!-- <script type="text/javascript" src="js/jquery.peity.min.js"></script> -->
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#file_content').hide()
+		$('#import_file').click(function(){
+			$('#file_content').toggle()
+		});
+	});
+	</script>
+</head>
+
+<body>
+	<!--sitemap-->
+	<div class="breadcrumbs" align="centre">
+		<a class="home" href="/home/">Home</a>
+            </div>
+            <!-- main content -->
+            <div class="maincontent">
+                <h1>Add New</h1>
+                <div class="portlet box blue">
+                    <div class="portlet-title"> Budget </div>
+                         
+                                  <!--  <div class="col3" style="padding-bottom:20px;">
+                                        {% if msg %}
+                                            <p style="color:red;">{{msg}}</p>
+                                        {% endif %}
+                                        <span><input type="submit" value="submit"></span>
+                                    </div>
+                                    <div class="col3">
+                                        <button style="width:231px;height:30px;padding-right:20px;" 
+                                        type="submit" formaction="/manage/households_static/list/">Cancel</button>
+                                    </div> -->
+                           
+                           
+                           
+                           
+                           
+                           <div class="col16" align="center">
+                <fieldset class="wtbg">
+                <legend class="heading">Upload File</legend>
+                    <div class="row pd10" id="ex_col3_col4">   
+                        <form action="/import/data/?key=project" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                        <div class="col3">
+                            <div class="col1">&nbsp;</div>Upload File : <span class="red"> *</span>
+                        </div>
+                        <div class="col4">
+                            <input type="file" name="data_file" required>
+                        </div> 
+                        <div class="col4">
+                            <input type="submit" value="Upload">
+                        </div> 
+                        </form>
+                    </div>
+                </fieldset>
+            </div>
+                           
+                           
+                           
+                           
+                       </div>
+                  </div>
+             </div>
+</body>
+</html>
+</div>
+{% endblock midpart %}

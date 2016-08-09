@@ -1,0 +1,60 @@
+{% extends "main.html" %}
+{% block midpart %}
+            <!--sitemap-->
+            <div class="breadcrumbs" align="center">
+            </div>
+                <!-- main content -->
+                <!-- Work_Type -->
+                    <div class="maincontent">
+                        <div class="portlet box blue">
+                        <div class="breadcrumb"> 
+                        <li>
+            <a href="/main/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="/projects-home/" style="text-decoration:none;">Employee</a>
+        </li>
+                        </div>
+                        <a class="breadcrumb" href="/employee/add/" style="text-decoration:none;" >Add New Employee</a>
+                        <div id="employee-designation-grid" class="breadcrumb">
+                                    <table class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+                                      {% if employees %}
+                                          <thead>
+                                           <tr>
+                                                <th> Name</th>
+                                                <th>Designation</th>
+                                                <th>UserProfile </th>
+                                                <th>Employer</th>
+                                                <th>Project</th>
+                                                <th>Edit </th>
+                                                <th>Delete</th>
+                                                <th>Active</th>
+                                            </tr>
+    
+                                                   </thead>
+                                            {% for e in employees %}
+                                                <tr class="{% cycle 'odd' 'even'%}">
+                                                    
+                                                    <td>{{ e.name }}</td>
+                                                    <td>{{ e.designation }}</td>
+                                                    <td>{{ e.userprofile }}</td>
+                                                    <td>{{ e.employer }}</td>
+                                                    <td>{% for i in e.project.all %} {{ i }} {% endfor %} </td>
+                                                    <td><a href="/employee/edit/?id={{e.id}}"><img src="/static/images/edit.jpg"></a> </td>
+                                                    <td><a href="/employee/delete/?id={{e.id}}"><img src="/static/images/delete.jpeg"></a></td>
+                                                    <td><a href="/employee/active/?id={{e.di}}">Active</a></td>
+                                                </tr>
+                                          {% endfor %}
+                                      {% else %}
+                                          <td style="text-align:center;color:blue;text-size:14px;">No People  added Yet...</td>
+                                        {% endif %}
+                                    </table>
+                                    <div class="keys" style="display:none" title="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+{% endblock midpart %}
+

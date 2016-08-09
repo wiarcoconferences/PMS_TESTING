@@ -1,0 +1,417 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/static/resources/demos/style.css">
+
+<style>
+.error{color:red; min-width: 200px;}
+</style>
+
+<script>
+  $(function() {
+    $(".datepicker").datepicker();
+  });
+  //$("#yourinput").datepicker( "setDate" , "7/11/2011" );
+  </script><!--{{todays}}-->
+  <script src="/static/js/jquery.validate.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+$("#task_form").validate({
+rules :
+{
+title: {required: true},
+client: {required: true},
+module: {required: true},
+project: {required: true},
+start_date : {required : true},
+estimated : {required: true},
+actual: {required: true},
+},
+});
+});
+</script>
+<script type="text/javascript">
+$( document ).ready(function() {
+//$( "#id_start_date").datepicker("setDate","{{todays|date:'m/d/o'}}");
+//$( "#id_end_date").datepicker("setDate","{{todays|date:'m/d/o'}}");
+
+
+$('#id_client').change(function(){
+    $('#id_project option').remove();
+    var cid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/gettasks/',
+        data:{'cid':cid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                $('<option>',{value:''}).html('Choose a project').appendTo('#id_project');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_project');
+                }
+            }
+        }
+    })
+    });
+});
+</script>
+<script>
+$(document).ready(function(){
+$('id_project').change(function(){
+    $('#id_module option').remove();
+    var pid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/getmodules/',
+        data:{'pid':pid},
+        success:function(data){
+            
+            if (data){
+            var res = data.res;
+            $('<option>',{value:''}).html('Choose Module').appendTo('#id_module');
+            for(i=0;i<res.length;i++)
+            {
+                $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_module');
+                
+            }
+        }
+    }
+    })
+});
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+{% if client_obj and proj_obj %}
+    $('#id_client option').remove();
+        var cid = {% if client_obj%}{{client_obj.id}}{%else%}0{%endif%}
+    $('<option>', {value:cid}).html('{{client_obj.name}}').appendTo('#id_client');
+    $('#id_project option').remove();
+        var pid = {% if proj_obj %} {{proj_obj.id}} {% else %}0{% endif %}
+    $('<option>', {value:pid}).html('{{proj_obj.name}}').appendTo('#id_project');
+    //console.log("Client id======="+{{client_obj}});
+    {% endif %}
+
+        $('#id_start_date').val('{{form.start_date.value|date:"o-m-d"}}');
+
+        $('select[name="milestone"] option[value={{form.milestone.value}}]').attr('selected','selected');
+
+        //uncomment to add task - taging milestone
+       // $('#id_milestone option:nth-child(1)').remove();
+        
+
+    });
+    
+</script>
+<script>
+$(document).ready(function(){
+$('#id_owned_by option').remove();
+var cid = {{user_id2.id}}
+$('<option>', {value:cid}).html('{{user_id2.first_name}}').appendTo('#id_owned_by');
+$('#id_owned_by').val({{user_id2.id}});
+
+//alert($('#id_owned_by').val({{user_id2.id}}))
+
+})
+</script>
+{% if key == 'request' %}
+<script>
+$(document).ready(function(){
+$('#id_title').val('{{requestobj.title}}');
+$('#id_client').val('{{requestobj.client.id}}');
+$('#id_project').val('{{requestobj.project.id}}');
+$('#id_start_date').val("{{requestobj.requested_due_date|date:'m/d/o'}}");
+$('#id_owned_by').val('{{user_id2.id}}');
+})
+</script>
+{% endif %}
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+$('#id_title').attr('class','form-control')
+//$('#id_client').attr('data-rel','chosen');
+//$('#id_project').attr('data-rel','chosen');
+//$('#id_module').attr('data-rel','chosen');
+//$('#id_milestone').attr('data-rel','chosen');
+//$('#id_status').attr('data-rel','chosen');
+//$('#id_priority').attr('data-rel','chosen');
+//$('#id_owned_by').attr('data-rel','chosen');
+//$('#id_assigned_to').attr('data-rel','chosen');
+//$('#id_followed_by').attr('data-rel','chosen');
+$('#id_estimated').attr('class','form-control')
+$('#id_actual').attr('class','form-control')
+$('#id_summary').attr('class','form-control')
+$('#id_start_date').attr('class','form-control')
+$('#id_due_date').attr('class','form-control')
+});
+</script>
+
+
+<!-- phone number validation-->
+<script type="text/javascript" src="/static/js/number_validation.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#id_estimated').keypress(function(evt){
+            var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+        return false;
+    return true;
+        })
+        
+        
+        $('#id_actual').keypress(function(evt){
+            var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+        return false;
+    return true;
+        })
+        
+        
+        
+        
+    });
+</script>
+
+{%if key == "add" %}
+<!--script to defualt due date -->
+<script type="text/javascript">
+$( document ).ready(function() {
+$("#id_start_date").datepicker("setDate","{{todays|date:'m/d/o'}}");
+$("#id_due_date").datepicker("setDate","{{todayss|date:'m/d/o'}}");
+
+});
+</script>
+{%endif%}
+
+<body>
+
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Task </h2>
+
+            </div>
+            <div class="box-content">
+        {% if key == 'add'%}
+       <form id="task_form" class="form-inline" role="form" action="/task/add/" method="POST" enctype = "multipart/form-data" >{% csrf_token %}
+<script>
+$(document).ready(function(){
+    $('#id_bug_reports').hide();
+    $('#id_module').change(function(){
+    var acc_level = $('#id_module').val()
+    if (acc_level == {{mod.id}}){
+        $('#id_bug_reports').show();
+    }
+    else{
+    $('#id_bug_reports').hide();
+    }
+    });
+});
+</script>
+       {% endif %}
+       {% if key == 'edit'%}
+       <form id="task_form" class="form-inline" role="form" action="/task/edit/{{id_edit}}/" method="POST" enctype = "multipart/form-data" >{% csrf_token %}
+   
+<script>
+$(document).ready(function(){
+$('#id_bug_reports').hide();
+    $('#id_module').change(function(){
+    var acc_level = $('#id_module').val()
+    if (acc_level == {{mod.id}}){
+        $('#id_bug_reports').show();
+    }
+    else{
+    $('#id_bug_reports').hide();
+    }
+    });
+});
+</script>
+       {% endif %}
+{% if key == 'request' %}
+<script>
+$(document).ready(function(){
+$('#id_bug_reports').hide();
+    $('#id_module').change(function(){
+    var acc_level = $('#id_module').val()
+    if (acc_level == {{mod.id}}){
+        $('#id_bug_reports').show();
+    }
+    else{
+    $('#id_bug_reports').hide();
+    }
+    });
+});
+</script>
+<script>
+{% if msg %}
+    alert('{{msg}}');
+{#% else error%#}
+    //alert('{{error}}');
+{% endif %}
+</script>
+
+
+<form id="task_form" class= "form-inline" role="form" action="." method="POST" enctype = "multipart/form-data">{% csrf_token %}
+
+
+{% endif %}
+    <div class="mmm">
+            <div class="form-group has-success has-feedback">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="control-label" for="id_title">Title:</label>
+                    <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                    {{form.title}}
+                <p style="color:red">{% if field.errors %}{{ field.errors|striptags }}{% endif %}</p>
+            </div>
+    </div>
+    <p>
+    <ul class="mmm">
+        <li>
+            <div class="form-group has-success has-feedback">
+                <div class="controls">
+                     <label class="control-label" for="id_client">Client:</label> 
+                        {{form.client}}
+                     <p style="color:red">{% if field.errors %}{{ field.errors|striptags }}{% endif %}</p>
+                </div>
+            </div>
+        </li>
+        <li>
+             <div class="form-group has-success has-feedback">
+                <div class="controls">
+                    <label class="control-label" for="id_project">Project:</label> 
+                        {{form.project}}
+                    <p style="color:red">{% if field.errors %}{{ field.errors|striptags }}{% endif %}</p>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group has-success has-feedback">
+                <div class="controls">
+                    <label class="control-label" for="id_module">Module:</label> 
+                        {{form.module}}
+                 <p style="color:red">{% if field.errors %}{{ field.errors|striptags }}{% endif %}</p>
+            </div>
+        </li>
+        <li>
+             <div class="form-group has-success has-feedback">
+                <label class="control-label" for="id_start_date" >Start Date:</label> 
+                    {{form.start_date}}
+            </div>
+        </li>
+        <li>
+             <div class="form-group has-success has-feedback">
+                <label class="control-label" for="id_due_date" >Due Date:</label> 
+                    <!--<input id="id_due_date" class="form-control" name="id_due_date">-->
+                        {{form.due_date}}
+            </div>
+        </li>
+        <li>
+            <div class="form-group has-success has-feedback">
+                <div class="controls">
+                     <label class="control-label" for="id_milestone">Milestone:</label> 
+                         {{form.milestone}}
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group has-success has-feedback">
+                <div class="controls">
+                     <label class="control-label" for="id_status">Status:</label> 
+                       {{form.status}}
+                     <p style="color:red">{% if field.errors %}{{ field.errors|striptags }}{% endif %}</p>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group has-success has-feedback">
+                <div class="controls">
+                   <label class="control-label" for="id_priority">Priority:</label>
+                       {{form.priority}}
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group has-success has-feedback">
+                <div class="controls">
+                    <label class="control-label" for="id_owned_by">Owned By:</label>
+                       {{form.owned_by}}
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="form-group has-success has-feedback">
+                <div class="controls">
+                    <label class="control-label" for="id_assigned_to">Assigned To:</label>
+                       {{form.assigned_to }}
+                </div>
+            </div>
+        </li>
+        <li>
+           <div class="form-group has-success has-feedback">
+               <div class="controls">
+                 <label class="control-label" for="id_followed_by">Followed By:</label>
+                   {{form.followed_by}}
+               </div>
+           </div>
+        </li>
+        <li>
+            <div class="form-group has-success has-feedback">
+                <label class="control-label" for="id_estimated">Estimated:</label>
+                    {{form.estimated}}
+                <p style="color:red">{% if field.errors %}{{ field.errors|striptags }}{% endif %}</p>
+            </div>
+        </li>
+       <li>
+            <div class="form-group has-success has-feedback">
+                <label class="control-label" for="id_actual">Actual:</label> 
+                <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                    {{form.actual}}
+                <p style="color:red">{% if field.errors %}{{ field.errors|striptags }}{% endif %}</p>
+            </div>
+        </li>
+        <li>
+            <div class="form-group has-success has-feedback">
+                <label class="control-label" for="id_summary">Summary:</label> 
+                    <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                    {{form.summary}}
+            </div>
+        </li>
+        <li>
+            <div id="id_bug_reports" class="form-group has-success has-feedback">
+                <label class="control-label" for="id_bug_reports">Upload a File:</label> 
+                        {{form.bug_reports}}
+            </div>
+        </li>
+    </ul>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="submit" class="btn btn-default" value="Save task" />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/tasks/" style="text-decoration:none;"> <button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+                              </div>
+        </div>
+    </div>
+    <!--/span-->
+</div><!--/row-->
+</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('select[name^=milestone] option[value={{mobj.id}}]').attr({'selected':'selected'},{'readyonly':'true'});
+
+});
+</script>
+
+
+{% endblock midpart %}

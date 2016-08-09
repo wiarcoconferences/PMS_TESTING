@@ -1,0 +1,122 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+<script type="text/javascript">
+$(document).ready(function() {
+$('#datepicker').datepicker({dateFormat: 'yy-mm-dd',changeMonth: true,changeYear: true,}).attr( 'readOnly' , 'true' );
+});
+//$('.datepicker').datepicker({dateFormat: 'yy-mm-dd',changeMonth: true,changeYear: true,"setDate":"{{today_date|date:'o/m/d'}}"}).attr( 'readOnly' , 'true' );
+</script>
+
+<script src="/static/js/jquery.validate.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+$("#leavecalender_form").validate({
+rules :
+{
+name: {minlength:3,maxlength:40,required: true},
+description: {required: true,
+        }
+},
+});
+});
+</script>
+
+<script>
+$(document).ready(function(){
+{% if form.error %}
+alert('{{error}}');
+{% endif %}
+});
+</script>
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> LeaveCalender Form</h2>
+
+                <div class="box-icon">
+                    <a href="/leavecalender/add/" class="btn btn-round btn-default">
+                    <i class="glyphicon glyphicon-plus " title="Add a Leave"> </i> </a>
+                </div>
+            </div>
+            <div class="box-content">
+            
+            
+            {% if task == 'add' %}
+            
+            <form id = leavecalender_form class="form-inline" role="form" action="/leavecalender/add/" method="POST" enctype = "multipart/form-data" >{% csrf_token %}
+            
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_name">Name:</label><p>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.name}}
+                </p>
+            </div>
+            <p>
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_name">Description:</label><p>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.description}}
+                </p>
+            </div>
+            <p>
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_name">Date:</label><p>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.date}}
+                </p>
+            </div>
+            <p>
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_name">Upload a Image:</label><p>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.image}}
+                </p>
+            </div>
+            <p>
+            <p>
+        <input type="submit" class="btn btn-default" value="Save" />
+                             <a href="/leavecalender/" style="text-decoration:none;"><button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+            {% endif %}
+            
+            {% if task == "edit" %}
+            
+            
+            <form id = leavecalender_form class="form-inline" role="form" action="/leavecalender/edit/?id={{id_edit}}" method="POST"enctype = "multipart/form-data" >{% csrf_token %}
+            
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_name">Name:</label>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.name}}
+            </div>
+            
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_name">Description:</label>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.description}}
+            </div>
+            
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_name">Date:</label><p>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.date}}
+                </p>
+            </div>
+            
+            <div class="form-group has-success has-feedback mmm">
+                <label class="control-label" for="id_name">Upload a Image:</label>
+                <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                {{form.image}}
+            </div>
+        <input type="submit" class="btn btn-default" value="Save" />
+                             <a href="/leavecalender/" style="text-decoration:none;"><button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+
+            {% endif %}
+
+
+
+
+{% endblock midpart %}

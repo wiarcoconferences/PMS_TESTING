@@ -1,0 +1,90 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/static/resources/demos/style.css">
+
+<script src="/static/js/jquery.validate.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+$("#task_status_form").validate({
+rules :
+{
+name: {required: true},
+},
+});
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+$('#id_name').attr('class','form-control')
+
+});
+</script>
+
+
+<body>
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><span class="glyphicon glyphicon-edit"></span> Project Categorization</h2>
+
+                <div class="box-icon">
+                    <!--a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a-->
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+            {% if task == "add" %}
+       <form id="task_status_form" class="form-inline" role="form" action ="/settings/project/categorization/add/0/" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_name">Name:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{form.name}}
+                    </div>
+                  
+                
+                <p>
+                <br>
+			    {% if msg %} {{ msg }} <br> {% endif %}
+                            <input type="submit" class="btn btn-default" value="Submit" />
+                            <a href="/settings/project/categorizations/" style="text-decoration:none;"> <button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+                {% endif %}
+    <!--/span-->
+                       
+                            
+            
+            <div class="box-content">
+            {% if task == "edit" %}
+       <form id="task_status_form" class="form-inline" role="form" action ="/settings/project/categorization/edit/{{id}}/" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_name">Name:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{form.name}}
+                    </div>
+                    <p>
+                <br>
+			    {% if msg %} {{ msg }} <br> {% endif %}
+                            <input type="submit" class="btn btn-default" value="Submit" />
+                            <a href="/settings/project/categorizations/" style="text-decoration:none;"> <button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+</div><!--/row-->
+</div>
+</div>
+{% endblock midpart %}

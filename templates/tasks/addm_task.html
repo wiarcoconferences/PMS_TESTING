@@ -1,0 +1,57 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/resources/demos/style.css">
+
+<script>
+  $(function() {
+    $( ".datepicker" ).datepicker();
+  });
+  </script>
+
+
+<body>
+	<!--sitemap
+	<div class="breadcrumbs">
+		<a class="home" href="main.html">Home</a>
+		<a href="designation.html">PMS</a><a href="tasks.html">Task</a><span>Add New</span>
+            </div>-->
+            <!-- main content -->
+            <div class="maincontent">
+                <h3>Tasks</h3>                  
+                <div class="portlet box blue">
+                         <div id="employee-designation-grid" class="breadcrumb">
+                              <div >
+                                 <form action="." method="POST" enctype = "multipart/form-data" >{% csrf_token %}
+                                  <h3> Task 1 : </h3>
+                                  {{ form.as_p }}
+                                  <h3> Task 2 : </h3>
+                                  {{ subform.as_p }}
+                                  <h3> Task 3 : </h3>
+                                  {{ subbform.as_p }}
+                                   <input type="submit" class="btnsubmit" value="Save task" />
+                                   <a href="/tasks/" style="text-decoration:none;"><button type="button">Cancel</button> </a>
+                                  </form>
+                                  <br>
+                                    <br></br>
+                              </div>
+                       </div>
+                  </div>
+             </div>
+</body>
+</html>
+<div>
+
+
+
+        </div>
+    </div>
+
+
+</div>
+
+{% endblock midpart %}
+

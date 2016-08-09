@@ -1,0 +1,247 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+
+<script src="/static/js/jquery.validate.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+$("#person_form").validate({
+rules :
+{
+first_name: {required: true},
+last_name:{required: true},
+password: {required: true},
+retypepassword: {required: true},
+email :{email: true},
+},
+});
+});
+
+
+$(document).ready(function(){
+
+$('#id_first_name').attr('class','form-control')
+$('#id_last_name').attr('class','form-control')
+$('#id_title').attr('class','form-control')
+$('#id_address').attr('class','form-control')
+$('#id_email').attr('class','form-control')
+$('#id_phone').attr('class','form-control')
+$('#id_website').attr('class','form-control')
+$('#id_network').attr('class','form-control')
+$('#id_notes').attr('class','form-control')
+$('#id_client').attr('data-rel','chosen');
+$('#id_access_level').attr('data-rel','chosen');
+})
+
+
+
+</script>
+<script type="text/javascript" src="/static/js/number_validation.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        //$("option[value=" + '{{clientobj.id}}' + "]").prop("selected",true);
+        {% if clientobj %}
+            $('#id_client option').remove();
+            var cid = {% if clientobj.id%}{{clientobj.id}}{%else%}0{%endif%}
+            $('<option>', {value:cid}).html('{{clientobj.name}}').appendTo('#id_client');
+            console.log("Client id======="+{{clientobj.id}});
+        {% endif %}
+        
+        $('#id_phone').keypress(function(evt){
+            var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+        return false;
+    return true;
+        })
+
+
+
+
+
+    });
+    //$(" option[value=" + '{{clientobj.id}}' + "]").prop("selected",true);
+    //$('#id_client option:eq('+'{{clientobj.id}}'+')').prop('selected', true);
+//    $('#id_client option:selected').attr('value', '{{client.id}}');
+{
+   // $("#id_client option:selected").attr('value','{{id}}');
+    //alert ("{{id_client}}");
+}
+</script>
+
+<script>
+$( document ).ready(function() {
+$('#id_client').change(function(){
+    $('#id_project option').remove();
+    var cid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/getprojects/',
+        data:{'cid':cid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                $('<option>',{value:''}).html('All Projects').appendTo('#id_project');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_project');
+                }
+            }
+        }
+    })
+    });
+});
+</script>
+
+<body>
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> People Form</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+             {% if msg %}
+                                     <font color="blue"><h3>{{msg}}</h3></font>
+                                    {% endif %}
+       <form id="person_form" class="form-inline" role="form" action ="/person/edit/{{id_edit}}/" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                                
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_first_name"> First Name:</label><p>
+                        <!--<input id="id_name" type="text" class="form-control" id="inputSuccess4" name="name">-->
+                        {{form.first_name}}
+                        
+                    </div>
+                    <p>
+                    
+                    
+                     <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_last_name">Last Name:</label><p>
+                       <!-- <input id="id_description" type="text" class="form-control " name="description"-->
+                       {{form.last_name}}
+                    </div>
+                    <p>
+                    
+                    
+                     <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_title">Title:</label><p>
+                        <!--<input id="id_address" type="text" class="form-control" name="address">-->
+                        {{form.title}}
+                    </div>
+                    <p>
+                    
+                    
+                    
+                     <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_address">Address:</label><p>
+                        <!--<input id="id_address" type="text" class="form-control" name="address">-->
+                        {{form.address}}
+                    </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_email">Email Address:</label><p>
+                        <!-- <input id="id_email" type="text" class="form-control" name="email" placeholder="Email">-->
+                       {{form.email}}
+                    </div>
+                    <p>
+                    
+                    
+                     <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_phone">Phone:</label><p>
+                        <!--<input id="id_phone" type="text" class="form-control" name="phone">-->
+                        {{form.phone}}
+                    </div>
+                    <p>
+                    
+                      
+                       <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_network">Network:</label><p>
+                        <!--<input id="id_network" type="text" class="form-control" name="phone">-->
+                        {{form.network}}
+                    </div>
+                    <p>
+                      
+                    
+                     <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_website">Website:</label><p>
+                        <!--<input id="id_website" type="text" class="form-control" name="website">-->
+                        {{form.website}}
+                    </div>
+                    <p>
+                    
+                    
+                     <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_notes">Notes:</label><p>
+                        <!--<input id="id_notes" type="text" class="form-control" name="fax">-->
+                        {{form.notes}}
+                    </div>
+                    <p>
+                    
+                    
+                    <div class="form-group">
+                        <label for="exampleInputFile">Upload a Image</label>
+                        <!--input type="file" id="exampleInputFile"-->
+                            {{form.profile_image}}
+                    </div>
+                    <p>
+                    
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_client">Client:</label> <p>
+                        {{form.client}}
+                    </div>
+                </div>
+                    <p>
+                    <div class="form-group has-success has-feedback">
+                        <div class="controls">
+                        <label class="control-label" for="id_project">Project Permission:</label> <p>
+                        {{form.project}}
+                         </div>
+                </div>
+                    <p>
+                    
+                    <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_access_level">Access Level:</label> <p>
+                        {{form.access_level}}
+                    </div>
+                </div>
+                    <p>
+                    <div id="hidden_div"  class="form-group has-success has-feedback">
+                    <div class="controls">
+                     <label class="control-label" for="id_resource_categorization">Resource Categorization:</label> <p>
+                        {{form.resource_categorization}}
+                    </div>
+                </div>
+                    
+                                <br>
+                            <input type="submit" class="btn btn-default" value="Save" />
+                             <a href="/persons/" style="text-decoration:none;"><button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+    <!--/span-->
+            
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+</div><!--/row-->
+</div>
+</div>
+
+</body>
+</html>
+</div>
+{% endblock midpart %}

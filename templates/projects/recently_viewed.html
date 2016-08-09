@@ -1,0 +1,67 @@
+{% extends "main.html" %}
+{% block midpart %}
+<body>
+ <!--sitemap
+            <div class="breadcrumbs" align="center">
+                    <a class="home" href="/home/">Home</a>
+            </div>-->
+                <!-- main content -->
+                <!-- Work_Type -->
+                    <div class="maincontent">
+                        <div class="portlet box blue">
+                        <div class="breadcrumb">
+        <li>
+            <a href="/home/" style="text-decoration:none;">Home</a>
+        </li>
+    </div>
+                       <a class="breadcrumb"  style="text-decoration:none;">Recently Viewed</a>
+                        <div id="client_gridview" class="breadcrumb">
+        
+                                    <div id="options" class="noprint">
+                            <div align= "right"><a href = "/projects/" title = "Return to Client home" style="text-decoration:none;"><< Return to Project Home </a> </div></br>
+                            <a title = "Print this Page" href="javascript:window.print()"><img src="/static/img/print-icon.png" height="25".width="25" align="right"></a>
+                            
+                            
+        
+        
+        
+                                <table id="sum_table" class="table table-striped table-bordered bootstrap-datatable datatable responsive" >
+                                    
+                                      {% if recently_viewed %}
+                                      
+                                         <thead>
+                                         <tr>
+                                                <th align="center">#</th>
+                                                <th>User Name</th>
+                                                <th>Name </th>
+                                                <th>Date Visited</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for c in recently_viewed %}
+                                                <tr class="{% cycle 'odd' 'even'%}">
+                                                    <td>{{c.id}}</td>
+                                                    <td>{{ c.user.first_name }}</td>
+                                                    <td class="rowDataSd"> {{ c.content_object }} </td>  
+                                                    
+                                                    <td> {{c.created_on|date }} </td>
+                                                </tr>
+                                          {% endfor %}
+                                         
+                                      {% else %}
+                                      
+                                          <td style="text-align:center;color:blue;text-size:14px;">No Client added Yet...</td>
+                                        {% endif %}
+
+                                                </tbody>
+                                                </table>
+                                    <div class="keys" style="display:none" title="">
+			
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+
+{% endblock midpart %}

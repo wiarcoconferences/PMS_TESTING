@@ -1,0 +1,347 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+<script>
+function myFunction() {
+    window.print();
+}
+</script>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<meta charset=utf-8 />
+
+<!-- script starts for hide tables-->
+<script>
+$(document).ready(function () {
+            $('#check1,#check2,#check3').on('click', function () {
+                //Check atlest one checkbox is checked
+                if ($("input[type=checkbox]:checked").length > 0) {
+                    //Show the table
+                    $('.clientd').show();
+                    $('.client').show();
+                    $('.description').show();
+                    $('.descriptiond').show();
+                    $('#estimated').show();
+                    $('.estimatedd').show();
+                    $('#actual').show();
+                    $('.actuald').show();
+                    $('#tot').show();
+                    $('#totd').show();
+                    $('#totdd').show();
+                    
+                    
+                }
+                else {
+                //hide the table
+                    $('.clientd').hide();
+                    $('.client').hide();
+                    $('.description').hide();
+                    $('.descriptiond').hide();
+                    $('#tot').hide();
+                    $('#totd').hide();
+                    $('#totdd').hide();
+                    $('#estimated').hide();
+                    $('.estimatedd').hide();
+                     $('#actual').hide();
+                    $('.actuald').hide();
+                }
+            });
+            
+            
+            
+            
+            
+            
+                $('#milestone_status').click(function(){
+        var is_checked = $(this).is(':checked');
+        if (is_checked){
+            $('tr.Complete').show();
+            $('tr.Inprogress').hide();
+        } else {
+            $('tr.Complete').show();
+            $('tr.Inprogress').show();
+        }
+    
+    }); 
+            
+            
+        });
+</script>
+<!-- script ends for hide tables-->
+
+<script>
+$( document ).ready(function() {
+$('#id_clients').change(function(){
+    $('#id_projects option').remove();
+    var cid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/gettasks/',
+        data:{'cid':cid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                $('<option>',{value:''}).html('All Projects').appendTo('#id_projects');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_projects');
+                }
+            }
+        }
+    })
+    });
+});
+</script>
+
+
+
+<script>
+$( document ).ready(function() {
+$('#id_projects').change(function(){
+    $('#id_owners option').remove();
+    var pid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/getpeople/',
+        data:{'pid':pid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                $('<option>',{value:''}).html('All Owners').appendTo('#id_owners');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_owners');
+                }
+            }
+        }
+    })
+    });
+});
+</script>
+
+<!--<script>
+$( document ).ready(function() {
+$('#id_owners').change(function(){
+    $('#id_status option').remove();
+    var sid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/getmilestones/',
+        data:{'sid':sid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                $('<option>',{value:''}).html('All Status').appendTo('#id_status');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_status');
+                }
+            }
+        }
+    })
+    });
+});
+</script>-->
+
+
+
+
+<!--script for total-->
+<script>
+var totals=[0,0,0];
+$(document).ready(function(){
+
+    var $dataRows=$("#sum_table tr:not('.totalColumn, .titlerow')");
+   
+    $dataRows.each(function() {
+        $(this).find('.rowDataSd').each(function(i){       
+            totals[i]+=parseInt( $(this).html());
+        });
+    });
+    $("#sum_table td.totalCol").each(function(i){
+        $(this).html(""+totals[i]);
+    });
+
+});
+</script>
+
+
+
+
+
+
+
+            <!--sitemap-->
+                <!-- main content -->
+                <!-- Work_Type -->
+                    <div class="maincontent">
+                        <div class="portlet box blue">
+                        <div class="breadcrumb">
+                         <li>
+            <a href="/home/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="/milestones/" style="text-decoration:none;">Milestone</a>
+        </li>
+                        </div>
+                        <a class="breadcrumb" style="text-decoration:none;">Owned by me</a>
+                        <div id="employee-designation-grid" class="breadcrumb">
+                        
+                        
+                        <h3>{{milestone__list|length}} Milestones</h3>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <p>
+                     <!--   <input type="checkbox" id="check1">
+                        <label>Show milestone descriptions</label>
+                       
+                        <input class="check" type="checkbox" value="1">
+                        <label for="f_summary">Include closed tasks </label>-->
+                        
+                         <input id="milestone_status" class="check" type="checkbox" name = "check_2" >
+                        <label for="f_summary">Show completed milestones</label>
+                        
+                      <input type="checkbox" id="check1">
+                        <label>Show widescreen view</label></p>
+        <a title = "Print this Page" href="javascript:window.print()"><img src="/static/img/print-icon.png" height="25" width="25" align="right"></a>
+                                
+                                
+                        
+                        
+                        </p>
+                        
+                        <form>
+                                
+                                <span class="sprites iconsPrintpage"></span>
+                                </a>
+                                </form>
+                        
+                        
+                                     <strong>Filter options:</strong>
+                        <form method = "GET" action="/milestones/">
+                        <select name="client" id="id_clients" class="filter-select">
+                        <option value = "">All Clients</option>
+                        {% for p in clients %}
+                        <option value = "{{p.id}}">{{p.name}}</option>
+                        {% endfor %}
+                        </select>
+                        <select name="projects" id="id_projects" class="filter-select">
+                        <option value = "">All Projects</option>
+                        {% for p in task %}
+                        <option value = "{{p.id}}">{{p.project}}</option>
+                        {% endfor %}
+                        </select>
+                                
+                              
+                        <select name="owners" id="id_owners" class="filter-select">
+                        <option value = "">All Owners</option>
+                        {% for m in milestone %}
+                        <option value = "{{m.id}}">{{ m.owned_by }}</option>
+                        {% endfor %}
+                        </select>
+                        
+                       
+                        
+                      
+                       <select name = "status" id="id_status" class="filter-select">
+                        <option value = "">All Status</option>
+                        {% for m in milestone__list %}
+                        <option value = "{{m.id}}">{{m.status|yesno:"Compelete,In Progress"}}</option>
+                        {% endfor %}
+                        </select>
+                      
+                               <input type="text" placeholder="Search Milestones" type="submit" value="{{p.title}}" name="milestone-title"/>
+                                        <input type ="submit" value="Search" >
+                        
+                            
+                     
+                      
+                       </p>
+                        
+                        <br>
+                        
+                                    <table id="sum_table" class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+                                      {% if milestone__list %}
+                                          <thead>
+                                                <tr>
+                                                <th>#</th>
+                                                <th>Title</th>
+                                                 <th class ="description" style="display: none">Description</th>
+                                                <th class ="client" style="display: none">Client</th>
+                                                <th>Project</th>
+                                                <th>Owned by</th>
+                                                <th>Progress</th>
+                                                <th>Due</th>
+                                                <th>Status</th>
+                                                 <th id="estimated" class ="estimated" style="display: none">Estimated Hour</th>
+                                                 <th id="actual" class ="actual" style="display: none">Actual Hour</th>
+                                                 {% if perms.milestones.change_milestone %}
+                                                 <th>Edit</th>{% endif %}
+                                                <!--<th>Active</th>
+                                                <th>Delete</th>
+                                                <th>Select</th>-->
+                                                </tr>
+                                                       </thead>
+                                            {% for p in milestone__list %}
+                                                <tr class="{% cycle 'odd' 'even'%} {{ p.status|yesno:'Complete,Inprogress'}}">
+                                                    <td>{{ p.id }}</td>
+                                                    <td><a title="click here for detail view" href="{% url 'milestone_view' p.id %}" style="text-decoration:none;">{{ p.title }}</a</td>
+                                                            <td id="descriptiond" class ="descriptiond" style="display: none">{{p.description}}</td>
+                                                            <td id="clientd" class ="clientd" style="display: none">{{p.client}}</td>
+                                                            <td><!--<a title="click to here to view projects" href = "/project-profile/?id={{p.id}}" style="text-decoration:none;">-->{{ p.project }}</td>
+                                                    <td>{{ p.owned_by}}</td>
+                                                    <td>{{ p.progress }}
+                                                    <td>{{ p.due_date }}</td>
+                                                    {%if p.due_date <= todays and p.status == False %}
+                                                             <td><span class="label-default label label-danger">Overdue </span></td>
+                                                             {%else%}
+                                                    <td><span class="label-warning label label-default">{{ p.status |yesno:"Compelete,In Progress"}}</span></td>
+                                                    {%endif%}
+                                                    <td id="estimatedd" class="rowDataSd estimatedd" style="display: none">{% for i in p.get_task_actual_time %}{{ i.estimated }} {% endfor %}</td>
+                                                            <td id="actuald" class="rowDataSd actuald" style="display: none">{% for i in p.get_task_actual_time %}{{ i.actual }} {% endfor %}</td>
+                                                            {% if perms.milestones.change_milestone %}
+                                                   <td><a href="/milestones/edit/{{p.id}}/" title="Edit" class="glyphicon glyphicon-edit"></a> </td>
+                                                   {% endif %}
+                                                    <!--<td><a href="/active-milestone/{{p.id}}/" style="text-decoration:none;" onClick="alert('Milestone Activated Successfully')">Active</a></td>
+                                                            <td><a href="/deactive-milestone/{{p.id}}/" style="text-decoration:none;" onClick="alert('Milestone Deactivated Successfully')"><img src="/static/images/delete.jpeg"/></td>
+                                                    <td><input type = checkbox f></td>-->
+                                                </tr>
+                                          {% endfor %}
+                                           <tr>
+                                                <th id="tot" colspan="9" align="right" class="tot" style="display: none">Total</th>
+                                                 <td id="totd" class="totalCol totd" style="display: none"></td>
+                                                <td id="totdd" class="totalCol totd" style="display: none"></td>
+                                                <th></th>
+                                                <th colspan="4"></th>
+                                                </tr>
+                                      {% else %}
+                                          <td style="text-align:center;color:blue;text-size:14px;">No Task added Yet...</td>
+                                        {% endif %}
+                                    </table>
+                                    
+                                    <div class="keys" style="display:none" title="">
+                                    <span>3</span><span>2</span><span>1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+{% endblock midpart %}
+

@@ -1,0 +1,9 @@
+
+
+{% if msg %}{{msg}}{% endif %}
+<form action="/login/" method="POST">{% csrf_token %}
+{{form.as_p}}
+<input type="submit" value="Submit" />
+<a href="/login/signup/">Skip</a>
+</form>
+

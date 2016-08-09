@@ -1,0 +1,52 @@
+{% extends "main.html" %}
+{% block midpart %}
+<script src="/static/js/jquery.validate.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+$("#task_status_form").validate({
+rules :
+{
+name: {required: true},
+},
+});
+});
+</script>
+<body>
+	<!--sitemap-->
+	<div class="breadcrumbs" align = "center">
+		<a class="home" href="/home/">Home</a>
+            </div>
+            <!-- main content -->
+            <div class="maincontent">
+                <div class="portlet box blue">
+                    <div class="portlet-title"> Project_Categorization </div>
+                         <div id="employee-designation-grid" class="grid-view">
+                                    {% if msg %}
+                                     <font color="red"><h3>{{msg}}</h3></font>
+                                    {% endif %}
+                                    
+                              <div>
+                             
+                              {% if task == "add" %}
+                                 <form id="task_status_form" action ="/settings/project/categorization/add/0/" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                              {% endif %}
+                              {% if task == "edit" %}
+                                 <form id="task_status_form" action ="/settings/project/categorization/edit/{{id_edit}}/" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                              {% endif %}
+                                
+                                            {{ form.as_p }}
+                                
+                                    
+                                     <input type="Submit" class="btnsubmit" value="submit" />
+                                  </form>
+                                  
+                                    <a href="/settings/project/categorizations/"> <input type="Submit" class="btnsubmit" value="Cancel" />
+                              </div>
+                       </div>
+                  </div>
+             </div>
+</body>
+</html>
+</div>
+{% endblock midpart %}

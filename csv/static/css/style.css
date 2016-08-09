@@ -1,0 +1,110 @@
+body{color: #666666;font-family: 'Open Sans',sans-serif;font-size: 13px;}
+.l1{list-style-type: none; float: left;}
+#sitemap{width: 100%; float: left;margin-bottom: 10px;}
+#container{float: left;width: 100%;}
+ul{margin: 0;}
+.maincontent{width: 100%;float: left;}
+.maincontent h1{color: #666666;display: block;font-family: 'Open Sans',sans-serif;font-size: 25px;font-weight: 300;letter-spacing: -1px;margin: 0;padding: 0;float: left;}
+.tabletopleft{width: 650px;clear: left;min-height: 232px;border: 1px solid #B4CEF8;float: left;margin-bottom: 20px;}
+.tabletopright{width: 650px;min-height: 232px;border: 1px solid #35AA47;margin-left: 10px;float: left;margin-bottom: 20px;}
+.tablebottomleft{width: 650px;height: 398px;border: 1px solid #35AA47;margin-left: 0px;float: left;margin-bottom: 20px;}
+.tablebottomright{width: 650px;height: 398px;border: 1px solid #B4CEF8;margin-left: 10px;float: left;margin-bottom: 20px;}
+.tabletitle{background-color: #4B8DF8;border-bottom: 1px solid #EEEEEE;color: #FFFFFF !important;font-size: 17px;padding: 10px;}
+.tabletopright>.tabletitle {background-color: #35AA47;}
+.tablebottomleft>.tabletitle {background-color: #35AA47;font-size: 17px;}
+.table1,.table2{border: 1px solid #eee;margin: 15px;}
+.table1 tr,.table2 tr{border-bottom: 1px solid #DDDDDD;}
+.table1 td,.table2 td,.table1 th,.table2 th{border-right: 1px solid #DDDDDD;border-bottom: 1px solid #DDDDDD;padding: 10px;}
+#piechart{margin: 0px 195px;}
+#piechart p{text-align: center;}
+.breadcrumbs a {color: #333333;margin-right: 5px;text-decoration: none;}
+.breadcrumbs a:after {color: #666666;content: "";font-family: "FontAwesome";margin-left: 5px;}
+.breadcrumbs .home:before {color: #666666;content: "";font-family: "FontAwesome";margin-right: 5px;}
+.s1{font-weight: bold; font-size: 17px;margin-right: 15px;}
+
+/*HEADER ELEMENTS CSS*/
+.header{float: left;background-color: #000;width: 100%;position: fixed;top: 0;left: 0;right: 0;border-bottom: 3px solid #777777; }
+#leftsection{float: left;width: 600px;}
+#rightsection{float: right;width: 300px;}
+#logo{float: left;height: 70px;margin-left: 20px;}
+#dashcontent{float: left;width: 100%;width: 98%;margin-left: 36px;}
+#support{float:left;background-color:#35AA47; color: #FFFFFF;margin-top: 30px; border-radius: 2px;padding: 5px;}
+#support h2{margin: 0;padding: 0;font-size: 17px;font-weight: lighter;}
+#support a{text-decoration: none;color: #fff;}
+#adminimg{float: left;margin: 32px 0px 0px 20px;width: 180px;padding-bottom: 9px; cursor: pointer;}
+#adminimg img{border-radius: 2px;float: left;}
+#adminimg span{color: #FFFFFF;float: left;margin: 10px 0 0 10px;}
+#adminimg a{ text-decoration: none;}
+.l1{width: 180px;display: block;}
+#logotitle h1{font-size: 20px;float: left;color: #DDD;margin-left: 20px;margin-top: 20px;font-weight: lighter;}/*MAIN SECTION*/
+iframe{width:98%;margin-left: 20px; height:600px;float:left;margin-top:70px;border: none;}
+.dropdown-menu {background-color: #FFFFFF;border: 1px solid #DDDDDD;box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);float: left;font-family: "Segoe UI",Helvetica,Arial,sans-serif;font-size: 14px;list-style: none outside none;margin: 0;padding: 0;position: absolute;right: 37px;text-shadow: none;top: 100%;width: 170px;z-index: 1000;}  
+li.sub-menu {background: none repeat scroll 0 0 #FFFFFF !important;}
+.dropdown-menu li > a {clear: both;color: #333333;display: block;font-weight: normal;line-height: 18px;padding: 6px 0 6px 25px;text-decoration: none;white-space: nowrap;}
+.dropdown-menu:after {border-bottom: 6px solid #FFFFFF;border-left: 6px solid transparent;border-right: 6px solid transparent;content: "";display: inline-block;position: absolute;right: 8px;top: -7px;}  
+.dropdown-menu a:hover {background: none repeat scroll 0 0 #575757;color: #FFFFFF;}  
+#adminimg:hover ul.dropdown-menu {display: block !important;}
+.footer {border-top: 3px solid #777777;color: #000000;float: right;height: 20px;padding: 15px;text-align: center;width: 100%;}
+.newline{ float: left;}
+.breadcrumbs .home:before {color: #666666;content: "";font-family: "FontAwesome";margin-right: 5px;}
+.breadcrumbs a:after {color: #666666;content: "";font-family: "FontAwesome";margin-left: 5px;}
+
+/*MANAGE DESIGNATIONS PAGE*/
+.form_label{width: 110px;float: left;}
+.btnyellow {background-color: #FFB848;}
+.btnblue {background-color: #4D90FE;}
+.btnblue:before {content: ""; padding-right: 7px;}
+.btnyellow:before {content: "";padding-right: 7px;}
+.operation {float: right;}
+.operation a {color: #FFFFFF;float: left;margin: 0 10px 10px;text-decoration: none;line-height: 17px;padding: 10px;text-align: center;width:60px;font-family: "FontAwesome";}
+.portlet.box.green {border: 1px solid #35AA47;float: left;width: 100%;}
+.portlet.box.blue {border: 1px solid #B4CEF8;float: left;width: 100%;}
+.pager {float: right;padding-right: 10px !important;}
+.custom-pager-class li {list-style: none outside none;}
+.custom-pager-class select {width: 50px;margin-right: 7px;}
+.portlet.box.blue.profile ul li {border-bottom: 1px solid #DDDDDD;float: left;list-style: none outside none;margin: 0;padding: 8px;width: 97.6%;}
+.portlet.box.blue.profile ul {float: left;margin: 0;padding: 0;width: 50%;}
+.portlet.box.blue.profile ul li:last-child {border: medium none;}
+.portlet.box.blue.profile label{width: 90px;}
+.portlet.box.green > .portlet-title,.portlet.box.blue > .portlet-title {background-color: #4B8DF8;border-bottom: 1px solid #EEEEEE;color:#FFFFFF !important;font-size: 17px;padding: 10px;}
+.btngreen {background-color: #35AA47;color: white;float: left;margin: 10px;padding: 10px;text-decoration: none;text-shadow: none;}
+.btnsubmit{background-color:#4B8DF8; color:#fff; float:left;padding:5px;margin-left: 112px; border:none;}
+.btn.green:hover {background-color: #1D943B !important;}
+.grid-view table.items th a, .grid-view table.items th {background: none !important;color: #000000 !important;font-size: 14px !important;font-weight: 500;  line-height: 20px;text-align: center;}
+.grid-view table.items {background: none repeat scroll 0 0 white;border: 1px solid #D0E3EF;border-collapse: collapse;margin: 9px !important;width: 98% !important;}
+.grid-view table.items th, .grid-view table.items td {-moz-border-bottom-colors: none !important;-moz-border-left-colors: none !important;-moz-border-right-colors: none !important;-moz-border-top-colors: none !important;border-bottom: medium none !important;border-image: none !important;border-left: 1px solid #DDDDDD  !important;border-right: medium none !important;border-top: 1px solid #DDDDDD !important;font-size: 13px;padding: 10px;}
+.grid-view table.items th a,.grid-view table.items th {  font-weight: bold;  font-family: 'Open Sans'; }
+.grid-view table.items tr:hover {  cursor: pointer;}
+.grid-view table.items th:hover {  cursor: default;}
+.grid-view table.items td {  font-family: 'Open Sans';}
+.grid-view table.items tr.odd {  background: none repeat scroll 0 0 #F9F9F9 !important;}
+.grid-view table.items tr.even {  background: none repeat scroll 0 0 #FFF !important;}
+.grid-view-loading{	background:url(loading.gif) no-repeat;}
+.grid-view{padding: 15px 0;}
+.grid-view table.items{background: white;border-collapse: collapse;width: 100%;border: 1px #D0E3EF solid;}
+.grid-view table.items th, .grid-view table.items td{font-size: 0.9em;border: 1px white solid;padding: 0.3em;}
+.grid-view table.items th{color: white;background: url("bg.gif") repeat-x scroll left top white;text-align:center;}
+.grid-view table.items th a{color: #EEE;font-weight: bold;text-decoration: none;}
+.grid-view table.items th a:hover{color: #FFF;}
+.grid-view table.items th a.asc{background:url(up.gif) right center no-repeat;padding-right: 10px;}
+.grid-view table.items th a.desc{background:url(down.gif) right center no-repeat;padding-right: 10px;}
+.grid-view table.items tr.even{background: #F8F8F8;}
+.grid-view table.items tr.odd{background: #E5F1F4;}
+.grid-view table.items tr.selected{background: #BCE774;}
+.grid-view .link-column img{border: 0;}
+.grid-view .button-column{text-align: center;width: 60px;}
+.grid-view .button-column img{border: 0;}
+.grid-view .checkbox-column{width: 15px;}
+.grid-view .summary{margin: 0 0 5px 0;text-align: right;}
+.grid-view .pager{margin: 5px 0 0 0;text-align: right;list-style-type: none;}
+.grid-view .empty{font-style: italic;}
+.grid-view .filters input,.grid-view .filters select{width: 100%;border: 1px solid #ccc;}
+
+ul.mmm{ float:left; }
+.mmm li{ float:left; width:50%; list-style-type:none; }
+.mmm li label{ float:left; width:127px;   }
+.mmm li input{ float:right; }
+.ch-container {
+   padding: 0 15px;
+}
+

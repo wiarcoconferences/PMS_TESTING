@@ -1,0 +1,93 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/static/resources/demos/style.css">
+
+<script src="/static/js/jquery.validate.js"></script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+$('#id_name').attr('class','form-control')
+$('#id_userprofile').attr('class','form-control')
+
+});
+</script>
+
+
+<body>
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><span class="glyphicon glyphicon-edit"></span> Manager</h2>
+
+                <div class="box-icon">
+                    <a href="/manager/add/" class="btn btn-setting btn-round btn-default"><i
+                                class="glyphicon glyphicon-plus-sign" title="click her to add new work types"></i></a>
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up" title="click her to hide the form"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove" title="click her to close the form"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+            {% if task == "add" %}
+       <form id=budget_form class="form-inline" role="form" action ="/manager/add/" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                    <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_name">Name:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{form.name}}
+                    </div>
+                  <p>
+                  
+                  <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_userprofile">UserProfile:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{form.userprofile}}
+                    </div>
+                
+                <p>
+                <br>
+                            <input type="submit" class="btn btn-default" value="Submit" />
+                            <a href="/managers/" style="text-decoration:none;"> <button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+                {% endif %}
+    <!--/span-->
+                       
+                            
+            
+            <div class="box-content">
+            {% if task == "edit" %}
+       <form id=budget_form  class="form-inline" role="form" action ="/manager/edit/?id={{id_edit}}" method = "POST" enctype = "multipart/form-data" >{% csrf_token %}
+                   <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_name">Name:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{form.name}}
+                    </div>
+                  <p>
+                  
+                  <div class="form-group has-success has-feedback">
+                        <label class="control-label" for="id_userprofile">UserProfile:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                        {{form.userprofile}}
+                    </div>
+                
+                <p>
+                <br>
+                            <input type="submit" class="btn btn-default" value="Submit" />
+                            <a href="/managers/" style="text-decoration:none;"> <button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+</div><!--/row-->
+</div>
+</div>
+{% endblock midpart %}

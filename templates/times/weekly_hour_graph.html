@@ -1,0 +1,136 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+<script>
+function myFunction() {
+    window.print();
+}
+</script>
+            <!--sitemap-->
+                <!-- main content -->
+                <!-- Work_Type -->
+                    <div class="maincontent">
+                        <div class="portlet box blue">
+                        <div class="breadcrumb">
+                         <li>
+            <a href="/main/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="/times/" style="text-decoration:none;">Time</a>
+        </li>
+                        
+                        </div>
+                        <a class="breadcrumb" style="text-decoration:none;">Weekly Time</a>
+                        <div id="employee-designation-grid" class="breadcrumb">
+                        
+                        
+                        Week of  {% now "" %}
+                        
+                        
+                         
+                        <div align="right">
+                        <a title = "Print this Page" href="javascript:window.print()"><img src="/static/img/print-icon.png" height="25" width="25"></a></p>
+                        <input type=button onClick="location.href='/addtimes/'" value="Add Time" ></p>
+                           <-- Previous Week | Next Week Next -->
+        
+                        </div>
+                        <p>
+                        <li>
+                        <strong>Filter options:</strong>
+                        <select>
+                        <option value = "0">All Clients</option>
+                        {% for p in task %}
+                        <option value = "{{ p.client }}">{{ p.client }}</option>
+                        {% endfor %}
+                        </select>
+                        
+                        <select>
+                        <option value = "None">All Projects</option>
+                        {% for p in task %}
+                        <option value = "{{ p.project }}">{{ p.project }}</option>
+                        {% endfor %}
+                        </select>
+                        
+                        <select>
+                        <option value = "0">{{user.username}}</option>
+                        </select>
+                        
+                        <select>
+                        <option value = "None">All work types</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Design">Design</option>
+                        <option value="Engineering / Development">Engineering / Development</option>
+                        <option value="Meeting">Meeting</option>
+                        <option value="Project  Management">Project Management</option>
+                        <option value="Quality Assurance">Quality Assurance</option>
+                        <option value="Sales / Biz Dev">Sales / Biz Dev</option>
+                        <option value="Site Strategy">Site Strategy</option>
+                        <option value="System Administration">System Administration</option>
+                        <option value="Travel">Travel</option>
+                        </select> 
+                        
+                        
+                        <input class="submit" type="submit" onclick="return filter_submit();" value="Filter" name="f_submit">
+                        
+                        </li>
+                        </div>
+                        
+                                    
+                                    
+                                    
+<!--   chart-->
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well">
+                <h2><i class="glyphicon glyphicon-list-alt"></i> Weekly Time</h2>
+
+                <div class="box-icon">
+<!--                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>-->
+                </div>
+            </div>
+            <div class="box-content">
+                <div id="stackchart" class="center" style="height:300px;"></div>
+                <p class="stackControls center">
+                    <input class="btn btn-default" type="button" value="Billable">
+                    <input class="btn btn-default" type="button" value="Unbillable">
+                </p>
+
+                <p class="graphControls center">
+                    <input class="btn btn-primary" type="button" value="Bars">
+                    <input class="btn btn-primary" type="button" value="Lines">
+                    <input class="btn btn-primary" type="button" value="Lines with steps">
+                </p>
+            </div>
+        </div>
+                                    
+                                    
+                                    
+                                    <div class="keys" style="display:none" title="">
+                                    <span>3</span><span>2</span><span>1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+<!-- chart libraries start -->
+<script src="/static/bower_components/flot/excanvas.min.js"></script>
+<script src="/static/bower_components/flot/jquery.flot.js"></script>
+<script src="/static/bower_components/flot/jquery.flot.pie.js"></script>
+<script src="/static/bower_components/flot/jquery.flot.stack.js"></script>
+<script src="/static/bower_components/flot/jquery.flot.resize.js"></script>
+<!-- chart libraries end -->
+<script src="/static/js/init-chart.js"></script>
+
+        </div>
+    </div>
+
+
+
+{% endblock midpart %}
+

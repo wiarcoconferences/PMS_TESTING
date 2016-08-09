@@ -1,0 +1,69 @@
+{% extends "main.html" %}
+{% block midpart %}
+  <div id="dashcontent"style="">
+
+        <div class="portlet box blue content-part" style="width:99%;height:602px; overflow:auto;overflow-x: hidden;">
+    <script>
+            function preferedlist() {
+                prefer = document.forms[0].list.value;
+                alert("You prefer listing " + prefer);
+            }
+    </script>
+            <!--sitemap-->
+            <div class="breadcrumbs" align = "center">
+            </div>
+                <!-- main content -->
+                <!-- Work_Type -->
+                    <div class="maincontent">
+                        <div class="portlet box blue">
+                        <div class="breadcrumb">   <li>
+                              <a href="/main/" style="text-decoration:none;">Home</a>
+                          </li>
+                          <li>
+                              <a href="/tags-home/" style="text-decoration:none;">Tags</a>
+                          </li>
+                        </div>
+                        <a class="breadcrumb" href="/documents/manage-tags/add/" style="text-decoration:none;" >Add Tags</a>
+                        <div id="employee-designation-grid" class="breadcrumb">
+
+
+
+        <a title = "Print this Page" href="javascript:window.print()"><img src="/static/img/print-icon.png" height="25".width="25" align="right"></a>
+     </p>
+                        <br>
+                        
+                        
+                                    <table class="table table-striped table-bordered bootstrap-datatable datatable responsive" >
+                                    {% if tags %}
+                                        <thead>
+                                           <tr>
+                                                <th>Tags</th>
+                                                <th>Edit </th>
+                                                <th>Delete</th>
+
+                                            </tr>
+                                                  </thead>
+                                                <!--tr class="{% cycle 'odd' 'even'%}"-->
+                                                    
+                                                {%for tag in tags.all %}
+                                                <td><a href="/documents/manage-tags/details/?id={{tag.id}}">{{tag}}</a></td>
+                                                
+                                                <td><a href="/documents/manage-tags/edit/?id={{tag.id}}"><img src="/static/images/edit.jpg"></a> </td>
+                                                
+                                                <td><a href="/documents/manage-tags/delete/?id={{tag.id}}"><img src="/static/images/delete.jpeg"></a> </td>
+                                                </tr>
+                                                {% endfor %}
+                                          {% else %}
+                                          <td style="text-align:center;color:blue;text-size:14px;">No Tags  added Yet...</td>
+                                    {% endif %}
+                                    </table>
+                                    <div class="keys" style="display:none" title="">
+                                          <span>3</span><span>2</span><span>1</span>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+{% endblock midpart %}
+

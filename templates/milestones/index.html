@@ -1,0 +1,440 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<meta charset=utf-8 />
+
+<!-- script starts for hide tables-->
+<script>
+$(document).ready(function () {
+            $('#check1,#check2,#check3').on('click', function () {
+                //Check atlest one checkbox is checked
+                if ($("input[type=checkbox]:checked").length > 0) {
+                    //Show the table
+                    $('.clientd').show();
+                    $('.client').show();
+                    $('.description').show();
+                    $('.descriptiond').show();
+                    $('#estimated').show();
+                    $('.estimatedd').show();
+                    $('#actual').show();
+                    $('.actuald').show();
+                    $('#tot').show();
+                    $('#totd').show();
+                    $('#totdd').show();
+                    
+                    
+                }
+                else {
+                //hide the table
+                    $('.clientd').hide();
+                    $('.client').hide();
+                    $('.description').hide();
+                    $('.descriptiond').hide();
+                    $('#tot').hide();
+                    $('#totd').hide();
+                    $('#totdd').hide();
+                    $('#estimated').hide();
+                    $('.estimatedd').hide();
+                     $('#actual').hide();
+                    $('.actuald').hide();
+                }
+            });
+            
+            
+            
+                $('#milestone_status').click(function(){
+        var is_checked = $(this).is(':checked');
+        if (is_checked){
+            $('tr.Complete').show();
+            $('tr.Inprogress').hide();
+        } else {
+            $('tr.Complete').show();
+            $('tr.Inprogress').show();
+        }
+    
+    });
+    
+            
+            
+            
+        });
+</script>
+<!-- script ends for hide tables-->
+
+
+<script>
+$( document ).ready(function() {
+$('#id_clients').change(function(){
+    $('#id_projects option').remove();
+    var cid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/gettasks/',
+        data:{'cid':cid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                $('<option>',{value:''}).html('All Projects').appendTo('#id_projects');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_projects');
+                }
+            }
+        }
+    })
+    });
+});
+</script>
+
+
+
+<script>
+$( document ).ready(function() {
+$('#id_projects').change(function(){
+    $('#id_owners option').remove();
+    var pid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/getpeople/',
+        data:{'pid':pid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+               
+                $('<option>',{value:''}).html('All Owners').appendTo('#id_owners');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_owners');
+                }
+            }
+        }
+    })
+    });
+});
+</script>
+
+
+<!--<script>
+$( document ).ready(function() {
+$('#id_owners').change(function(){
+    $('#id_status option').remove();
+    var rid = $(this).val();
+    
+    $.ajax({
+    
+        type:'GET',
+        url:'/getstatus/',
+        data:{'rid':rid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                alert(res);
+                 $('<option>',{value:''}).html('All Status').appendTo('#id_status');
+                 for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_status');
+                }
+            }
+        }
+    })
+    });
+});
+
+</script>
+
+<script>
+$( document ).ready(function() {
+
+$('#id_owners').change(function(){
+    $('#id_status option').remove();
+    var sid = $(this).val();
+    
+    $.ajax({
+        type:'GET',
+        url:'/getmilestones/',
+        data:{'sid':sid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                alert(res);
+                $('<option>',{value:''}).html('All Status').appendTo('#id_status');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_status');
+                }
+            }
+        }
+    })
+    });
+});
+</script>-->
+
+
+<!--script for total-->
+<script>
+var totals=[0,0,0];
+$(document).ready(function(){
+
+    var $dataRows=$("#sum_table tr:not('.totalColumn, .titlerow')");
+   
+    $dataRows.each(function() {
+        $(this).find('.rowDataSd').each(function(i){       
+            totals[i]+=parseInt( $(this).html());
+        });
+    });
+    $("#sum_table td.totalCol").each(function(i){
+        $(this).html(""+totals[i]);
+    });
+
+});
+</script>
+
+
+
+            <!--sitemap-->
+                <!-- main content -->
+                <!-- Work_Type -->
+                    <div class="maincontent">
+                        <div class="portlet box blue">
+                        <div class="breadcrumb">
+                         <li>
+            <a href="/home/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="/milestones/" style="text-decoration:none;">Milestone</a>
+        </li></h3></div>
+        {% if perms.milestones.add_milestone %}
+                        <a title="Cick here to create new milestone" class="breadcrumb" href="/milestones/add/0/" style="text-decoration:none;">Create New Milestone</a>
+                        {% endif %}
+                        <!--a title="Import milestones" class="breadcrumb" href="/milestones/import/" style="text-decoration:none;">Import milestones</a-->
+                        {% if perms.milestones.milestones.can_view_milestone %}
+                        <a title="Recently viewed milestones" class="breadcrumb" href="/recently/viewed/?key=milestone" style="text-decoration:none;">Recently viewed milestones</a>
+                        {% endif %}
+                        <div id="employee-designation-grid" class="breadcrumb">
+                        
+                        
+                        
+                        
+                        
+                        
+                        <h3>{{milestone_list|length}} Milestones</h3>
+                        
+                        
+                                                <p>
+                                             <!--  <input type="checkbox" id="check1">
+                        <label>Show milestone descriptions</label>-->
+                        
+                         <input id="milestone_status" class="check" type="checkbox" name = "check_2" >
+                        <label>Show completed milestones</label>
+                        
+                        <!--<input type="checkbox">
+                        <label>Include closed tasks</label>-->
+                       
+                            <input type="checkbox" id="check1" >
+                        <label>Show widescreen view</label></p>
+                        
+                        <a title = "Print this Page" href="javascript:window.print()"><img src="/static/img/print-icon.png" height="25" width="25" align="right"></a>
+                        
+                        </p>
+                        
+                        
+                        <form>
+                                
+                                <span class="sprites iconsPrintpage"></span>
+                                </a>
+                                </form>
+                         <strong>Filter options:</strong>
+                        <form method = "GET" action="/milestones/">
+                        <select class="filter-select" name="client" id="id_clients" >
+                        <option value = "">All Clients</option>
+                        {% for p in clients %}
+                        <option value = "{{p.id}}">{{p.name}}</option>
+                        {% endfor %}
+                        </select>
+                        <select name="projects" id="id_projects" class="filter-select">
+                        <option value = "">All Projects</option>
+                        {% for p in project_list %}
+                        <option value = "{{p.id}}">{{p.name}}</option>
+                        {% endfor %}
+                        </select>
+                                
+                              
+                        <select name="owners" id="id_owners" class="filter-select">
+                        <option value = "">All Owners</option>
+                        {% for p in milestone %}
+                        <option value = "{{p.id}}">{{p.owned_by}}</option>
+                        {% endfor %}
+                        </select>
+                        
+                      
+                       <!--<select name = "status" id="id_status">
+                        <option value = "">All Status</option>
+                        {% for m in milestone %}
+                        <option value = "{{m.id}}">{{m.status|yesno:"Complete,In Progress"}}</option>
+                        {% endfor %}
+                        </select>-->
+                            
+                            
+                            
+                             <select name = "status" id="id_status" class="filter-select">
+                                <option>All Status</option>
+                                <option>In Progress</option>
+                                <option>Complete</option>
+                            </select>
+                            
+                            
+                            
+                            
+                            <!--<input type="text" placeholder="search" type="submit" value="{{p.title}}" name="task-title"/>
+                                        <input type ="submit" value="Search" >-->
+                            
+                       <input type="text" placeholder="Search Milestones" value="{{p.title}}" name="milestone-title"/>
+                                        <input type ="submit" value="Search" >
+                        
+                      
+                       
+                        
+                        </p>
+                        <br>
+                        
+
+                              <table id="sum_table" class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+                                      {% if milestone_list %}
+                                      <thead>
+                                         <tr>
+                                                        <th>#</th>
+                                                        <th>Title</th>
+                                                        <th class ="description" style="display: none">Description</th>
+                                                        <th class ="description" style="display: none">Client</th>
+                                                        <th>Project</th>
+                                                        <th>Owned By</th>
+                                                        <th>Progress</th>
+                                                        <th>Due</th>
+                                                       <!-- <th>Todays's date</th>-->
+                                                        <th>Status</th>
+                                                        <th id="estimated" class ="estimated" style="display: none">Estimated Hour</th>
+                                                        <th id="actual" class ="actual" style="display: none">Actual Hour</th>
+                                                        {% if perms.milestones.change_milestone %}
+                                                        <th>Edit</th>
+                                                        <!--<th>task</th>-->
+                                                        <th>Active</th>
+                                                        <th>Delete</th>
+                                                        {% endif %}
+                                                        <!--<th><input type = "checkbox"></th>-->
+                                                </tr>
+                                        </thead>
+                                        <tbody>
+                                                
+                                            {% for p in milestone_list %}
+                                            
+                                              <tr class="{% cycle 'odd' 'even'%} {{ p.status|yesno:'Complete,Inprogress'}}">
+                                                            <td>{{ p.id }}</td>
+                                                            {% if perms.milestones.can_view_milestone %}
+                                                            <td><a title="click here for detail view" href="/milestones/view/{{p.id}}/" style="text-decoration:none;">{{ p.title }}</a</td>
+                                                            {% endif %}
+                                                            <td class ="descriptiond" style="display: none">{{p.description}}</td>
+                                                            <td class ="descriptiond" style="display: none">{{p.client}}</td>
+                                                            <td><!--<a title="click to here to view projects" href = "{% url 'project_profile' p.id%}" style="text-decoration:none;">-->{{ p.project }}</td>
+                                                            <td>{{ p.owned_by }}</td>
+                                                            <td>{{ p.progress }}</td>
+                                                            <td>{{ p.due_date }}</td>
+                                                            <!--<td>{{todays}}</td>-->
+                                                            {% if perms.milestones.change_milestone %}
+                                                             {%if p.due_date < todays and p.status != True %}
+                                                             <td><span class="label-default label label-danger">Overdue </span></td>
+                                                             {%else%}
+                                                            <td><span class="label-warning label label-default">{{ p.status |yesno:"Complete,In Progress"}}</span></td>
+                                                            {%endif%}
+                                                            <td id="estimatedd" class="rowDataSd estimatedd" style="display: none">{% for i in p.get_task_actual_time %} {{ i.estimated }} {% endfor %}</td>
+                                                            <td id="actuald" class="rowDataSd actuald" style="display: none">{% for i in p.get_task_actual_time %} {{ i.actual }} {% endfor %}</td>
+                                                            <td><a href="/milestones/edit/{{p.id}}/" title="Edit" class="glyphicon glyphicon-edit" style="text-decoration:none;"></a> </td>
+                                                           <!--<td><a href="/tasks/edit/{{p.id}}/" title="View Tasks for This Milestone">{{p.available_task}}</td>-->
+                                                             {%if p.activate == 2 %}
+                                                            <td><a href="/milestones/active/{{p.id}}/" class="confirmationactive label-success label label-default "style="text-decoration:none;" title="Click here to activate">Active</a></td>
+                                                            {% else %}
+                                                            <td><a href="/milestones/active/{{p.id}}/" class="confirmationactive label-default label" style="text-decoration:none;" title="Click here to activate">Inactive</a></td>
+                                                            {%endif%}
+                                                            <td ><a href="/milestones/deactive/{{p.id}}/" class="confirmationdeactive glyphicon glyphicon-trash" style="text-decoration:none;" title="Click here to Deactivate"></td>
+                                                            {% endif %}
+                                                            <!--<td><input type = "checkbox"></td>-->
+                                                </tr>
+                                          {% endfor %}
+
+
+<!-- script for confirm alert -->
+<script type="text/javascript">
+    var elems = document.getElementsByClassName('confirmationdeactive');
+    var confirmIt = function (e) {
+        if (!confirm('Do you want to deactivate ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+    
+    
+    
+     var elems = document.getElementsByClassName('confirmationactive');
+    var confirmIt = function (e) {
+        if (!confirm('Do you want to activate ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+    
+</script>
+<!-- script for confirm alert ends -->
+                                                
+                                                
+                                                <tr>
+                                                <th id="tot" colspan="9" align="right" class="tot" style="display: none">Total</th>
+                                                 <td id="totd" class="totalCol totd" style="display: none"></td>
+                                                <td id="totdd" class="totalCol totd" style="display: none"></td>
+                                                <th></th>
+                                                <th colspan="4"></th>
+                                                </tr>
+                                      {% else %}
+                                          <td>No Milestone added Yet</td>
+                                        {% endif %}
+                                    
+                                                </tbody>
+                                                </table>
+                                            
+                                            
+                                        <!--    <table>
+                                            <tr>
+                                            <th>due date</th>
+                                            <th>today's date</th>
+                                            <th>result</th>
+                                            <th>t</th>
+                                            </tr>
+                                            
+                                              
+
+
+                                            <tr> 
+                                             <td>{{ due_dates}}</td>
+                                             <td>{%now ""%}</td>
+                                             {%if due_dates <= todays %}
+                                             <td> overdue</td>
+                                             {%else%}
+                                             <td> notoverdue</td>
+                                             {%endif%}
+                                            </tr>
+                                            <td></td>
+                                            </table> -->
+                                             
+                                    <div class="keys" style="display:none" title="">
+                                    <span>3</span><span>2</span><span>1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+        </div>
+        </div>
+
+
+{% endblock midpart %}
+

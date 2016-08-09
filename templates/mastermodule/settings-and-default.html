@@ -1,0 +1,204 @@
+{% extends "mastermodule/settings-main.html" %}
+{% block specialpart %}
+
+        <a title = "Print this Page" href="javascript:window.print()"><img src="/static/img/print-icon.png" height="25" width="25" align="right"></a>
+                        {% load staticfiles %}
+               <a href ="http://www.facebook.com/jyothi.nadu/" > <img  src  ="{% static "static/logoimage/mahiti.png" %}" align="right" alt="My image" width = "100"/></a>
+                        <form>
+                                
+                                <span class="sprites iconsPrintpage"></span>
+                                </a>
+                                </form>
+                        <br>
+                            <div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <a href="/add settings/" style="text-decoration:none;"><h2>General Info</h2></a>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                <form method="post" action="file-upload-1.htm" name="submit" enctype="multipart/form-data">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <th>Company / Account Name</th>
+                            </tr>
+                        </thead>
+                        {% for a in admin %}
+                                <tr>
+                                <td>{{ a.user }}</td>
+                                {% if perms.mastermodule.add_generalinfo %}
+                                <td><input type=button onClick="location.href='/person/edit/{{a.id}}/'" value="Change Name" ></td>
+                                {% endif %}
+                                </tr> 
+                                    {% endfor %}
+                                <tr>
+                                <th>Intervals Domain</th>
+                                </tr></thead>
+                        {% for s in settings %}
+                                <tr>
+                                <td>Type your desired domain and we’ll check to see if it is available.</td>
+                                <td></td>
+                                </tr>
+                                <tr>
+                                <td>{{ s.Intervals_Domain_Name }}</td>
+                                {% if perms.mastermodule.add_generalinfo %}
+                                <td><input type=button onClick="location.href='/editsettings/{{s.id}}/'" value="Change Domain" ></td>
+                                {% endif %}
+                                </tr>
+          
+                                  <tr>
+                                  <th>Intervals Administrator</th>
+                                  </tr>
+                                  
+                                  <tr>
+                                  <td>There can only be one Intervals Administrator per account. This user is the account owner that receives support emails, training tips and monthly receipts.</td>
+                                  <td></td>
+                                  </tr>
+                                  <tr>
+                                  <td>{{ s.Intervals_Admin }}</td>
+                                  {% if perms.mastermodule.add_generalinfo %}
+                                  <td><input type=button onClick="location.href='/editsettings/{{s.id}}/'" value="Set Intervals Admin" ></td>
+                                  {% endif %}
+                                  </tr>
+                                  
+                                  <tr>
+                                  <th>Defaul Time Round Up</th>
+                                  </tr>
+                                  
+                                  <tr>
+                                  <td>If you need to round time up to the nearest portion of an hour, this setting can be used to customize that interval</td>
+                                   <td></td>
+                                  </tr>
+                                  <tr>
+                                  <td>{{ s.Default_time }}</td>
+                                  {% if perms.mastermodule.add_generalinfo %}
+                                  <td><input type=button onClick="location.href='/editsettings/{{s.id}}/'" value="Change default time round up" ></td>
+                                  {%  endif %}
+                                  </tr>{% endfor %} 
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+
+
+
+
+
+<div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <a href="/add settings/" style="text-decoration:none;"><h2>Appearance and Theme</h2></a>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                <form method="post" action="file-upload-1.htm" name="submit" enctype="multipart/form-data">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Site Logo</th>
+                                    </tr></thead>
+                                     
+                        <tbody>
+                            {% for s in settings %}
+                                    <tr>
+                                     <td>{{ s.Site_logo}}</td>
+                                     {% if perms.mastermodule.add_generalinfo %}
+                                  <td><input type=button onClick="location.href='/editsettings/{{s.id}}/'" value="Upload new logo" ></td>
+                                  {% endif %}
+                                    </tr>{% endfor %}
+                                    <tr>
+                                   <th>The maximum size for the logo is 240x120 pixels. Anything larger will be automagically resized. GIF, JPG, or PNG are all acceptable formats.</th>
+                                     </tr>
+                                     <tr>
+                                     <th>Prefer to use your own custom styles? Try the Advanced Theme Editor.</th>
+                                     </tr>
+                                     <tr>
+                                     <th>Current Theme: Dark Side</th>
+                                     </tr>
+                        <tbody>
+                        </tbody>
+                       
+                    </table>
+                </div>
+            </div>
+            </div>
+    </div><!--/row-->
+
+
+
+
+
+
+<div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <a href="/add settings/" style="text-decoration:none;"><h2>Regional Settings</h2></a>
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                                class="glyphicon glyphicon-chevron-up"></i></a>
+                        <a href="#" class="btn btn-close btn-round btn-default"><i
+                                class="glyphicon glyphicon-remove"></i></a>
+                    </div>
+                </div>
+                <div class="box-content">
+                <form method="post" action="file-upload-1.htm" name="submit" enctype="multipart/form-data">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                           <th>Default Time Zone</th>
+                           </tr>
+                           <tr>
+                           <td>The default time zone is used whenever a new person is created, but each person can select their own time zone for convenience.<td>
+                                    </tr></thead>
+                                     
+                        <tbody>
+                        <tr>
+                                    <td>rr</td>
+                        </tr> 
+                        <tr>
+                        <th>Locate</th>
+                        </tr>
+                        <tr>
+                        <td>l</td>
+                        </tr>
+                        <tr>
+                        <td>Number</td>
+                        </tr>
+                        <tr>
+                        <td>Currency</td>
+                        </tr>
+                        <tr>
+                        <td>Time</td>
+                        </tr>
+                        <tr>
+                        <td>Short Date</td>
+                        </tr>
+                        <tr>
+                        <td>Long Date</td>
+                        </tr>
+                                     
+                        <tbody>
+                        </tbody>
+                       
+                    </table>
+                </div>
+            </div>
+                    </div>
+    
+{% endblock specialpart %}
+

@@ -1,0 +1,280 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="/static/resources/demos/style.css">
+
+<script>
+$(document).ready(function(){
+$('#id_person').val({{user_id2.id}});
+{% for i in tasks %}
+$('#id_tasks').val({{i.id}})
+{% endfor %}
+//alert($('#id_owned_by').val({{user_id2.id}}))
+{% if task_obj %}
+    $('#id_client option').remove();
+        var cid = {% if client_obj%}{{client_obj.id}}{%else%}0{%endif%}
+    $('<option>', {value:cid}).html('{{client_obj.name}}').appendTo('#id_client');
+    $('#id_project option').remove();
+        var pid = {% if project_obj %} {{project_obj.id}} {% else %}0{% endif %}
+    $('<option>', {value:pid}).html('{{project_obj.name}}').appendTo('#id_project');
+    //console.log("Client id======="+{{client_obj}});
+    $('#id_tasks option').remove();
+        var tid = {% if task_obj %}{{task_obj.id}}{% else %}0{% endif %}
+        alert('tid');
+    $('<option>', {value:tid}).html('{{task_obj.title}}').appendTo('#id_tasks');
+
+    {% endif %}
+
+       // $('#id_start_date').val('{{form.start_date.value|date:"o-m-d"}}');
+        
+//        $('select[name="task"] option[value={{form.tasks.value}}]').attr('selected','selected');
+        
+        //uncomment to add task - taging milestone
+       // $('#id_milestone option:nth-child(1)').remove();
+
+    });
+    
+</script>
+
+<script src="/static/js/jquery.validate.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+
+//$('#id_person').attr('data-rel','chosen');
+//$('#id_times').attr('class','form-control')
+//$('#id_client').attr('data-rel','chosen');
+//$('#id_project').attr('data-rel','chosen');
+//$('#id_module').attr('data-rel','chosen');
+//$('#id_tasks').attr('data-rel','chosen');
+//$('#id_worktype').attr('data-rel','chosen');
+//$('#id_description').attr('class','form-control')
+//$('#id_pub_date').attr('class','form-control')
+
+
+$("#times_form").validate({
+    
+rules :
+{
+client: {required: true},
+module: {required: true},
+project:{required: true},
+worktype: {required: true},
+},
+});
+});
+</script>
+<!--script to defualt due date -->
+<script type="text/javascript" src="/static/js/jquery.datepick.js"> </script>
+<!--link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css"--> 
+<script type="text/javascript">
+$( document ).ready(function(){
+$("#id_date").datepicker({dateFormat: 'yy-mm-dd',changeMonth: true,changeYear: true,}).attr( 'readOnly' , 'true' );
+//$("#id_date").datepicker("setDate","{{today|date:'o-m-d'}}",{dateFormat:'yy-mm-dd', changeMonth: true, changeYear: true}).attr('readOnly','true');
+//$('#id_date').datepicker({dateFormat: 'yy-mm-dd',changeMonth: true,changeYear: true,}).attr( 'readOnly' , 'true' );
+{% if today %}
+//$('#id_date').datepicker({dateFormat: 'yy-mm-dd',changeMonth: true,changeYear: true,"setDate":"{{today|date:'o-m-d'}}"}).attr( 'readOnly' , 'true' );
+{% endif %}
+});
+
+</script>
+
+<!--script to set defualt owned by -->
+<script>
+$(document).ready(function(){
+$('#id_owned_by').val({{user_id2.id}});
+//var temp=""; 
+//$("#id_tasks").val(temp);
+});
+</script>
+<script>
+$( document ).ready(function() {
+$('#id_client').change(function(){
+    $('#id_project option').remove();
+    var cid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/getprojects/',
+        data:{'cid':cid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                $('<option>',{value:''}).html('Choose a Project').appendTo('#id_project');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_project');
+                }
+            }
+        }
+    })
+    });
+});
+</script>
+<script>
+$( document ).ready(function() {
+$('#id_project').change(function(){
+    $('#id_tasks option').remove();
+    var pid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/get_project_tasks/',
+        data:{'pid':pid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                $('<option>',{value:''}).html('Choose a Tasks').appendTo('#id_tasks');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].title).appendTo('#id_tasks');
+                }
+            }
+        }
+    })
+    });
+});
+</script>
+<!--script>
+$(function(){
+{% if error %}
+    alert('{{error}}');
+{% endif %}
+});
+</script-->
+
+<body>
+
+
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Add Time</h2>
+            </div>
+            <div class="box-content">
+                <form id = times_form class="form-inline" role="form" action="." method="POST" enctype = "multipart/form-data" >{% csrf_token %}
+        <ul class="mmm">
+        <li>
+            <div class="form-group has-success has-feedback">
+                <div class="controls">
+                    <label class="control-label" for="id_person">Person:</label> <p>
+                        {{form.person}}
+                    <p style="color:red">{% if error %}{{ form.error }}{% endif %}</p>
+                </div>
+            </div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback">
+                    <label class="control-label" for="id_date" >Date:</label> <p>
+                    <!--<input id="id_pub_date" class="form-control" name="id_pub_date">-->
+                        {{form.date}}
+                    <p style="color:red">{% if error %}{{ form.error }}{% endif %}</p>
+                </div>
+            </li>
+            <li>
+                 <div class="form-group has-success has-feedback">
+                     <label class="control-label" for="id_time">Time:</label> <p>
+                        <!--<input id="id_title" type="text" class="form-control" id="inputSuccess4" name="title">-->
+                          {{form.times}}
+                      <p style="color:red">{% if error %}{{ form.error }}{% endif %}</p>
+                </div>
+            </li>
+            <li>
+                 <div class="form-group has-success has-feedback">
+                     <div class="controls">
+                        <label class="control-label" for="id_client">Client:</label> <p>
+                        {% if key = 'edit' %}
+                        <select name="client">
+                            <option value="">Choose a client </option>
+                                {% for i in client %}
+                            <option value = "{{i.id}}" {% if clnt.pk == i.id %}selected="selected"{% endif %}>{{i.name}}</option>
+                                {% endfor %}
+                        </select>
+                        <p style="color:red">{% if error %}{{ form.error }}{% endif %}</p>
+                                {% else %}
+                                    {{form.client}}
+                                <p style="color:red">{% if error %}{{ form.error }}{% endif %}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                        <label class="control-label" for="id_project">Project:</label> <p>
+                            {% if key = 'edit' %}
+                        <select name="project">
+                            <option value="">Choose a project </option>
+                                {% for i in project %}
+                            <option value = "{{i.id}}" {% if proj.pk == i.id %}selected="selected"{% endif %}>{{i.name}}</option>
+                                {% endfor %}
+                        </select>
+                                {% else %}
+                                    {{form.project}}
+                            {% endif %}
+                    </div>
+                    <p style="color:red">{% if error %}{{ form.error }}{% endif %}</p>
+                </div>
+            </li>
+             <li>
+                  <div class="form-group has-success has-feedback">
+                      <div class="controls">
+                        <label class="control-label" for="id_module">Module:</label> <p>
+                            {{form.module}}
+                        <p style="color:red">{% if error %}{{ form.error }}{% endif %}</p>
+                      </div>
+                  </div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                         <label class="control-label" for="id_tasks">Task:</label> <p>
+                               {{form.tasks}}
+                         <p style="color:red">{% if error %}{{ form.error }}{% endif %}</p>
+                    </div>
+               </div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                        <label class="control-label" for="id_worktype">Worktype:</label> </p> 
+                           {{form.worktype}}
+                        <p style="color:red">{% if error %}{{ form.error }}{% endif %}</p>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="form-group has-success has-feedback">
+                    <div class="controls">
+                        <label class="control-label" for="id_billable">Billable:</lable>
+                        {{form.billable}}
+                        <p style="color:red">{% if error %}{{ form.error }}{% endif %}</p>
+                    </div>
+                </div>
+            </li>
+            <div>
+                 <div class="form-group has-success has-feedback">
+                     <label class="control-label" for="id_description">Description:</label> <p>
+                         <!--<input id="id_description" type="text" class="form-control" name="description">-->
+                            {{form.description}}
+                    <p style="color:red">{% if error %}{{ form.error }}{% endif %}</p>
+                </div>
+            </div>
+            
+        </ul>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="submit" class="btn btn-default" value="Save" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/times/" style="text-decoration:none;"> <button type="button" class="btn btn-default">Cancel</button> </a><br></br>
+                </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock midpart %}

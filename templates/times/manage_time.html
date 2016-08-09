@@ -1,0 +1,314 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+
+
+            <!--sitemap-->
+            <div class="breadcrumbs">
+                   <!-- <a class="home" href="#">Home</a>-->
+            </div>
+                <!-- main content -->
+                <!-- Work_Type -->
+                    <div class="maincontent">
+                        <div class="portlet box blue">
+                         <div class="breadcrumb">
+                         <li>
+            <a href="/main/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="/times/" style="text-decoration:none;">Time</a>
+        </li>
+                        
+                        </div>
+                        <a class="breadcrumb" style="text-decoration:none;">Manage Timesheets</a>
+                        <div id="employee-designation-grid" class="breadcrumb">
+                        <h4> Timesheet</h4>
+                                
+                         <a title = "Print this Page" href="javascript:window.print()"><img src="/static/img/print-icon.png" height="25" width="25" align="right"></a>
+                         
+                         
+                         
+                         
+                            <div align = left>
+                         <h5><a href="/Manage time/" style="text-decoration:none;">Current View </a>
+                             <a href="/Submitted/" style="text-decoration:none;">Submitted</a>
+                             <a href="/Overdue/" style="text-decoration:none;">Overdue</a>
+                             <a href="/Rejected/" style="text-decoration:none;">Rejected</a>
+                             <a href="/Approved/" style="text-decoration:none;">Approved</a>
+                         </h5>
+                         </div>
+                         <select>
+                         <option value="none">Custom Date Range</option>
+                         <option value="">Today</option>
+                         <option value="">Yesterday</option>
+                         <option value="">Current Week</option>
+                         <option value="">Current Month</option>
+                         <option value="">Current Quater</option>
+                         <option value="">Current Year to Date</option>
+                         <option value="">Previous Week</option>
+                         <option value="">Previous Month</option>
+                         <option value="">Previous Quarter</option>
+                         <option value="">Previous Year</option>
+                         <option value=" , ">All Dates</option>
+                         </select>
+                         
+                            <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+                            <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+                            <script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+                            <link rel="stylesheet" href="/resources/demos/style.css">
+                            <script>
+                            $(function() {
+                            $( "#startdate" ).datepicker();
+                            $( "#enddate" ).datepicker();
+                            });
+                            </script>
+                            <input type="text" id="startdate" maxlength="14" size="10" placeholder="Select date">
+                            <input type="text" id="enddate" maxlength="14" size="10" placeholder="Select date">
+                            <input type="checkbox" value="">Filter active items only
+                            <select>
+                            <option value="none">All people </option>
+                            {% for m in times %}
+                            <option value = "{{ m.person }}">{{ m.person }}</option>
+                            {% endfor %}
+                            </select>
+                            <select>
+                            <option value="none">All status </option>
+                            <option value="none">Current Week</option>
+                            <option value="none">Submitted</option>
+                            <option value="none">Overdue</option>
+                            <option value="none">Rejected</option>
+                            <option value="none">Approved</option>
+                            </select>
+                            <input type="submit" value="Filter">
+                            
+                            
+                            
+                            
+                               </p>
+                        <br>
+                               <table id="table1" class="table table-striped table-bordered bootstrap-datatable datatable responsive" >
+                                                      <Strong>Timesheets</Strong>
+                                                       {% if times_view_obj %}
+                                                      <thead>
+                                                          <tr>
+                                                            <th>Date</th>
+                                                            <th>Person</th>
+                                                            <th>Billable</th>
+                                                            <th>Unbillable</th>
+                                                            <th>Total</th>
+                                                            <th>Status</th>
+                                                            <th><input type=checkbox></th>
+                                                          </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                      {% for p in times_view_obj %}
+                                                          <tr id="row1">
+                                                              <td>{{ p.pub_date }}</td>
+                                                            <td>{{ p.person }}</td>
+                                                            <td>{{ p.billable |yesno:"1,0"}}</td>
+                                                            <td>{{ p.billable |yesno:"1,0"}}</td>
+                                                            <td>{{ p.total }}</td>
+                                                            <td>
+                                                            {{ p.status }}
+                                                            <input type=button onClick="location.href='/times/'" value='View'>
+                                                            <input type=button onClick="location.href='/times/manage/timesheets/?id={{p.id}}/'" value='Approve' id="row1Link" class="rowLink">
+                                                           <input type=button onClick="location.href='#'" value='Reject' id="row1Link" class="rowLink">
+                                                            
+                                                            </td>
+                                                            <td><input type="checkbox"/></td>
+          </tr>
+          {% endfor %}
+         {% else %}
+         <p>
+         <p>
+                                        {% endif %}
+         
+      </tbody>
+  </table>
+                                              <!--   <tr align="center">
+                                        <td>Total</td>
+                                        <td></td>
+                                        <td>{{ p.billable |yesno:"1,0"  }}</td>
+                                        <td>{{ p.billable |yesno:"1,0"}}</td>
+                                        <td>{{ p.total }}</td>
+                                        <td><select onchange="if (!task_list_table.updateFilters) { task_list_table.update({'f_numPerPage': Math.max(-1,this.value), f_pageNum: (Math.max(0,task_list_table.get('f_pageNum')))}); };" name="f_numPerPage">
+                                <option value="null">With Selected...</option>
+                                <option value="10">Approve</option>
+                                <option value="200">Reject</option>
+                                </select></td>
+                                        </tr> 
+                                    </table>-->
+                                    
+                                    <div class="keys" style="display:none" title="">
+                                    <span>3</span><span>2</span><span>1</span>
+                                </div>
+                            </div>
+                            
+                            
+                           {% if times_submitted %}
+                                                    <table id="table2" class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+                                                      <Strong>Submitted</Strong><p>
+                                                          <tr>
+                                                             <th>Date</th>
+                                                             <th>Person</th>
+                                                             <th>Billable</th>
+                                                             <th>Unbillable</th>
+                                                             <th>Total</th>
+                                                             <th>Status</th>
+                                                             <th><input type=checkbox></th>
+                                                          </tr>
+                                                      <tbody>
+                                                      {% for p in times_submitted %}
+                                                          <tr id="row1">
+                                                              <td>{{ p.pub_date }}</td>
+                                                            <td>{{ p.person }}</td>
+                                                            <td>{{ p.billable |yesno:"1,0"}}</td>
+                                                            <td>{{ p.billable |yesno:"1,0"}}</td>
+                                                            <td>{{ p.total }}</td>
+                                                            <td>
+                                                                {{ p.status }}
+                                                            <input type=button onClick="location.href='/times/'" value='View'>
+                                                            <input type=button onClick="location.href='/times/manage/timesheets/?id={{p.id}}'" value='Approve' id="row1Link" class="rowLink">
+                                                           <input type=button onClick="location.href='#'" value='Reject' id="row1Link" class="rowLink">
+                                                            
+                                                            </td>
+                                                            <td><input type="checkbox"/></td>
+          </tr>
+          {% endfor %}
+  </table>
+    {% else %}
+        <table id="table2" class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+                                                      <Strong>Submitted</Strong><p>
+                                                          <tr>
+                                                             <th>Date</th>
+                                                             <th>Person</th>
+                                                             <th>Billable</th>
+                                                             <th>Unbillable</th>
+                                                             <th>Total</th>
+                                                             <th>Status</th>
+                                                             <th><input type=checkbox></th>
+                                                          </tr>
+                                                      <tbody>
+                                                      <tr>
+                                                      
+                                                        No Submitted time sheets
+                                                      
+                                                      </tr>
+             {% endif %}
+    <table id="table2" class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+      <Strong>Overdue</Strong><p>
+          <tr>
+              <th>Date</th>
+             <th>Person</th>
+             <th>Billable</th>
+             <th>Unbillable</th>
+             <th>Total</th>
+             <th>Status</th>
+             <th><input type=checkbox></th>
+          </tr>
+      <tbody>
+      </tbody>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+    <table id="table3" class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+      <Strong>Rejected</Strong><p>
+          <tr>
+              <th>Date</th>
+             <th>Person</th>
+             <th>Billable</th>
+             <th>Unbillable</th>
+             <th>Total</th>
+             <th>Status</th>
+             <th><input type=checkbox></th>
+          </tr>
+      <tbody>
+      </tbody>
+  </table>
+  
+  
+  
+  
+    
+  
+  <table id="table4" class="table table-striped table-bordered bootstrap-datatable datatable responsive">
+      <Strong>Approved</Strong><p>
+          <tr>
+              <th>Date</th>
+             <th>Person</th>
+             <th>Billable</th>
+             <th>Unbillable</th>
+             <th>Total</th>
+             <th>Status</th>
+             <th><input type=checkbox></th>
+          </tr>
+      <tbody>
+      </tbody>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  <script>
+  $(".rowLink").click(function () {
+    // get the row containing this link
+    var row = $(this).closest("tr");
+ 
+    // find out in which table it resides
+    var table = $(this).closest("table");
+ 
+    // move it
+    row.detach();
+ 
+    if (table.is("#table1")) {
+        $("#table2").append(row);
+    }
+    else {
+        $("#table3").append(row);
+    }
+
+    if (table.is("#table3")) {
+        $("#table2").append(row);
+    }
+    
+    if (table.is("#table2")) {
+        $("#table4").append(row);
+    }
+    
+    
+    // draw the user's attention to it
+    row.fadeOut();
+    row.fadeIn();
+});
+  
+  </script>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  </div>
+                            
+
+
+
+
+        </div>
+    </div>
+{% endblock midpart %}
+

@@ -1,0 +1,70 @@
+from django.shortcuts import render
+from documents.models import *
+from documents.forms import *
+from projects.models import *
+from django.http import HttpResponseRedirect, HttpResponse, Http404
+
+def documents_home(request):
+    documents = Document.objects.all()
+    projects = Project.objects.all()
+    client = Client.objects.all()
+    print client,"client"
+    return render(request,"documents/documents-home.html",locals())
+
+def documents_details(request,task=None):
+    """ Document Details Add """
+    response = {}
+    check = ''
+    msg = ''
+    Success = False
+    import ipdb;ipdb.set_trace()
+    if task == 'add':
+        form = DocumentForm()
+        if request.method == "POST":
+            form = DocumentForm(request.POST,request.FILES)
+            title = request.POST.get('title', '')
+            tags = request.POST.get('tags','')
+            notes = request.POST.get('notes','')
+            files=request.FILES.get('files')
+            project = request.POST.get('project')
+            if form.is_valid():
+                projectobj = Project.objects.get(id=project)
+                documentobj = Document.objects.create(title=title,files=files,tags=tags,notes=notes,project=projectobj)
+                add = True
+                success = True
+                msg = "Successfully Registered."
+                return HttpResponseRedirect("/documents/documents-home/")
+            else:
+                    msg =" "
+        else:
+            msg = ""
+    if task == "edit":
+        #import ipdb;ipdb.set_trace()
+        id_edit = request.GET.get('id')
+        documentobj = Document.objects.get(id=id_edit)
+        projectobj=Project.objects.get(id=documentobj.client.id)
+        form = DocumentForm(initial={'files':documentobj.files,\
+        'title':documentobj.title,'tags':documentobj.tags,'notes':documentobj.tags,\
+        'project':projectobj.id})
+        if request.method == "POST":
+            form = DocumentForm(request.POST)
+            if form.is_valid():
+                title = request.POST.get('title')
+                tags = request.POST.get('tags')
+                notes = request.POST.get('notes')
+                files = request.FILES.get('files')
+                project = request.POST.get('project')
+                documentobj.title='title'
+                documentobj.tags='tags'
+                documentobj.notes='notes'
+                documentobj.files = 'files'
+                documentobj.project.id = 'project'
+                edit_done = True
+                success = True
+                msg = 'Profile Edited Successfully'
+            return HttpResponseRedirect("/documents/documents-home/")
+    return render(request,"documents/documents.html", locals())
+
+
+
+

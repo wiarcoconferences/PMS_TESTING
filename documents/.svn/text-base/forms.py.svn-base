@@ -1,0 +1,13 @@
+from django.forms import ModelForm
+from django import forms
+from documents.models import *
+
+
+class DocumentForm(forms.Form):
+
+    files = forms.FileField(label='Upload a Document',required=False)
+    title = forms.CharField()
+    project = forms.ModelChoiceField(queryset = Project.objects.all())
+    tags = forms.CharField()
+    notes = forms.CharField(required=False)
+

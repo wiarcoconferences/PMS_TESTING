@@ -1,0 +1,357 @@
+{% extends "main.html" %}
+{% block midpart %}
+
+{% load pms %}
+<script type="text/javascript" src="/static/js/jquery-1.10.2.min.js"></script>
+<script>
+$( document ).ready(function() {
+$('#id_clients').change(function(){
+    $('#id_projects option').remove();
+    var cid = $(this).val();
+    $.ajax({
+        type:'GET',
+        url:'/getprojects/',
+        data:{'cid':cid},
+        success:function(data){
+            if(data){
+                var res = data.res;
+                $('<option>',{value:''}).html('All Projects').appendTo('#id_projects');
+                for(i=0;i<res.length;i++)
+                {
+                    $('<option>',{value:res[i].id}).html(res[i].name).appendTo('#id_projects');
+                }
+            }
+        }
+    })
+    });
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $(".region").click(function(e){
+    alert('a');
+        var content = $(this).html();
+        $('#map').replaceWith('<div class="b">'+content+'</div>');
+    });
+
+});
+</script>
+
+
+
+
+
+            <!--sitemap-->
+                <!-- main content -->
+                <!-- Work_Type -->
+                    <div class="maincontent">
+                        <div class="portlet box blue">
+                        <div class="breadcrumb"> 
+                        <li>
+            <a href="/home/" style="text-decoration:none;">Home</a>
+        </li>
+        <li>
+            <a href="/projects/" style="text-decoration:none;">Projects</a>
+        </li>
+                        </div>
+                        {% if perms.projects.add_project %}
+                            <a title = "Add new project" class="breadcrumb" href="/project/add/0" style="text-decoration:none;">Add New Project</a> 
+                            <a title = "Recently viewed projects"class="breadcrumb" href="/recently/viewed/?key=project" style="text-decoration:none;">Recently Viewd Projects</a>
+                            <a title = "Import projects" class="breadcrumb" href="#" style="text-decoration:none;">Import Projects</a>
+                            {% endif %}
+                           <div id="project_gridview" class="breadcrumb">
+                           <h3> {{project_list|length}} Project </h3> 
+                            
+                        <p>
+                        
+                         <input id="active_projects" class="check" type="checkbox" name = "check_2" >
+                        <label for="f_summary">Show active projects only</label>
+                        
+                         <input type="checkbox" id="check1">
+                        <label for="f_summary">Show project description</label></p>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<meta charset=utf-8 />
+
+
+
+
+
+<script>
+$(document).ready(function () {
+            $('#check1,#check2,#check3').on('click', function () {
+                //Check atlest one checkbox is checked
+                if ($("input[type=checkbox]:checked").length > 0) {
+                    //Show the table
+                    $('#tblone').show();
+                    $('.milestone').css('display','block');
+                    $('#tblonee').show();
+                    $('#tblones').show();
+                    $('.tbloend').css('display','block');
+                    $('.tbloeed').css('display','block');
+                    $('.tblonesd').css('display','block');
+                    $('#desc').show();
+                    $('.descd').css('display','block');
+                    $('#blank').show();
+                    $('#tot').show();
+                    
+                    
+                    $('#tcount').show();
+                    $('#inp').show();
+                    $('#over_due').show();
+                    
+                    
+                }
+                else {
+                //hide the table
+                    $('#tot').hide();
+                    $('#tblone').hide();
+                    $('.milestone').hide();
+                    $('#tblonee').hide();
+                    $('#tblones').hide();
+                    $('.tbloend').hide();
+                    $('.tbloneed').hide();
+                    $('.tblonesd').hide();
+                    $('#desc').hide();
+                    $('.descd').hide();
+                    $('#blank').hide();
+                    
+                    
+                    
+                    $('#tcount').hide();
+                    $('#inp').hide();
+                    $('#over_due').hide();
+                    
+                }
+            });
+            
+            $('#check1,#check2,#check3').on('click', function () {
+                if ($("input[type=checkbox]:checked").length > 0) {
+                    $('.milestone').each(function(){
+                    //console.log($(this).html());
+                    $(this).css('display','block');
+                    });
+                }
+            });
+            
+            
+            
+            
+            
+        });
+</script>
+<!-- script ends for hide tables-->
+
+<!-- script ends for hide tables-->
+
+
+<!-- script for select checkbox-->
+
+<SCRIPT language="javascript">
+$(function(){
+ 
+    // add multiple select / deselect functionality
+    $("#all").click(function () {
+          $('.case').attr('checked', this.checked);
+    });
+ 
+    // if all checkbox are selected, check the selectall checkbox
+    // and viceversa
+    $(".case").click(function(){
+ 
+        if($(".case").length == $(".case:checked").length) {
+            $("#all").attr("checked", "checked");
+        } else {
+            $("#all").removeAttr("checked");
+        }
+ 
+    });
+    
+    
+    $('#active_projects').click(function(){
+        var is_checked = $(this).is(':checked');
+        if (is_checked){
+            $('tr.2').show();
+            $('tr.1').hide();
+        } else {
+            $('tr.2').show();
+            $('tr.1').show();
+        }
+    
+    });
+    
+});
+</SCRIPT>
+<script>
+var totals=[0,0,0];
+$(document).ready(function(){
+
+    var $dataRows=$("#sum_table tr:not('.totalColumn, .titlerow')");
+   
+    $dataRows.each(function() {
+        $(this).find('.rowDataSd').each(function(i){       
+            totals[i]+=parseInt( $(this).html());
+        });
+    });
+    $("#sum_table td.totalCol").each(function(i){
+        $(this).html(""+totals[i]);
+    });
+
+});
+</script>
+<!-- script for select checkbox ends-->
+
+                            <a title = "Print this Page" href="javascript:window.print()"><img src="/static/img/print-icon.png" height="25".width="25" align="right"></a>
+                                <strong>Filter options:</strong>
+                                <form method = "GET" action="/projects/">
+                        <select class="filter-select" name="client" id="id_clients">
+                        <option value = "">All Clients</option>
+                        {% with request|get_client_list as clients_list %}
+                        {% if clients_list %}
+                        {% for client in clients_list %}
+                        <option value="{{client.id}}"> {{client.name}} </option>
+                                                    {% endfor %}
+                            {% else %}
+                        <option value="{{client.id}}"> {{client.name}} </option>
+                        {% endif %}
+                        {%  endwith %}
+                        
+                                </select>
+                            <select class="filter-select" name="project" id='id_projects'>
+                                    <option value = "">All Projects</option>
+                                    {% with request|get_project_list as project_list %}
+                                    {% for project in project_list %}
+                                    <option value="{{project.id}}">{{project.name}}</option>
+                                    {% endfor %}
+                                    {% endwith %}
+                                </select>
+                            <input class="glyphicon glyphicon-search" type="text" placeholder="Search Projects" type="submit" value="{{p.name}}" name="project-name"/>
+                                        <button class="glyphicon glyphicon-search" type ="submit" value="Search" ></button>
+                              <!--<select>
+                                                <option value ="Billable & Unbillable">Billable & Unbillable </option>
+                                                <option value = "Billable only">Billable only</option>
+                                                <option value = "UnBillable only">UnBillable only</option>
+                                 </select>--><p>
+                                 
+                                 <div class="a" id="DataTables_Table_0_wrapper" class="dataTables_wrapper" role="grid">
+                                  <table class="table table-striped table-bordered bootstrap-datatable datatable responsive" id="sum_table">
+                                      {% if projects %}
+                                      
+                                         <thead>
+                                         <tr>
+                                                <th align="center">#</th>
+                                                <th>Name</th>
+                                                <th id="desc" runat="server" style="display: none">Description</th>
+                                                <th>Client</th>
+                                                <!--th>Dashboards</th-->
+                                                <th colspan="3">Tasks</th>
+                                                <th colspan="3">Milestones</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                        {% if perms.projects.change_project %}<th>Edit</th> 
+                                                <!--th>Delete</th-->
+                                                <th>Status</th>{% endif %}
+                                                <!--<th><input type="checkbox" id="select"></th>-->
+                                        </tr>
+                                        <tr>
+                                                <th colspan="3"></th>
+                                                <th colspan="1" id="blank" class="blank" style="display: none"></th>
+                                                <th>Total</th>
+                                                <th>Unstarted</th>
+                                                <th>Overdue</th>
+                                                <th >Total</th>
+                                                <th >InProgress</th>
+                                                <th >Overdue</th>
+                                                <th colspan="6"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for p in projects %}
+                                                <tr class="{% cycle 'odd' 'even'%} {{ p.active}}">
+                                                    <td>{{p.id}}</td>
+                                                    <td>{% if perms.can_view_project %}
+                                                    <a title = "Click here for detail view" href = "/project/view/{{p.id}}" style="text-decoration:none;"> {% endif %}{{ p.name }}</a></td>
+                                                <td id="descd" class ="descd" runat="server" style="display: none"> {{ p.description }} </td>
+                                                    <td> {{p.client}} </td>
+                                        <!--td> <a href = "/project/dashboard/{{p.id}}/" style="text-decoration:none;"> Dashboard </a></td-->
+                                                    <td class="rowDataSd"> {{p.get_tasks_list.count }}</td>
+                                                    <td ></td>
+                                                    <td > </td>
+                                                    <td class="rowDataSd"> {{p.get_milestones_list.count }}</td>
+                                                    <td ></td>
+                                                    <td ></td>
+                                                    <td> {{ p.start_date }}</td>
+                                                    <td> {{ p.end_date }}  </td>
+                                                    {% if perms.projects.change_project %}
+                                                  <td><a title = "Edit this project" href="/project/edit/{{p.id}}" onclick="return editfunc({{i.id}})" style="text-decoration:none;" class="glyphicon glyphicon-edit"></a> </td> 
+                                                  
+                                                    {%if p.active == 2 %}
+                                                    
+                                                    <td><a title = "Activate this project" href="/project/delete/{{p.id}}" style="text-decoration:none;" class="confirmationdeactive label-success label label-default ">Active</a> </td>
+                                                    {% else %}
+                                                    
+                                                    <td><a title = "Activate this project" href="/project/active/{{p.id}}" style="text-decoration:none;" class="confirmationactive label-default label">Inactive</a> </td>
+                                                    {% endif%}
+                                                    {% endif %}
+                                                 <!-- <td><input type="checkbox" class="case" name="case" value=""/></td>-->
+                                                </tr>
+                                          {% endfor %}
+                                           <th colspan="3">Total</th>
+                                           <th colspan="1" id="tot" style="display: none"></th>
+                                           <td class = "totalCol"></td>
+                                        <th></th>
+                                        <th></th>
+                                         <td class = "totalCol"></td>    
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th colspan="6"></th>
+                                        </tr>
+                                      {% else %}
+                                          <td style="text-align:center;color:blue;text-size:14px;">No Projects added Yet...</td>
+                                        {% endif %}
+                                        
+                                        
+                                        <!-- script for confirm alert -->
+<script type="text/javascript">
+    var elems = document.getElementsByClassName('confirmationdeactive');
+    var confirmIt = function (e) {
+        if (!confirm('Do you want to deactive ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+    
+    
+    
+     var elems = document.getElementsByClassName('confirmationactive');
+    var confirmIt = function (e) {
+        if (!confirm('Do you want to active ?')) e.preventDefault();
+    };
+    for (var i = 0, l = elems.length; i < l; i++) {
+        elems[i].addEventListener('click', confirmIt, false);
+    }
+    
+</script>
+<!-- script for confirm alert -->
+
+                                        
+                                        
+                                        
+                                        
+                                        
+                                                </tbody>
+                                                </table>
+                                                </div>
+                                    <div class="keys" style="display:none" title="">
+			</div>
+			
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+
+{% endblock midpart %}
